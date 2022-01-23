@@ -1,0 +1,14 @@
+{
+  "name": "relax",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "apps/*"
+  ],
+  "author": "beardfriend <beardfriend21@gmail.com>",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {
+    "typescript": "^4.5.5"
+  }
+}

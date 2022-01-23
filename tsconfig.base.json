@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es6",
+    //엄격 타입 설정
+    "noImplicitAny": true, // any타입 허용 안함
+    "strictNullChecks": true, // null 체크 까다롭게
+    "strictFunctionTypes": true, // 함수 타입 까다롭게 체크
+    "noUnusedLocals": true, //
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true // commonjs를 사용하기 위해 꼭 필요함.
+    //
+  },
+  "exclude": ["node_modules", "dist"],
+  "include": ["**/*.ts", "**/*.tsx"]
+}
