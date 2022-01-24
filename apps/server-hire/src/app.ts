@@ -1,9 +1,9 @@
-import express from 'express';
+import useDotenv from '@Initializations/express/lib/useDotenv';
+import initPostgres from '@Initializations/database/initPostgres';
+import initExpress from '@Initializations/express/initExpress';
+useDotenv();
+console.log('initializing postgres ....');
+initPostgres();
 
-const init = () => {
-  const app = express();
-  const port = 4000;
-  app.set('port', port);
-  app.listen(port, () => console.log('running'));
-};
-init();
+console.log('initializing express ....');
+initExpress();
