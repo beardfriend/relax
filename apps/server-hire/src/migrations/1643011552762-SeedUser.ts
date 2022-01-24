@@ -20,7 +20,6 @@ class SeedUser1643011552762 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    console.log('hello');
     await queryRunner.query(`truncate table public.user cascade;`);
   }
 }
