@@ -11,9 +11,18 @@
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true // commonjs를 사용하기 위해 꼭 필요함.
+    "esModuleInterop": true, // commonjs를 사용하기 위해 꼭 필요함.
+    "emitDecoratorMetadata": true, // typeorm
+    "experimentalDecorators": true, //typeorm
+    "baseUrl": ".",
+    "paths": {
+      "@Libs/*": ["./libs/*"],
+      "@Constants/Types": ["./libs/constants/types/index.ts"],
+      "@Constants/Errors": ["./libs/constants/errors/index.ts"]
+    }
     //
   },
+
   "exclude": ["node_modules", "dist"],
   "include": ["**/*.ts", "**/*.tsx"]
 }

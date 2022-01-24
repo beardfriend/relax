@@ -1,13 +1,16 @@
 {
-  "extends": "../../tsconfig.base.json",
+  "extends": "../../tsconfig.json",
+
   "compilerOptions": {
     "lib": ["ES2015", "ES2016", "ES2017", "ES2018", "ES2019", "ES2020"],
     "removeComments": true,
-    "emitDecoratorMetadata": true, // typeorm
-    "experimentalDecorators": true, //typeorm
     "baseUrl": "src",
     "paths": {
-      "@Initializations/*": ["./initialzations/*"]
+      "@SH/Initializations/*": ["./initialzations/*"],
+      "@SH/Entities/*": ["./entities/*"],
+      "@Libs/*": ["../../../libs/*"],
+      "@Constants/Types": ["../../../libs/constants/types/index.ts"],
+      "@Constants/Errors/*": ["../../../libs/constants/errors/index.ts"]
     }
   }
 }

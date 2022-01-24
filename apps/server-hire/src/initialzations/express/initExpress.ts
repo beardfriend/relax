@@ -1,5 +1,5 @@
 import express from 'express';
-import useBodyParser from '@Initializations/express/lib/useBodyParser';
+import useBodyParser from '@SH/Initializations/express/lib/useBodyParser';
 
 const initExpress = () => {
   const app = express();

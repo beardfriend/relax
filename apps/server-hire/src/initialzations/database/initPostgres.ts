@@ -12,6 +12,7 @@ const initPostgres = () => {
     TYPEORM_LOGGING,
     TYPEORM_ENTITIES,
   } = process.env;
+
   createConnection({
     type: 'postgres',
     host: TYPEORM_HOST,

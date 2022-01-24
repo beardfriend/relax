@@ -2,5 +2,18 @@
   "env": {
     "node": true
   },
-  "extends": ["airbnb-base", "airbnb-typescript/base", "../../.eslintrc"]
+  "extends": ["airbnb-base", "airbnb-typescript/base", "../../.eslintrc"],
+  "parserOptions": {
+    "project": "*/tsconfig.json"
+  },
+  "settings": {
+    "import/parsers": {
+      "@typescript-eslint/parser": [".ts", ".tsx"]
+    },
+    "import/resolver": {
+      "typescript": {
+        "project": "*/tsconfig.json"
+      }
+    }
+  }
 }
