@@ -14,8 +14,11 @@
     "esModuleInterop": true, // commonjs를 사용하기 위해 꼭 필요함.
     "emitDecoratorMetadata": true, // typeorm
     "experimentalDecorators": true, //typeorm
+
     "baseUrl": ".",
     "paths": {
+      "@SH/Initializations/*": ["./apps/server-hire/src/initialzations/*"],
+      "@SH/Entities/*": ["./apps/server-hire/src/entities/*"],
       "@Libs/*": ["./libs/*"],
       "@Constants/Types": ["./libs/constants/types/index.ts"],
       "@Constants/Errors": ["./libs/constants/errors/index.ts"]
