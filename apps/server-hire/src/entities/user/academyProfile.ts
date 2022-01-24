@@ -1,4 +1,5 @@
 import { Column, Entity, OneToOne, JoinColumn } from 'typeorm';
+import Address from '../address';
 import User from './user';
 
 abstract class AuthBusiness {
@@ -26,6 +27,10 @@ class AcademyProfile extends AuthBusiness {
 
   @Column()
   introduce: string;
+
+  @OneToOne(() => Address)
+  @JoinColumn()
+  address: Address;
 }
 
 export default AcademyProfile;
