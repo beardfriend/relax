@@ -4,7 +4,10 @@
   },
   "extends": ["airbnb-base", "airbnb-typescript/base", "../../.eslintrc"],
   "parserOptions": {
-    "project": "*/tsconfig.json"
+    "project": "**/tsconfig.json"
+  },
+  "rules": {
+    "import/no-extraneous-dependencies": "off"
   },
   "settings": {
     "import/parsers": {
@@ -12,7 +15,7 @@
     },
     "import/resolver": {
       "typescript": {
-        "project": "*/tsconfig.json"
+        "project": "**/tsconfig.json"
       }
     }
   }
