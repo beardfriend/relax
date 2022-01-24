@@ -1,6 +1,6 @@
 import { CreateDateColumn, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 
-export abstract class PrimaryEntity {
+export abstract class Primary {
   @PrimaryGeneratedColumn({ type: 'bigint' })
   id?: string;
 
@@ -15,7 +15,7 @@ export abstract class PrimaryEntity {
   updated_at?: Date;
 }
 
-export abstract class NoPrimaryEntity {
+export abstract class UnPrimary {
   @CreateDateColumn({
     name: 'created_at',
   })
