@@ -9,7 +9,8 @@
   "license": "MIT",
   "dependencies": {
     "typeorm": "^0.2.41",
-    "reflect-metadata": "^0.1.13"
+    "reflect-metadata": "^0.1.13",
+    "dotenv": "^14.2.0"
   },
   "devDependencies": {
     "typescript": "^4.5.5"
