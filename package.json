@@ -7,7 +7,10 @@
   ],
   "author": "beardfriend <beardfriend21@gmail.com>",
   "license": "MIT",
-  "dependencies": {},
+  "dependencies": {
+    "typeorm": "^0.2.41",
+    "reflect-metadata": "^0.1.13"
+  },
   "devDependencies": {
     "typescript": "^4.5.5"
   }
