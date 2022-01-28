@@ -8,8 +8,8 @@ class ClassContent {
   @PrimaryGeneratedColumn()
   work_experience: WorkExperience;
 
-  @Column({ type: 'enum', enum: yogaSortType })
-  yoga_name: yogaSortType;
+  @Column({ type: 'enum', enum: yogaSortType, array: true })
+  yogaType: yogaSortType[];
 
   @Column()
   running_time: string;

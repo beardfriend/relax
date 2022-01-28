@@ -1,6 +1,7 @@
-import { Column, Entity, OneToOne, JoinColumn } from 'typeorm';
+import { Column, Entity, OneToOne, JoinColumn, OneToMany } from 'typeorm';
 import { userType, signUpType } from '@Constants/Types';
 import { Primary } from '@Libs/entites/abstract';
+import Resume from '@SH/Entities/resume/resume';
 import TeacherProfile from './teacherProfile';
 import AcademyProfile from './academyProfile';
 
@@ -28,6 +29,9 @@ class User extends Primary {
   @OneToOne(() => AcademyProfile)
   @JoinColumn()
   academy: AcademyProfile;
+
+  @OneToMany(() => Resume, (resume) => resume.user)
+  resume: Resume[];
 }
 
 export default User;

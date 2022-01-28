@@ -1,5 +1,7 @@
+import { yogaSortType } from '@Libs/constants/types';
 import { Column, Entity, OneToOne, JoinColumn } from 'typeorm';
 import Address from '../address';
+import Images from '../image';
 import User from './user';
 
 abstract class AuthBusiness {
@@ -19,6 +21,10 @@ class AcademyProfile extends AuthBusiness {
   @JoinColumn()
   user: User;
 
+  @OneToOne(() => Images)
+  @JoinColumn()
+  logo: Images;
+
   @Column()
   academy_name: string;
 
@@ -27,6 +33,9 @@ class AcademyProfile extends AuthBusiness {
 
   @Column()
   introduce: string;
+
+  @Column({ type: 'enum', enum: yogaSortType, array: true })
+  yogaType: yogaSortType[];
 
   @OneToOne(() => Address)
   @JoinColumn()

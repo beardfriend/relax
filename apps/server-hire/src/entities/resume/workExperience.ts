@@ -1,6 +1,7 @@
-import { Column, Entity, OneToMany } from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 import { Primary } from '@Libs/entites/abstract';
 import ClassContent from './classContent';
+import Resume from './resume';
 
 @Entity()
 class WorkExperience extends Primary {
@@ -18,6 +19,9 @@ class WorkExperience extends Primary {
 
   @OneToMany(() => ClassContent, (data) => data.work_experience)
   class_content: ClassContent[];
+
+  @ManyToOne(() => Resume)
+  resume: Resume;
 }
 
 export default WorkExperience;
