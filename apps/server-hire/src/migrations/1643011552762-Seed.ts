@@ -2,7 +2,7 @@ import { MigrationInterface, getConnection, QueryRunner } from 'typeorm';
 import casual from 'casual';
 import User from '@SH/Entities/user/user';
 
-class SeedUser1643011552762 implements MigrationInterface {
+class Seed1643011552762 implements MigrationInterface {
   public async up(): Promise<void> {
     const value: {}[] = [];
     for (let i = 0; i < 100; i += 1) {
@@ -24,4 +24,4 @@ class SeedUser1643011552762 implements MigrationInterface {
   }
 }
 
-export default SeedUser1643011552762;
+export default Seed1643011552762;
