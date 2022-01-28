@@ -7,12 +7,17 @@
   ],
   "author": "beardfriend <beardfriend21@gmail.com>",
   "license": "MIT",
+  "scripts": {
+    "test": "yarn jest --forceExit"
+  },
   "dependencies": {
     "typeorm": "^0.2.41",
     "reflect-metadata": "^0.1.13",
     "dotenv": "^14.2.0"
   },
   "devDependencies": {
-    "typescript": "^4.5.5"
+    "typescript": "^4.5.5",
+    "jest": "^27.4.7",
+    "ts-jest": "^27.1.3"
   }
 }
