@@ -1,8 +1,9 @@
 import Image from '@Libs/entites/image';
-import { Column, Entity, JoinColumn, OneToOne } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToOne } from 'typeorm';
 import { imageType } from '@Constants/Types';
 import TeacherProfile from '@SH/Entities/user/teacherProfile';
 import AcademyProfile from '@SH/Entities/user/academyProfile';
+import Resume from '@SH/Entities/resume/resume';
 
 @Entity()
 class Images extends Image {
@@ -12,6 +13,9 @@ class Images extends Image {
   @OneToOne(() => TeacherProfile)
   @JoinColumn()
   teacher_profile: TeacherProfile;
+
+  @ManyToOne(() => Resume, (resume) => resume.images)
+  resume: Resume;
 
   @OneToOne(() => AcademyProfile)
   @JoinColumn()

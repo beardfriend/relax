@@ -1,5 +1,5 @@
 import { Primary } from '@Libs/entites/abstract';
-import { Column, Entity, ManyToOne, OneToMany, ManyToMany, JoinTable } from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 import Images from '../image';
 import User from '../user/user';
 import Certification from './certification';
@@ -17,8 +17,7 @@ class Resume extends Primary {
   @ManyToOne(() => User)
   user: User;
 
-  @ManyToMany(() => Images, { nullable: true })
-  @JoinTable()
+  @OneToMany(() => Images, (image) => image.resume, { nullable: true })
   images: Images[];
 
   @OneToMany(() => Certification, (certification) => certification.resume, { nullable: true })
