@@ -1,9 +1,9 @@
-import { Column, Entity, OneToOne, JoinColumn, OneToMany } from 'typeorm';
+import { Column, Entity, OneToOne, JoinColumn } from 'typeorm';
 import { userType, signUpType } from '@Constants/Types';
 import { Primary } from '@Libs/entites/abstract';
-import Resume from '@SH/Entities/resume/resume';
 import TeacherProfile from './teacherProfile';
 import AcademyProfile from './academyProfile';
+import Teacher from './teacher';
 
 @Entity()
 class User extends Primary {
@@ -24,14 +24,15 @@ class User extends Primary {
 
   @OneToOne(() => TeacherProfile)
   @JoinColumn()
-  teacher: TeacherProfile;
+  teacher_profile: TeacherProfile;
 
   @OneToOne(() => AcademyProfile)
   @JoinColumn()
-  academy: AcademyProfile;
+  academy_profile: AcademyProfile;
 
-  @OneToMany(() => Resume, (resume) => resume.user)
-  resume: Resume[];
+  @OneToOne(() => Teacher)
+  @JoinColumn()
+  teacher: Teacher;
 }
 
 export default User;
