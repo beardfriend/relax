@@ -1,7 +1,7 @@
 import { Primary } from '@Libs/entites/abstract';
 import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 import Images from '../image';
-import ResumeApplyList from '../ResumeApplyList';
+import ResumeApplyList from '../resumeApplyList';
 import Teacher from '../user/teacher';
 import Certification from './certification';
 import Education from './education';
