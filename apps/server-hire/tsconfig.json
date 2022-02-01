@@ -8,9 +8,12 @@
     "paths": {
       "@SH/Initializations/*": ["./initialzations/*"],
       "@SH/Entities/*": ["./entities/*"],
+      "@SH/Controllers/*": ["./controllers/*"],
+      "@SH/Services/*": ["./services/*"],
+      "@SH/Routers/*": ["./routers/*"],
       "@Libs/*": ["../../../libs/*"],
       "@Constants/Types": ["../../../libs/constants/types/index.ts"],
-      "@Constants/Errors/*": ["../../../libs/constants/errors/index.ts"]
+      "@Constants/Messages": ["../../../libs/constants/messages/index.ts"]
     }
   }
 }
