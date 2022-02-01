@@ -1,4 +1,4 @@
-export interface validation {
+export interface response {
   statusCode: number;
   category: string;
   message: string;
