@@ -1,8 +1,9 @@
-import { EntityManager } from 'typeorm';
+import { getRepository } from 'typeorm';
 import User from '@SH/Entities/user/user';
 
-export async function findUser(manager: EntityManager, email: string) {
-  const res = await manager.findOne(User, email);
+export async function findUser(email: string) {
+  const userRepo = getRepository(User);
+  const res = await userRepo.findOne({ where: { email } });
   return res;
 }
 
