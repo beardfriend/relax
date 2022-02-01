@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "module": "commonjs",
+    "lib": ["DOM", "ES2015"],
     "target": "es6",
     //엄격 타입 설정
     "noImplicitAny": true, // any타입 허용 안함
@@ -19,6 +20,9 @@
     "paths": {
       "@SH/Initializations/*": ["./apps/server-hire/src/initialzations/*"],
       "@SH/Entities/*": ["./apps/server-hire/src/entities/*"],
+      "@SH/Controllers/*": ["./apps/server-hire/src/controllers/*"],
+      "@SH/Services/*": ["./apps/server-hire/src/services/*"],
+      "@SH/Routers/*": ["./apps/server-hire/src/routers/*"],
       "@Libs/*": ["./libs/*"],
       "@Constants/Types": ["./libs/constants/types/index.ts"],
       "@Constants/Messages": ["libs/constants/messages/index.ts"]

@@ -7,5 +7,8 @@ export default {
     '@Constants/Types': '<rootDir>/libs/constants/types/',
     '@SH/Entities/(.*)': '<rootDir>/apps/server-hire/src/entities/$1',
     '@SH/Initializations/(.*)': '<rootDir>/apps/server-hire/src/initialzations/$1',
+    '@SH/Controllers/(.*)': '<rootDir>/apps/server-hire/src/controllers/$1',
+    '@SH/Services/(.*)': '<rootDir>/apps/server-hire/src/services/$1',
+    '@SH/Routers/(.*)': '<rootDir>/apps/server-hire/src/routers/$1',
   },
 };
