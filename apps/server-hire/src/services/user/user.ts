@@ -8,11 +8,11 @@ export async function findUser(email: string) {
   return res;
 }
 
-export function tokenSign(email: string) {
+export async function tokenSign(email: string) {
   if (process.env.JWT === undefined) {
     return false;
   }
-  const token = jwt.sign({ email }, process.env.JWT);
+  const token = await jwt.sign({ email }, process.env.JWT, { expiresIn: '1h' });
   return token;
 }
 

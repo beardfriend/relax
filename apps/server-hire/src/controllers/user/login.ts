@@ -20,8 +20,8 @@ async function login(req: Request, res: Response) {
       .status(incorrectPassword.statusCode)
       .json({ msg: incorrectPassword.message, category: incorrectPassword.category });
   }
-  const token = tokenSign(email);
-  res.cookie('login', token, { signed: true, maxAge: 10000, httpOnly: true });
+  const token = await tokenSign(email);
+  res.cookie('relaxLogin', token, { maxAge: 24 * 60 * 60, httpOnly: true });
   return res.status(loginSuccess.statusCode).json({ msg: loginSuccess.message, category: loginSuccess.category });
 }
 
