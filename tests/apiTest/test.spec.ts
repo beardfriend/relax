@@ -29,26 +29,21 @@ describe('test', () => {
     await manager.save(user);
   });
 
+  const app = express();
+  useBodyParser(app);
+  setRoute(app);
+
   test('Case, success', async () => {
-    const app = express();
-    useBodyParser(app);
-    setRoute(app);
     const res = await request(app).post('/user/login').send({ email: 'asd@naver.com', password: 'password' });
     expect(res.statusCode).toEqual(200);
   });
 
   test('Case Password Fail', async () => {
-    const app = express();
-    useBodyParser(app);
-    setRoute(app);
     const res = await request(app).post('/user/login').send({ email: 'asd@naver.com', password: 'password' });
     expect(res.statusCode).toEqual(200);
   });
 
   test('Case Email didnt Exist', async () => {
-    const app = express();
-    useBodyParser(app);
-    setRoute(app);
     const res = await request(app).post('/user/login').send({ email: 'asd@naver.com', password: 'password' });
     expect(res.statusCode).toEqual(200);
   });
