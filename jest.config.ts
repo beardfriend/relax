@@ -5,6 +5,7 @@ export default {
   moduleNameMapper: {
     '@Libs/(.*)': '<rootDir>/libs/$1',
     '@Constants/Types': '<rootDir>/libs/constants/types/',
+    '@Constants/Messages': '<rootDir>/libs/constants/messages/',
     '@SH/Entities/(.*)': '<rootDir>/apps/server-hire/src/entities/$1',
     '@SH/Initializations/(.*)': '<rootDir>/apps/server-hire/src/initialzations/$1',
     '@SH/Controllers/(.*)': '<rootDir>/apps/server-hire/src/controllers/$1',

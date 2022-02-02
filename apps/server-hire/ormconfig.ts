@@ -11,7 +11,6 @@ export default {
   password: process.env.TYPEORM_PASSWORD,
   database: process.env.TYPEORM_DATABASE,
   synchronize: Boolean(process.env.TYPEORM_SYNCHRONIZE),
-  logging: Boolean(process.env.TYPEORM_LOGGING),
   entities: [`${process.env.TYPEORM_ENTITIES}`],
   migrations: ['./src/migrations/**/*.ts'],
   cli: {
