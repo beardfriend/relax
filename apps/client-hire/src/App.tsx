@@ -1,12 +1,16 @@
 import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Kakao from './pages/kakao';
+import Main from './pages/main';
 
 const App = () => {
   return (
-    <>
-      <div className="hello">
-        <h1 style={{ color: 'red' }}>hello</h1>
-      </div>
-    </>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Main />}></Route>
+        <Route path="/kakao" element={<Kakao />}></Route>
+      </Routes>
+    </Router>
   );
 };
 
