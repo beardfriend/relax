@@ -24,7 +24,7 @@ async function signUp(req: Request, res: Response) {
   await manager.save(user);
 
   const token = tokenSign(email);
-  res.cookie('relaxLogin', token, { signed: true, maxAge: 10000, httpOnly: true });
+  res.cookie('relaxLogin', token, { maxAge: 24 * 60 * 60, httpOnly: true });
   return res.status(signupSuccess.statusCode).json({ msg: signupSuccess.message, category: signupSuccess.category });
 }
 
