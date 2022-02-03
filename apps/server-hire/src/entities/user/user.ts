@@ -7,10 +7,13 @@ import Teacher from './teacher';
 
 @Entity()
 class User extends Primary {
-  @Column()
+  @Column({ nullable: true })
+  kakao_id: number;
+
+  @Column({ nullable: true })
   email: string;
 
-  @Column()
+  @Column({ nullable: true })
   password: string;
 
   @Column({ nullable: true })
