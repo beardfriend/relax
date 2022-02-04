@@ -1,9 +1,12 @@
 import { Request, Response } from 'express';
 import bcrypt from 'bcrypt';
+import token from '@Libs/constants/token';
+import { normalMaxAge } from '@Libs/constants/constant';
 import { getManager } from 'typeorm';
 import User from '@SH/Entities/user/user';
 import { signupSuccess, existEmail } from '@Constants/Messages';
 import { findUser, tokenSign } from '@SH/Services/user/user';
+import { signUpType } from '@Libs/constants/types';
 
 interface SignUpReq {
   email: string;
@@ -20,11 +23,12 @@ async function signUp(req: Request, res: Response) {
   const manager = await getManager();
   const user = new User();
   user.email = email;
+  user.signup_type = signUpType.NORMAL;
   user.password = await bcrypt.hash(password, 10);
   await manager.save(user);
 
-  const token = tokenSign(email);
-  res.cookie('relaxLogin', token, { maxAge: 24 * 60 * 60, httpOnly: true });
+  const signedEmail = tokenSign(email);
+  res.cookie(token.LOGIN, signedEmail, { maxAge: normalMaxAge, httpOnly: true });
   return res.status(signupSuccess.statusCode).json({ msg: signupSuccess.message, category: signupSuccess.category });
 }
 

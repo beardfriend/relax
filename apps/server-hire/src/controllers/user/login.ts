@@ -2,6 +2,8 @@ import { Request, Response } from 'express';
 import bcrypt from 'bcrypt';
 import { incorrectPassword, loginSuccess, noUser } from '@Constants/Messages';
 import { findUser, tokenSign } from '@SH/Services/user/user';
+import token from '@Libs/constants/token';
+import { normalMaxAge } from '@Libs/constants/constant';
 
 interface Reqlogin {
   email: string;
@@ -20,8 +22,8 @@ async function login(req: Request, res: Response) {
       .status(incorrectPassword.statusCode)
       .json({ msg: incorrectPassword.message, category: incorrectPassword.category });
   }
-  const token = await tokenSign(email);
-  res.cookie('relaxLogin', token, { maxAge: 24 * 60 * 60, httpOnly: true });
+  const signedEmail = await tokenSign(email);
+  res.cookie(token.LOGIN, signedEmail, { maxAge: normalMaxAge, httpOnly: true });
   return res.status(loginSuccess.statusCode).json({ msg: loginSuccess.message, category: loginSuccess.category });
 }
 

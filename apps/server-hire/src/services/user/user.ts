@@ -1,12 +1,14 @@
 import { getRepository } from 'typeorm';
 import User from '@SH/Entities/user/user';
 import jwt from 'jsonwebtoken';
+import token from '@Libs/constants/token';
 import { kakao_authCode } from '@Libs/api/kakao';
 import { signUpType } from '@Libs/constants/types';
+import { normalExpireIn } from '@Libs/constants/constant';
 
 export async function findUser(email: string) {
   const userRepo = getRepository(User);
-  const res = await userRepo.findOne({ where: { email } });
+  const res = await userRepo.findOne({ where: { email, signup_type: signUpType.NORMAL } });
   return res;
 }
 
@@ -20,8 +22,8 @@ export async function tokenSign(email: string) {
   if (process.env.JWT === undefined) {
     return false;
   }
-  const token = await jwt.sign({ email }, process.env.JWT, { expiresIn: '1h' });
-  return token;
+  const signToken = await jwt.sign({ email, type: token.LOGIN }, process.env.JWT, { expiresIn: normalExpireIn });
+  return signToken;
 }
 
 export async function kakaoAuth() {
