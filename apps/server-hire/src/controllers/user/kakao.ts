@@ -13,7 +13,6 @@ export async function getCode(req: Request, res: Response) {
   const cookies = req.headers.cookie;
 
   if (
-    cookies === undefined ||
     process.env.KAKAO_KEY === undefined ||
     process.env.KAKAO_FINISH_URI === undefined ||
     process.env.JWT === undefined
@@ -21,16 +20,7 @@ export async function getCode(req: Request, res: Response) {
     return res.status(serverError.statusCode).send({ msg: serverError.message, category: serverError.category });
   }
 
-  const splitedCookies = splitCookie(cookies);
-  const accessToken = findCookieValue(splitedCookies, token.LOGIN);
-
-  if (typeof accessToken === 'string') {
-    return res.send({ msg: '이미 access토큰이 존재합니다.' });
-  }
-
-  const refreshToken = findCookieValue(splitedCookies, token.RefreshKakao);
-
-  if (accessToken === false || refreshToken === false) {
+  if (cookies === undefined) {
     try {
       const result = await kakaoAuth();
       if (result === false) {
@@ -40,30 +30,56 @@ export async function getCode(req: Request, res: Response) {
     } catch (error) {
       return res.status(serverError.statusCode).send({ msg: serverError.message, category: serverError.category });
     }
+  } else {
+    const splitedCookies = splitCookie(cookies);
+    const accessToken = findCookieValue(splitedCookies, token.LOGIN);
+
+    if (typeof accessToken === 'string') {
+      return res.send({ msg: '이미 access토큰이 존재합니다.' });
+    }
+
+    const refreshToken = findCookieValue(splitedCookies, token.RefreshKakao);
+
+    if (refreshToken === false) {
+      try {
+        const result = await kakaoAuth();
+        if (result === false) {
+          return res.status(serverError.statusCode).send({ msg: serverError.message, category: serverError.category });
+        }
+        return res.json(result.request.res.responseUrl);
+      } catch (error) {
+        return res.status(serverError.statusCode).send({ msg: serverError.message, category: serverError.category });
+      }
+    }
+    const verifyRefreshToken = await jwt.verify(refreshToken, process.env.JWT);
+
+    if (typeof verifyRefreshToken === 'string') {
+      return res.status(serverError.statusCode).send({ msg: serverError.message, category: serverError.category });
+    }
+
+    const updateResult = await kakao_token_update({
+      grant_type: 'refresh_token',
+      client_id: process.env.KAKAO_KEY,
+      refresh_token: verifyRefreshToken.refresh_token,
+    });
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    const { access_token, expires_in, refresh_token, refresh_token_expires_in } = updateResult.data;
+
+    const signedAccessToken = await jwt.sign({ access_token, type: 'kakao' }, process.env.JWT, {
+      expiresIn: expires_in,
+    });
+
+    res.cookie(token.LOGIN, signedAccessToken, { maxAge: expires_in * 1000, httpOnly: true });
+
+    if (refresh_token !== undefined && refresh_token_expires_in !== undefined) {
+      const signedRefreshToken = await jwt.sign({ refresh_token, type: 'kakao' }, process.env.JWT, {
+        expiresIn: refresh_token_expires_in,
+      });
+      res.cookie(token.RefreshKakao, signedRefreshToken, { maxAge: refresh_token_expires_in, httpOnly: true });
+    }
+
+    return res.redirect(process.env.KAKAO_FINISH_URI);
   }
-
-  const updateResult = await kakao_token_update({
-    grant_type: 'refresh_token',
-    client_id: process.env.KAKAO_KEY,
-    refresh_token: refreshToken,
-  });
-
-  // eslint-disable-next-line @typescript-eslint/naming-convention
-  const { access_token, expires_in, refresh_token, refresh_token_expires_in } = updateResult.data;
-
-  const signedAccessToken = await jwt.sign({ access_token, type: 'kakao' }, process.env.JWT, expires_in);
-
-  res.cookie(token.LOGIN, signedAccessToken, { maxAge: expires_in, httpOnly: true });
-
-  if (refresh_token !== undefined && refresh_token_expires_in !== undefined) {
-    const signedRefreshToken = await jwt.sign(
-      { refresh_token, type: 'kakao' },
-      process.env.JWT,
-      refresh_token_expires_in
-    );
-    res.cookie(token.RefreshKakao, signedRefreshToken, { maxAge: refresh_token_expires_in, httpOnly: true });
-  }
-  return res.redirect(process.env.KAKAO_FINISH_URI);
 }
 
 export async function getToken(req: Request, res: Response) {
@@ -100,12 +116,12 @@ export async function getToken(req: Request, res: Response) {
       await manager.save(user);
     }
 
-    const signedAccessToken = await jwt.sign({ access_token, type: 'kakao' }, process.env.JWT, expires_in);
-    const signedRefreshToken = await jwt.sign(
-      { refresh_token, type: 'kakao' },
-      process.env.JWT,
-      refresh_token_expires_in
-    );
+    const signedAccessToken = await jwt.sign({ access_token, type: 'kakao' }, process.env.JWT, {
+      expiresIn: expires_in,
+    });
+    const signedRefreshToken = await jwt.sign({ refresh_token, type: 'kakao' }, process.env.JWT, {
+      expiresIn: refresh_token_expires_in,
+    });
 
     res.cookie(token.LOGIN, signedAccessToken, { maxAge: expires_in, httpOnly: true });
     res.cookie(token.RefreshKakao, signedRefreshToken, { maxAge: refresh_token_expires_in, httpOnly: true });
