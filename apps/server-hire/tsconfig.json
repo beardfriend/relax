@@ -11,6 +11,7 @@
       "@SH/Controllers/*": ["./controllers/*"],
       "@SH/Services/*": ["./services/*"],
       "@SH/Routers/*": ["./routers/*"],
+      "@SH/MiddleWares/*": ["./middlewares/*"],
       "@Libs/*": ["../../../libs/*"],
       "@Constants/Types": ["../../../libs/constants/types/index.ts"],
       "@Constants/Messages": ["../../../libs/constants/messages/index.ts"]
