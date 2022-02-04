@@ -15,7 +15,7 @@ interface SignUpReq {
 
 async function signUp(req: Request, res: Response) {
   const { email, password }: SignUpReq = req.body;
-  const searchEmail = await findUser(email);
+  const searchEmail = await findUser(email, 'normal');
   if (searchEmail !== undefined) {
     return res.status(existEmail.statusCode).json({ msg: existEmail.message, category: existEmail.category });
   }

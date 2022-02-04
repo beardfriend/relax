@@ -47,7 +47,7 @@ export async function loginCheckMiddleWare(req: Request, res: Response, next: Ne
   const splitedCookies = splitCookie(cookies);
   const accessToken = findCookieValue(splitedCookies, token.LOGIN);
   const refreshToken = findCookieValue(splitedCookies, token.RefreshKakao);
-
+  console.log(accessToken, refreshToken);
   if (accessToken === false) {
     if (refreshToken === false) {
       return res.status(500).send({ msg: 'accees없고 refresh없는 경우 로그인 페이지로 리다이렉트' });
@@ -79,6 +79,19 @@ export async function loginCheckMiddleWare(req: Request, res: Response, next: Ne
       });
       res.cookie(token.RefreshKakao, signedRefreshToken, { maxAge: refresh_token_expires_in, httpOnly: true });
     }
+    return next();
   }
+  const verifyAccessToken = await jwt.verify(accessToken, process.env.JWT);
+
+  if (typeof verifyAccessToken === 'string') {
+    return res.status(500).send({ msg: 'verfiy 실패' });
+  }
+  req.type = verifyAccessToken.type;
+  if (verifyAccessToken.type === 'normal') {
+    req.user = verifyAccessToken.email;
+  } else if (verifyAccessToken.type === 'kakao') {
+    req.user = verifyAccessToken.kakao_id;
+  }
+
   return next();
 }
