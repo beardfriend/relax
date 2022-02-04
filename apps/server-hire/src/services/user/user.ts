@@ -28,7 +28,10 @@ export async function kakaoAuth() {
   if (process.env.KAKAO_KEY === undefined || process.env.KAKAO_REDIRECT_URI === undefined) {
     return false;
   }
-
-  const result = await kakao_authCode(process.env.KAKAO_KEY, process.env.KAKAO_REDIRECT_URI);
-  return result;
+  try {
+    const result = await kakao_authCode(process.env.KAKAO_KEY, process.env.KAKAO_REDIRECT_URI);
+    return result;
+  } catch (error) {
+    return false;
+  }
 }
