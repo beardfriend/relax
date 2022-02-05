@@ -11,5 +11,6 @@ export default {
     '@SH/Controllers/(.*)': '<rootDir>/apps/server-hire/src/controllers/$1',
     '@SH/Services/(.*)': '<rootDir>/apps/server-hire/src/services/$1',
     '@SH/Routers/(.*)': '<rootDir>/apps/server-hire/src/routers/$1',
+    '@SH/MiddleWares/(.*)': '<rootDir>/apps/server-hire/src/middlewares/$1',
   },
 };
