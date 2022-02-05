@@ -47,7 +47,6 @@ export async function loginCheckMiddleWare(req: Request, res: Response, next: Ne
   const splitedCookies = splitCookie(cookies);
   const accessToken = findCookieValue(splitedCookies, token.LOGIN);
   const refreshToken = findCookieValue(splitedCookies, token.RefreshKakao);
-  console.log(accessToken, refreshToken);
   if (accessToken === false) {
     if (refreshToken === false) {
       return res.status(500).send({ msg: 'accees없고 refresh없는 경우 로그인 페이지로 리다이렉트' });
