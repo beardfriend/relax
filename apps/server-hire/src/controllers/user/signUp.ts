@@ -27,7 +27,7 @@ async function signUp(req: Request, res: Response) {
   user.password = await bcrypt.hash(password, 10);
   await manager.save(user);
 
-  const signedEmail = tokenSign(email);
+  const signedEmail = await tokenSign(email);
   res.cookie(token.LOGIN, signedEmail, { maxAge: normalMaxAge, httpOnly: true });
   return res.status(signupSuccess.statusCode).json({ msg: signupSuccess.message, category: signupSuccess.category });
 }
