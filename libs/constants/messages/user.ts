@@ -29,3 +29,15 @@ export const existEmail: response = {
   category: 'user',
   message: '이미 존재하는 이메일입니다.',
 };
+
+export const userInfoNotfound: response = {
+  statusCode: 400,
+  category: 'user',
+  message: '유저가 존재하지 않습니다.',
+};
+
+export const userTypeSelect: response = {
+  statusCode: 200,
+  category: 'user',
+  message: '회원 유형이 성공적으로 등록되었습니다.',
+};

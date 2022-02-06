@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken';
 import { Request, Response, NextFunction } from 'express';
 import { findCookieValue, splitCookie } from '@Libs/utils/cookie';
+import { verfiyError, envError, accessRefreshNotFound } from '@Constants/Messages';
 import token from '@Libs/constants/token';
 import { kakao_token_update } from '@Libs/api/kakao';
 
@@ -24,7 +25,7 @@ export async function verfiyToken(req: Request, res: Response, next: NextFunctio
 export async function tokenCheck(req: Request, res: Response, next: NextFunction) {
   const { relaxLogin } = await req.cookies;
   if (JWTKEY === undefined) {
-    res.status(500).send({ msg: '서버 장애' });
+    res.status(envError.statusCode).send({ msg: envError.message, category: envError.category });
     return;
   }
   const isOurToken = await jwt.verify(relaxLogin, JWTKEY);
@@ -37,11 +38,11 @@ export async function tokenCheck(req: Request, res: Response, next: NextFunction
 export async function loginCheckMiddleWare(req: Request, res: Response, next: NextFunction) {
   const cookies = req.headers.cookie;
   if (process.env.JWT === undefined || process.env.KAKAO_KEY === undefined) {
-    return res.status(500).send({ msg: 'env file 에러' });
+    return res.status(envError.statusCode).send({ msg: envError.message, category: envError.category });
   }
   if (cookies === undefined) {
     // 리다이렉트 로그인 페이지
-    return res.status(500).send({ msg: '쿠키가 아예 없는 경우.' });
+    return res.status(verfiyError.statusCode).send({ msg: verfiyError.message, category: verfiyError.category });
   }
 
   const splitedCookies = splitCookie(cookies);
@@ -49,12 +50,14 @@ export async function loginCheckMiddleWare(req: Request, res: Response, next: Ne
   const refreshToken = findCookieValue(splitedCookies, token.RefreshKakao);
   if (accessToken === false) {
     if (refreshToken === false) {
-      return res.status(500).send({ msg: 'accees없고 refresh없는 경우 로그인 페이지로 리다이렉트' });
+      return res
+        .status(accessRefreshNotFound.statusCode)
+        .send({ msg: accessRefreshNotFound.message, category: accessRefreshNotFound.category });
     }
     const verifyRefreshToken = await jwt.verify(refreshToken, process.env.JWT);
 
     if (typeof verifyRefreshToken === 'string') {
-      return res.status(500).send({ msg: 'verify가 제대로 안 된 경우.' });
+      return res.status(verfiyError.statusCode).send({ msg: verfiyError.message, category: verfiyError.category });
     }
 
     const updateResult = await kakao_token_update({
@@ -83,7 +86,7 @@ export async function loginCheckMiddleWare(req: Request, res: Response, next: Ne
   const verifyAccessToken = await jwt.verify(accessToken, process.env.JWT);
 
   if (typeof verifyAccessToken === 'string') {
-    return res.status(500).send({ msg: 'verfiy 실패' });
+    return res.status(verfiyError.statusCode).send({ msg: verfiyError.message, category: verfiyError.category });
   }
   req.type = verifyAccessToken.type;
   if (verifyAccessToken.type === 'normal') {

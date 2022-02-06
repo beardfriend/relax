@@ -1,11 +1,14 @@
 import { Response, Request } from 'express';
 import { findUser } from '@SH/Services/user/user';
+import { requestTokenNotfound, userInfoNotfound, userTypeSelect } from '@Constants/Messages';
 import { getManager } from 'typeorm';
 import { userType } from '@Libs/constants/types';
 
 async function selectType(req: Request, res: Response) {
   if (req.user === undefined || req.type === undefined) {
-    return res.status(500).send('token 정보값 undefined 에러');
+    return res
+      .status(requestTokenNotfound.statusCode)
+      .send({ msg: requestTokenNotfound.message, category: requestTokenNotfound.category });
   }
   const { selectedType } = req.params;
   const manager = getManager();
@@ -13,12 +16,14 @@ async function selectType(req: Request, res: Response) {
   const user = await findUser(req.user, req.type);
 
   if (user === undefined) {
-    return res.status(500).send('유저 정보 없음');
+    return res
+      .status(userInfoNotfound.statusCode)
+      .send({ msg: userInfoNotfound.message, category: userInfoNotfound.category });
   }
 
   user.role = selectedType as userType;
   manager.save(user);
-  return res.send('hello');
+  return res.status(userTypeSelect.statusCode).send({ msg: userTypeSelect.message, category: userTypeSelect.category });
 }
 
 export default selectType;
