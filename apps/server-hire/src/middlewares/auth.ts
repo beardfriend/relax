@@ -2,8 +2,11 @@ import jwt from 'jsonwebtoken';
 import { Request, Response, NextFunction } from 'express';
 import { findCookieValue, splitCookie } from '@Libs/utils/cookie';
 import { verfiyError, envError, accessRefreshNotFound } from '@Constants/Messages';
+import { userType } from '@Libs/constants/types';
+
 import token from '@Libs/constants/token';
 import { kakao_token_update } from '@Libs/api/kakao';
+import { findUser } from '@SH/Services/user/user';
 
 const JWTKEY = process.env.JWT;
 
@@ -93,7 +96,33 @@ export async function loginCheckMiddleWare(req: Request, res: Response, next: Ne
     req.user = verifyAccessToken.email;
   } else if (verifyAccessToken.type === 'kakao') {
     req.user = verifyAccessToken.kakao_id;
+  } else if (verifyAccessToken.type === 'google') {
+    req.user = verifyAccessToken.google_id;
   }
 
   return next();
+}
+
+export async function onlyTeacherAccess(req: Request, res: Response, next: NextFunction) {
+  if (req.user === undefined || req.type === undefined) {
+    return res.send('login check middleware error');
+  }
+
+  const user = await findUser(req.user, req.type);
+  if (user?.role === userType.TEACHER) {
+    return next();
+  }
+  return res.status(403).send('접근 금지');
+}
+
+export async function onlyAcademyAccess(req: Request, res: Response, next: NextFunction) {
+  if (req.user === undefined || req.type === undefined) {
+    return res.send('login check middleware error');
+  }
+
+  const user = await findUser(req.user, req.type);
+  if (user?.role === userType.ACADEMY) {
+    return next();
+  }
+  return res.status(403).send('접근 금지');
 }

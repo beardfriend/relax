@@ -1,11 +1,5 @@
 import { response } from '@Libs/interface/response';
 
-export const envError: response = {
-  statusCode: 500,
-  category: 'auth',
-  message: 'ENV파일이 존재하지 않습니다.',
-};
-
 export const accessRefreshNotFound: response = {
   statusCode: 302,
   category: 'auth',
