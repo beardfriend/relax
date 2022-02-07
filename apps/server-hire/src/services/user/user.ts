@@ -1,14 +1,20 @@
 import { getRepository } from 'typeorm';
 import User from '@SH/Entities/user/user';
+import AcademyProfile from '@SH/Entities/user/academyProfile';
 import jwt from 'jsonwebtoken';
 import { kakao_authCode } from '@Libs/api/kakao';
 import { signUpType } from '@Libs/constants/types';
 import { normalExpireIn } from '@Libs/constants/constant';
 
-export async function findUser(uniqueKey: string | number, loginType: 'normal' | 'kakao') {
+export async function findUser(uniqueKey: string | number, loginType: 'normal' | 'kakao' | 'google') {
   const userRepo = getRepository(User);
   if (loginType === 'normal') {
     const res = await userRepo.findOne({ where: { email: uniqueKey, signup_type: signUpType.NORMAL } });
+    return res;
+  }
+
+  if (loginType === 'google') {
+    const res = await userRepo.findOne({ where: { google_id: uniqueKey, signup_type: signUpType.GOOGLE } });
     return res;
   }
 
@@ -19,6 +25,12 @@ export async function findUser(uniqueKey: string | number, loginType: 'normal' |
 export async function findKakaoUser(kakaoId: string) {
   const userRepo = getRepository(User);
   const res = await userRepo.findOne({ where: { kakao_id: kakaoId, signup_type: signUpType.KAKAO } });
+  return res;
+}
+
+export async function findGoogleUser(googleId: string) {
+  const userRepo = getRepository(User);
+  const res = await userRepo.findOne({ where: { google_id: googleId, signup_type: signUpType.GOOGLE } });
   return res;
 }
 
@@ -40,4 +52,10 @@ export async function kakaoAuth() {
   } catch (error) {
     return false;
   }
+}
+
+export async function findAcademyProfile(businessNumber: string) {
+  const academyProfileRepo = getRepository(AcademyProfile);
+  const res = await academyProfileRepo.findOne({ where: { bussiness_number: businessNumber } });
+  return res;
 }
