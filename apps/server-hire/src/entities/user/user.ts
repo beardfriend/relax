@@ -11,6 +11,9 @@ class User extends Primary {
   kakao_id: number;
 
   @Column({ nullable: true })
+  google_id: string;
+
+  @Column({ nullable: true })
   email: string;
 
   @Column({ nullable: true })
