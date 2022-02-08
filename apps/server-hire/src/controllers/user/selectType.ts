@@ -10,7 +10,8 @@ async function selectType(req: Request, res: Response) {
       .status(requestTokenNotfound.statusCode)
       .send({ msg: requestTokenNotfound.message, category: requestTokenNotfound.category });
   }
-  const { selectedType } = req.params;
+  const { role } = req.body;
+
   const manager = getManager();
 
   const user = await findUser(req.user, req.type);
@@ -20,8 +21,12 @@ async function selectType(req: Request, res: Response) {
       .status(userInfoNotfound.statusCode)
       .send({ msg: userInfoNotfound.message, category: userInfoNotfound.category });
   }
+  if (role === 'ACADEMY') {
+    user.role = userType.ACADEMY;
+  } else if (role === 'TEACHER') {
+    user.role = userType.TEACHER;
+  }
 
-  user.role = selectedType as userType;
   manager.save(user);
   return res.status(userTypeSelect.statusCode).send({ msg: userTypeSelect.message, category: userTypeSelect.category });
 }
