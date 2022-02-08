@@ -1,23 +1,12 @@
 import { yogaSortType } from '@Libs/constants/types';
 import { Primary } from '@Libs/entites/abstract';
-import { Column, Entity, OneToOne, JoinColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, OneToOne } from 'typeorm';
 import Address from '../address';
 import Images from '../image';
 import User from './user';
 
-abstract class AuthBusiness extends Primary {
-  @Column()
-  bussiness_number: string;
-
-  @Column()
-  representation_name: string;
-
-  @Column()
-  open_date: string;
-}
-
 @Entity()
-class AcademyProfile extends AuthBusiness {
+class AcademyProfile extends Primary {
   @OneToOne(() => User)
   @JoinColumn()
   user: User;

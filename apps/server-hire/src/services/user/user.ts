@@ -1,6 +1,7 @@
 import { getRepository } from 'typeorm';
 import User from '@SH/Entities/user/user';
-import AcademyProfile from '@SH/Entities/user/academyProfile';
+// import AcademyProfile from '@SH/Entities/user/academyProfile';
+import AcademyBusiness from '@SH/Entities/user/academyBusiness';
 import jwt from 'jsonwebtoken';
 import { kakao_authCode } from '@Libs/api/kakao';
 import { signUpType } from '@Libs/constants/types';
@@ -54,8 +55,8 @@ export async function kakaoAuth() {
   }
 }
 
-export async function findAcademyProfile(businessNumber: string) {
-  const academyProfileRepo = getRepository(AcademyProfile);
-  const res = await academyProfileRepo.findOne({ where: { bussiness_number: businessNumber } });
+export async function findAcademyBusiness(businessNumber: string) {
+  const academyBusinessRepo = getRepository(AcademyBusiness);
+  const res = await academyBusinessRepo.findOne({ where: { bussiness_number: businessNumber } });
   return res;
 }

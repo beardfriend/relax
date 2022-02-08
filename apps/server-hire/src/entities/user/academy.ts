@@ -1,5 +1,6 @@
 import { Entity, JoinColumn, OneToMany, OneToOne } from 'typeorm';
 import Recruitement from '../recruitment/recruitment';
+import AcademyBusiness from './academyBusiness';
 import User from './user';
 
 @Entity()
@@ -10,5 +11,9 @@ class Academy {
 
   @OneToMany(() => Recruitement, (recruitement) => recruitement.writer)
   recruitement: Recruitement[];
+
+  @OneToOne(() => AcademyBusiness)
+  @JoinColumn()
+  business: AcademyBusiness;
 }
 export default Academy;

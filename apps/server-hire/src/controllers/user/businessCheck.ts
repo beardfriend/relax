@@ -2,9 +2,10 @@
 import { business_check } from '@Libs/api/openapi';
 import { Response, Request } from 'express';
 import { getManager } from 'typeorm';
-import AcademyProfile from '@SH/Entities/user/academyProfile';
 import { envError } from '@Constants/Messages';
-import { findAcademyProfile, findUser } from '@SH/Services/user/user';
+import { findAcademyBusiness, findUser } from '@SH/Services/user/user';
+import AcademyBusiness from '@SH/Entities/user/academyBusiness';
+import Academy from '@SH/Entities/user/academy';
 
 export default async function businessCheck(req: Request, res: Response) {
   const { businessNumber, representationName, openDate } = req.body;
@@ -25,14 +26,16 @@ export default async function businessCheck(req: Request, res: Response) {
       },
       process.env.OPEN_API_KEY
     );
+
     if (response === undefined) {
       return res.send('axios return value 없음');
     }
 
     const { valid, request_param } = response.data.data[0];
+
     if (valid === '01') {
       const { b_no, start_dt, p_nm } = request_param;
-      const isAcademyProfile = await findAcademyProfile(b_no);
+      const isAcademyProfile = await findAcademyBusiness(b_no);
 
       if (isAcademyProfile === undefined) {
         if (req.user === undefined || req.type === undefined) {
@@ -40,20 +43,19 @@ export default async function businessCheck(req: Request, res: Response) {
         }
 
         const user = await findUser(req.user, req.type);
-        console.log(user?.teacher_profile);
+
         if (user === undefined) {
           return res.send('login check middleware error');
         }
         const manager = getManager();
-
-        const academyProfile = new AcademyProfile();
-        academyProfile.bussiness_number = b_no;
-        academyProfile.representation_name = p_nm;
-        academyProfile.open_date = start_dt;
-        await manager.save(academyProfile);
-        user.academy_profile = academyProfile;
-        await manager.save(user);
-
+        const academyBusiness = manager.create(AcademyBusiness, {
+          bussiness_number: b_no,
+          representation_name: p_nm,
+          open_date: start_dt,
+        });
+        await manager.save(academyBusiness);
+        const academy = manager.create(Academy, { business: academyBusiness, id: user });
+        await manager.save(academy);
         return res.send('사업자 등록이 완료되었습니다');
       }
       return res.send('이미 등록된 사업자번호입니다. <br>고객센터로 문의 바랍니다.');
