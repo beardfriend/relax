@@ -1,18 +1,22 @@
 import { businessCheckData } from '@Libs/interface/openAPI';
 import axios from 'axios';
 
-const baseURL = 'https://api.odcloud.kr/api/nts-businessman/v1';
+const baseURL = 'http://api.odcloud.kr/';
 
 export async function business_check(data: businessCheckData, key: string) {
-  const result = await axios({
-    method: 'post',
-    baseURL: baseURL,
-    url: `validate?serviceKey=${key}&returnType=JSON`,
-    headers: {
-      'Content-Type': 'application/json',
-      Accept: 'application/json',
-    },
-    params: data,
-  });
-  return result;
+  try {
+    const result = await axios({
+      method: 'post',
+      baseURL: baseURL,
+      url: `api/nts-businessman/v1/validate?serviceKey=${key}`,
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+      data,
+    });
+    return result;
+  } catch (error) {
+    return console.log(error);
+  }
 }
