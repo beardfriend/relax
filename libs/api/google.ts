@@ -3,7 +3,6 @@ import { getCodeData, getTokenData } from '@Libs/interface/googleAuth';
 
 const baseURL = 'https://accounts.google.com/';
 const oAuthURL = 'https://oauth2.googleapis.com/';
-const apiURL = 'https://www.googleapis.com/';
 
 export async function goolge_authcode(data: getCodeData) {
   const result = await axios({
