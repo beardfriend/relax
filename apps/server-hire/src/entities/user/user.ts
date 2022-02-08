@@ -4,6 +4,7 @@ import { Primary } from '@Libs/entites/abstract';
 import TeacherProfile from './teacherProfile';
 import AcademyProfile from './academyProfile';
 import Teacher from './teacher';
+import Academy from './academy';
 
 @Entity()
 class User extends Primary {
@@ -39,6 +40,10 @@ class User extends Primary {
   @OneToOne(() => Teacher)
   @JoinColumn()
   teacher: Teacher;
+
+  @OneToOne(() => Academy)
+  @JoinColumn()
+  academy: Academy;
 }
 
 export default User;

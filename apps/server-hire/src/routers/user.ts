@@ -6,6 +6,7 @@ import { getCode, getToken } from '@SH/Controllers/user/kakao';
 import selectType from '@SH/Controllers/user/selectType';
 import { loginCheckMiddleWare, onlyAcademyAccess } from '@SH/MiddleWares/auth';
 import { googleGetCode, googleGetToken } from '@SH/Controllers/user/google';
+import businessCheck from '@SH/Controllers/user/businessCheck';
 
 const router = express.Router();
 
@@ -16,7 +17,7 @@ router.get('/kakao', getCode);
 router.get('/kakao/get-token', getToken);
 router.get('/google', googleGetCode);
 router.get('/google/get-token', googleGetToken);
-router.get('/select-type', loginCheckMiddleWare, selectType);
-router.post('/business-check', loginCheckMiddleWare, onlyAcademyAccess);
+router.post('/select-type', loginCheckMiddleWare, selectType);
+router.post('/business-check', loginCheckMiddleWare, onlyAcademyAccess, businessCheck);
 
 export default router;

@@ -1,10 +1,11 @@
 import { yogaSortType } from '@Libs/constants/types';
+import { Primary } from '@Libs/entites/abstract';
 import { Column, Entity, OneToOne, JoinColumn } from 'typeorm';
 import Address from '../address';
 import Images from '../image';
 import User from './user';
 
-abstract class AuthBusiness {
+abstract class AuthBusiness extends Primary {
   @Column()
   bussiness_number: string;
 
@@ -17,27 +18,27 @@ abstract class AuthBusiness {
 
 @Entity()
 class AcademyProfile extends AuthBusiness {
-  @OneToOne(() => User, { primary: true })
+  @OneToOne(() => User)
   @JoinColumn()
   user: User;
 
-  @OneToOne(() => Images)
+  @OneToOne(() => Images, { nullable: true })
   @JoinColumn()
   logo: Images;
 
-  @Column()
+  @Column({ default: null })
   academy_name: string;
 
-  @Column()
+  @Column({ default: null })
   representation_number: string;
 
-  @Column()
+  @Column({ default: null })
   introduce: string;
 
-  @Column({ type: 'enum', enum: yogaSortType, array: true })
+  @Column({ type: 'enum', enum: yogaSortType, array: true, nullable: true })
   yogaType: yogaSortType[];
 
-  @OneToOne(() => Address)
+  @OneToOne(() => Address, { nullable: true })
   @JoinColumn()
   address: Address;
 }
