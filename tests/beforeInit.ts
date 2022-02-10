@@ -19,7 +19,7 @@ async function beforeInit() {
     password: process.env.TYPEORM_PASSWORD,
     database: process.env.TYPEORM_DATABASE,
     synchronize: Boolean(process.env.TYPEORM_SYNCHRONIZE),
-    entities: [`${process.env.TYPEORM_ENTITIES}`],
+    entities: [`${process.env.TYPEORM_TEST_TYPEORM_ENTITIES}`],
   });
 }
 

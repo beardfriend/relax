@@ -2,6 +2,7 @@ export default {
   preset: 'ts-jest',
   testEnvironment: 'node',
   testMatch: ['**/tests/**/*.spec.(ts|tsx)'],
+  testTimeout: 200000000,
   moduleNameMapper: {
     '@Libs/(.*)': '<rootDir>/libs/$1',
     '@Constants/Types': '<rootDir>/libs/constants/types/',
