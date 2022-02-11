@@ -7,6 +7,7 @@ import selectType from '@SH/Controllers/user/selectType';
 import { loginCheckMiddleWare, onlyAcademyAccess } from '@SH/MiddleWares/auth';
 import { googleGetCode, googleGetToken } from '@SH/Controllers/user/google';
 import businessCheck from '@SH/Controllers/user/businessCheck';
+import academyProfile from '@SH/Controllers/user/academyProfile';
 
 const router = express.Router();
 
@@ -19,5 +20,5 @@ router.get('/google', googleGetCode);
 router.get('/google/get-token', googleGetToken);
 router.post('/select-type', loginCheckMiddleWare, selectType);
 router.post('/business-check', loginCheckMiddleWare, onlyAcademyAccess, businessCheck);
-
+router.post('/academy-profile', academyProfile);
 export default router;
