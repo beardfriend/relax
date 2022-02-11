@@ -6,7 +6,7 @@ abstract class AddressBasic extends Primary {
   x: number;
 
   @Column({ type: 'float' })
-  y: string;
+  y: number;
 
   @Column()
   region_1_depth: string;
