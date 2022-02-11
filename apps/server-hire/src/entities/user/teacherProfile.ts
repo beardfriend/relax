@@ -1,6 +1,6 @@
-import { yogaSortType } from '@Libs/constants/types';
-import { Column, Entity, JoinColumn, OneToOne } from 'typeorm';
+import { Column, Entity, JoinColumn, OneToMany, OneToOne } from 'typeorm';
 import Images from '../image';
+import Yoga from '../yoga/yoga';
 import User from './user';
 
 @Entity()
@@ -13,8 +13,8 @@ class TeacherProfile {
   @JoinColumn()
   logo: Images;
 
-  @Column({ type: 'enum', enum: yogaSortType, array: true })
-  yogaType: yogaSortType[];
+  @OneToMany(() => Yoga, (yoga) => yoga.teacher)
+  yoga: Yoga[];
 
   @Column()
   introduce: string;

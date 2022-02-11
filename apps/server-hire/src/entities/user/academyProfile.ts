@@ -1,8 +1,8 @@
-import { yogaSortType } from '@Libs/constants/types';
 import { Primary } from '@Libs/entites/abstract';
-import { Column, Entity, JoinColumn, OneToOne } from 'typeorm';
+import { Column, Entity, JoinColumn, OneToMany, OneToOne } from 'typeorm';
 import Address from '../address';
 import Images from '../image';
+import Yoga from '../yoga/yoga';
 import User from './user';
 
 @Entity()
@@ -24,8 +24,8 @@ class AcademyProfile extends Primary {
   @Column({ default: null })
   introduce: string;
 
-  @Column({ type: 'enum', enum: yogaSortType, array: true, nullable: true })
-  yogaType: yogaSortType[];
+  @OneToMany(() => Yoga, (yoga) => yoga.acadmey)
+  yoga: Yoga[];
 
   @OneToOne(() => Address, { nullable: true })
   @JoinColumn()
