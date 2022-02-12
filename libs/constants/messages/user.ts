@@ -41,3 +41,21 @@ export const userTypeSelect: response = {
   category: 'user',
   message: '회원 유형이 성공적으로 등록되었습니다.',
 };
+
+export const businessCheckSuccess: response = {
+  statusCode: 200,
+  category: 'user',
+  message: '사업자 등록이 완료되었습니다.',
+};
+
+export const businessAlreadyExist: response = {
+  statusCode: 403,
+  category: 'user',
+  message: 'Relax에 이미 가입된 사업자 번호입니다.<br> 고객센터로 문의하시길 바랍니다.',
+};
+
+export const businessCheckFail: response = {
+  statusCode: 200,
+  category: 'user',
+  message: '존재하지 않는 사업자입니다. <br> 사업자 번호 또는 대표자명 또는 개업일자를 확인해주세요. ',
+};

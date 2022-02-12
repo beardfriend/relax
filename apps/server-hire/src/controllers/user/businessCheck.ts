@@ -1,11 +1,16 @@
 /* eslint-disable @typescript-eslint/naming-convention */
+import {
+  envError,
+  requsetBodyNotFound,
+  businessCheckFail,
+  businessCheckSuccess,
+  businessAlreadyExist,
+} from '@Constants/Messages';
 import { business_check } from '@Libs/api/openapi';
-import { Response, Request } from 'express';
-import { getManager } from 'typeorm';
-import { envError } from '@Constants/Messages';
+import { axiosReturn } from '@Libs/constants/messages/axios';
+import { createAcademy, createAcademyBusiness } from '@SH/Services/user/academy';
 import { findAcademyBusiness, findUser } from '@SH/Services/user/user';
-import AcademyBusiness from '@SH/Entities/user/academyBusiness';
-import Academy from '@SH/Entities/user/academy';
+import { Request, Response } from 'express';
 
 export default async function businessCheck(req: Request, res: Response) {
   const { businessNumber, representationName, openDate } = req.body;
@@ -28,7 +33,7 @@ export default async function businessCheck(req: Request, res: Response) {
     );
 
     if (response === undefined) {
-      return res.send('axios return value 없음');
+      return res.status(axiosReturn.statusCode).send({ msg: axiosReturn.message, category: axiosReturn.category });
     }
 
     const { valid, request_param } = response.data.data[0];
@@ -39,28 +44,33 @@ export default async function businessCheck(req: Request, res: Response) {
 
       if (isAcademyProfile === undefined) {
         if (req.user === undefined || req.type === undefined) {
-          return res.send('login check middleware error');
+          return res
+            .status(requsetBodyNotFound.statusCode)
+            .send({ msg: requsetBodyNotFound.message, cateogry: requsetBodyNotFound.category });
         }
 
         const user = await findUser(req.user, req.type);
 
         if (user === undefined) {
-          return res.send('login check middleware error');
+          return res
+            .status(requsetBodyNotFound.statusCode)
+            .send({ msg: requsetBodyNotFound.message, cateogry: requsetBodyNotFound.category });
         }
-        const manager = getManager();
-        const academyBusiness = manager.create(AcademyBusiness, {
-          bussiness_number: b_no,
-          representation_name: p_nm,
-          open_date: start_dt,
-        });
-        await manager.save(academyBusiness);
-        const academy = manager.create(Academy, { business: academyBusiness, id: user });
-        await manager.save(academy);
-        return res.send('사업자 등록이 완료되었습니다');
+
+        const academyBusiness = await createAcademyBusiness(b_no, p_nm, start_dt);
+        await createAcademy(academyBusiness, user);
+
+        return res
+          .status(businessCheckSuccess.statusCode)
+          .send({ msg: businessCheckSuccess.message, category: businessCheckSuccess.category });
       }
-      return res.send('이미 등록된 사업자번호입니다. <br>고객센터로 문의 바랍니다.');
+      return res
+        .status(businessAlreadyExist.statusCode)
+        .send({ msg: businessAlreadyExist.message, category: businessAlreadyExist.category });
     }
-    return res.send('존재하지 않는 사업자입니다.');
+    return res
+      .status(businessCheckFail.statusCode)
+      .send({ msg: businessCheckFail.message, category: businessCheckFail.category });
   } catch (error) {
     return res.send('erorr');
   }

@@ -6,7 +6,7 @@ abstract class Image extends Primary {
   path: string;
 
   @Column()
-  volume: string;
+  volume: number;
 
   @Column()
   file_type: string;

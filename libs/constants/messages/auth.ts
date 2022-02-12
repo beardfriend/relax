@@ -11,3 +11,9 @@ export const requestTokenNotfound: response = {
   category: 'auth',
   message: '로그인시 요청한 token이 정상적으로 넘어오지 않았습니다.',
 };
+
+export const requsetBodyNotFound: response = {
+  statusCode: 400,
+  category: 'auth',
+  message: '미들웨어로부터 request값이 넘어오지 않았습니다.',
+};
