@@ -9,6 +9,7 @@ import { normalExpireIn } from '@Libs/constants/constant';
 
 export async function findUser(uniqueKey: string | number, loginType: 'normal' | 'kakao' | 'google') {
   const userRepo = getRepository(User);
+
   if (loginType === 'normal') {
     const res = await userRepo.findOne({ where: { email: uniqueKey, signup_type: signUpType.NORMAL } });
     return res;
@@ -57,6 +58,10 @@ export async function kakaoAuth() {
 
 export async function findAcademyBusiness(businessNumber: string) {
   const academyBusinessRepo = getRepository(AcademyBusiness);
-  const res = await academyBusinessRepo.findOne({ where: { bussiness_number: businessNumber } });
-  return res;
+  try {
+    const res = await academyBusinessRepo.findOne({ where: { bussiness_number: businessNumber } });
+    return res;
+  } catch (error) {
+    return false;
+  }
 }
