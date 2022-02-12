@@ -20,6 +20,9 @@ class Images extends Image {
   @OneToOne(() => AcademyProfile)
   @JoinColumn()
   academy_logo: AcademyProfile;
+
+  @ManyToOne(() => AcademyProfile, (profile) => profile.introduce_image)
+  academy_introduce: AcademyProfile;
 }
 
 export default Images;

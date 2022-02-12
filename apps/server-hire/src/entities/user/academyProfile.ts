@@ -24,6 +24,10 @@ class AcademyProfile extends Primary {
   @Column({ default: null })
   introduce: string;
 
+  @OneToMany(() => Images, (image) => image.academy_introduce, { nullable: true })
+  @JoinColumn()
+  introduce_image: Images[];
+
   @OneToMany(() => Yoga, (yoga) => yoga.acadmey)
   yoga: Yoga[];
 
