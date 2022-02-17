@@ -1,4 +1,4 @@
-import { getRepository } from 'typeorm';
+import { getRepository, getManager } from 'typeorm';
 import User from '@SH/Entities/user/user';
 // import AcademyProfile from '@SH/Entities/user/academyProfile';
 import AcademyBusiness from '@SH/Entities/user/academyBusiness';
@@ -64,4 +64,34 @@ export async function findAcademyBusiness(businessNumber: string) {
   } catch (error) {
     return false;
   }
+}
+
+export async function createGoogleUser(sub: string, email: string) {
+  const manager = await getManager();
+  const user = manager.create(User, {
+    signup_type: signUpType.GOOGLE,
+    google_id: sub,
+    email,
+  });
+  await manager.save(user);
+}
+
+export async function createKakaoUser(id: number, email?: string) {
+  const manager = await getManager();
+  const user = manager.create(User, {
+    signup_type: signUpType.KAKAO,
+    kakao_id: id,
+    email,
+  });
+  await manager.save(user);
+}
+
+export async function createNormalUser(email: string, password: string) {
+  const manager = await getManager();
+  const user = manager.create(User, {
+    signup_type: signUpType.NORMAL,
+    email,
+    password,
+  });
+  await manager.save(user);
 }

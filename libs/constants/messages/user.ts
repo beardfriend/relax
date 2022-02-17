@@ -18,6 +18,12 @@ export const noUser: response = {
   message: '존재하지 않는 아이디입니다.',
 };
 
+export const logoutSuccess: response = {
+  statusCode: 200,
+  category: 'user',
+  message: '로그아웃에 성공하였습니다.',
+};
+
 export const incorrectPassword: response = {
   statusCode: 400,
   category: 'user',
@@ -58,4 +64,16 @@ export const businessCheckFail: response = {
   statusCode: 200,
   category: 'user',
   message: '존재하지 않는 사업자입니다. <br> 사업자 번호 또는 대표자명 또는 개업일자를 확인해주세요. ',
+};
+
+export const academyProfileSuccess: response = {
+  statusCode: 200,
+  category: 'user',
+  message: '프로필 등록이 성공적으로 완료되었습니다.',
+};
+
+export const academyProfileFail: response = {
+  statusCode: 403,
+  category: 'user',
+  message: '학원이름 또는 대표번호를 입력하지 않았습니다.',
 };

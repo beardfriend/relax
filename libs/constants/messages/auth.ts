@@ -17,3 +17,27 @@ export const requsetBodyNotFound: response = {
   category: 'auth',
   message: '미들웨어로부터 request값이 넘어오지 않았습니다.',
 };
+
+export const alreadyAccessToken: response = {
+  statusCode: 400,
+  category: 'auth',
+  message: '이미 access토큰이 존재합니다.',
+};
+
+export const googleCodeNotFound: response = {
+  statusCode: 400,
+  category: 'auth',
+  message: '토큰발급을 위한 구글코드가 넘어오지 않았습니다.',
+};
+
+export const cookieNotFound: response = {
+  statusCode: 400,
+  category: 'auth',
+  message: '쿠키가 존재하지 않습니다.',
+};
+
+export const tokenNotfound: response = {
+  statusCode: 400,
+  category: 'auth',
+  message: '토큰이 존재하지 않습니다.',
+};

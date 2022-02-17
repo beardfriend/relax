@@ -4,3 +4,4 @@ export * from './errors';
 export * from './jwt';
 export * from './auth';
 export * from './env';
+export * from './axios';

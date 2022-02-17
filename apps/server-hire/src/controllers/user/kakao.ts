@@ -1,13 +1,10 @@
 import { kakao_getToken, kakao_getUserData, kakao_token_update } from '@Libs/api/kakao';
-import { serverError } from '@Libs/constants/messages';
+import { serverError, envError, alreadyAccessToken, verfiyError } from '@Libs/constants/messages';
 import token from '@Libs/constants/token';
-import { signUpType } from '@Libs/constants/types';
 import { findCookieValue, splitCookie } from '@Libs/utils/cookie';
-import User from '@SH/Entities/user/user';
-import { findKakaoUser, kakaoAuth } from '@SH/Services/user/user';
+import { createKakaoUser, findKakaoUser, kakaoAuth } from '@SH/Services/user/user';
 import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
-import { getManager } from 'typeorm';
 
 export async function getCode(req: Request, res: Response) {
   const cookies = req.headers.cookie;
@@ -17,7 +14,7 @@ export async function getCode(req: Request, res: Response) {
     process.env.KAKAO_FINISH_URI === undefined ||
     process.env.JWT === undefined
   ) {
-    return res.status(serverError.statusCode).send({ msg: serverError.message, category: serverError.category });
+    return res.status(envError.statusCode).send({ msg: envError.message, category: envError.category });
   }
 
   if (cookies === undefined) {
@@ -35,7 +32,9 @@ export async function getCode(req: Request, res: Response) {
     const accessToken = findCookieValue(splitedCookies, token.LOGIN);
 
     if (typeof accessToken === 'string') {
-      return res.send({ msg: '이미 access토큰이 존재합니다.' });
+      return res
+        .status(alreadyAccessToken.statusCode)
+        .send({ msg: alreadyAccessToken.message, category: alreadyAccessToken.category });
     }
 
     const refreshToken = findCookieValue(splitedCookies, token.RefreshKakao);
@@ -54,7 +53,7 @@ export async function getCode(req: Request, res: Response) {
     const verifyRefreshToken = await jwt.verify(refreshToken, process.env.JWT);
 
     if (typeof verifyRefreshToken === 'string') {
-      return res.status(serverError.statusCode).send({ msg: serverError.message, category: serverError.category });
+      return res.status(verfiyError.statusCode).send({ msg: verfiyError.message, category: verfiyError.category });
     }
 
     const updateResult = await kakao_token_update({
@@ -90,7 +89,7 @@ export async function getToken(req: Request, res: Response) {
     process.env.KAKAO_FINISH_URI === undefined ||
     process.env.JWT === undefined
   ) {
-    return res.status(serverError.statusCode).send({ msg: serverError.message, category: serverError.category });
+    return res.status(envError.statusCode).send({ msg: envError.message, category: envError.category });
   }
 
   try {
@@ -109,11 +108,7 @@ export async function getToken(req: Request, res: Response) {
     const isAlreadyKakaoUser = await findKakaoUser(userData?.data.id);
 
     if (isAlreadyKakaoUser === undefined) {
-      const manager = await getManager();
-      const user = new User();
-      user.signup_type = signUpType.KAKAO;
-      user.kakao_id = userData.data.id;
-      await manager.save(user);
+      await createKakaoUser(userData.data.id);
     }
 
     const signedAccessToken = await jwt.sign({ access_token, type: 'kakao' }, process.env.JWT, {

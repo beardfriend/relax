@@ -1,5 +1,11 @@
 import { response } from '@Libs/interface/response';
 
+export const axiosBasic: response = {
+  statusCode: 404,
+  category: 'axios',
+  message: 'axios 에러',
+};
+
 export const axiosReturn: response = {
   statusCode: 404,
   category: 'axios',

@@ -1,12 +1,9 @@
-import { serverError } from '@Libs/constants/messages';
+import { serverError, envError, axiosBasic, alreadyAccessToken, googleCodeNotFound } from '@Libs/constants/messages';
 import { google_getToken, goolge_authcode } from '@Libs/api/google';
 import jwt, { GoogleUserDataPayload } from 'jsonwebtoken';
 import { Response, Request } from 'express';
-import { findGoogleUser } from '@SH/Services/user/user';
-import { getManager } from 'typeorm';
+import { findGoogleUser, createGoogleUser } from '@SH/Services/user/user';
 import { normalExpireIn, normalMaxAge } from '@Libs/constants/constant';
-import User from '@SH/Entities/user/user';
-import { signUpType } from '@Libs/constants/types';
 import token from '@Libs/constants/token';
 import { findCookieValue, splitCookie } from '@Libs/utils/cookie';
 
@@ -18,12 +15,12 @@ export async function googleGetCode(req: Request, res: Response) {
     process.env.GOOGLE_REDIRECT_URI === undefined ||
     process.env.JWT === undefined
   ) {
-    return res.status(serverError.statusCode).send({ msg: serverError.message, category: serverError.category });
+    return res.status(envError.statusCode).send({ msg: envError.message, category: envError.category });
   }
 
   if (cookies === undefined) {
     if (process.env.GOOGLE_KEY === undefined || process.env.GOOGLE_REDIRECT_URI === undefined) {
-      return res.status(serverError.statusCode).send({ msg: serverError.message, category: serverError.category });
+      return res.status(envError.statusCode).send({ msg: envError.message, category: envError.category });
     }
     try {
       const result = await goolge_authcode({
@@ -36,7 +33,7 @@ export async function googleGetCode(req: Request, res: Response) {
 
       return res.json(result.request.res.responseUrl);
     } catch (error) {
-      return res.status(serverError.statusCode).send({ msg: serverError.message, category: serverError.category });
+      return res.status(axiosBasic.statusCode).send({ msg: axiosBasic.message, category: axiosBasic.category });
     }
   } else {
     const splitedCookies = splitCookie(cookies);
@@ -53,17 +50,21 @@ export async function googleGetCode(req: Request, res: Response) {
         });
         return res.json(result.request.res.responseUrl);
       } catch (error) {
-        return res.status(serverError.statusCode).send({ msg: serverError.message, category: serverError.category });
+        return res.status(axiosBasic.statusCode).send({ msg: axiosBasic.message, category: axiosBasic.category });
       }
     } else {
-      return res.send({ msg: '이미 access토큰이 존재합니다.' });
+      return res
+        .status(alreadyAccessToken.statusCode)
+        .send({ msg: alreadyAccessToken.message, category: alreadyAccessToken.category });
     }
   }
 }
 
 export async function googleGetToken(req: Request, res: Response) {
   if (req.query.code === undefined) {
-    return res.status(serverError.statusCode).send({ msg: '코드가 넘어오지 않음', category: serverError.category });
+    return res
+      .status(googleCodeNotFound.statusCode)
+      .send({ msg: googleCodeNotFound.message, category: googleCodeNotFound.category });
   }
   if (
     process.env.GOOGLE_KEY === undefined ||
@@ -72,7 +73,7 @@ export async function googleGetToken(req: Request, res: Response) {
     process.env.JWT === undefined ||
     process.env.GOOGLE_FINISH_URI === undefined
   ) {
-    return res.status(500).send('env error');
+    return res.status(envError.statusCode).send({ msg: envError.message, category: envError.category });
   }
   try {
     const result = await google_getToken({
@@ -89,12 +90,7 @@ export async function googleGetToken(req: Request, res: Response) {
     const { sub, email } = userData;
     const isAlreadyGoogleUser = await findGoogleUser(sub);
     if (isAlreadyGoogleUser === undefined) {
-      const manager = await getManager();
-      const user = new User();
-      user.signup_type = signUpType.GOOGLE;
-      user.google_id = sub;
-      user.email = email;
-      await manager.save(user);
+      await createGoogleUser(sub, email);
     }
 
     const signedGoogleID = await jwt.sign({ google_id: sub, type: 'google' }, process.env.JWT, {
