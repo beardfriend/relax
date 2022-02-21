@@ -1,22 +1,25 @@
-import { Column, Entity, JoinColumn, OneToMany, OneToOne } from 'typeorm';
+import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryColumn } from 'typeorm';
 import Images from '../image';
 import Yoga from '../yoga/yoga';
 import User from './user';
 
 @Entity()
 class TeacherProfile {
-  @OneToOne(() => User, { primary: true })
-  @JoinColumn()
+  @PrimaryColumn()
+  id: number;
+
+  @OneToOne(() => User, { cascade: true })
+  @JoinColumn({ name: 'id' })
   user: User;
 
   @OneToOne(() => Images)
   @JoinColumn()
-  logo: Images;
+  profile: Images;
 
   @OneToMany(() => Yoga, (yoga) => yoga.teacher)
   yoga: Yoga[];
 
-  @Column()
+  @Column({ nullable: true })
   introduce: string;
 }
 

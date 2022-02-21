@@ -11,7 +11,9 @@ export async function findUser(uniqueKey: string | number, loginType: 'normal' |
   const userRepo = getRepository(User);
 
   if (loginType === 'normal') {
-    const res = await userRepo.findOne({ where: { email: uniqueKey, signup_type: signUpType.NORMAL } });
+    const res = await userRepo.findOne({
+      where: { email: uniqueKey, signup_type: signUpType.NORMAL },
+    });
     return res;
   }
 

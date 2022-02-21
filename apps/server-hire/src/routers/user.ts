@@ -9,16 +9,9 @@ import { loginCheckMiddleWare, onlyAcademyAccess } from '@SH/MiddleWares/auth';
 import { googleGetCode, googleGetToken } from '@SH/Controllers/user/google';
 import businessCheck from '@SH/Controllers/user/businessCheck';
 import academyProfile from '@SH/Controllers/user/academyProfile';
-import multer from 'multer';
-
-const upload = multer({ dest: 'uploads/' });
+import { academyMulter } from '@SH/MiddleWares/multer';
 
 const router = express.Router();
-
-const multers = upload.fields([
-  { name: 'ACADEMY_LOGO', maxCount: 1 },
-  { name: 'ACADEMY_INTRODUCE', maxCount: 5 },
-]);
 
 router.post('/login', login);
 router.post('/signup', signUp);
@@ -29,6 +22,6 @@ router.get('/google', googleGetCode);
 router.get('/google/get-token', googleGetToken);
 router.post('/select-type', loginCheckMiddleWare, selectType);
 router.post('/business-check', loginCheckMiddleWare, onlyAcademyAccess, businessCheck);
-router.post('/academy-profile', loginCheckMiddleWare, onlyAcademyAccess, multers, academyProfile);
+router.post('/academy-profile', loginCheckMiddleWare, onlyAcademyAccess, academyMulter, academyProfile);
 
 export default router;

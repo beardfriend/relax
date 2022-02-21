@@ -45,11 +45,13 @@ export async function getCode(req: Request, res: Response) {
         if (result === false) {
           return res.status(serverError.statusCode).send({ msg: serverError.message, category: serverError.category });
         }
+
         return res.json(result.request.res.responseUrl);
       } catch (error) {
         return res.status(serverError.statusCode).send({ msg: serverError.message, category: serverError.category });
       }
     }
+
     const verifyRefreshToken = await jwt.verify(refreshToken, process.env.JWT);
 
     if (typeof verifyRefreshToken === 'string') {
@@ -76,7 +78,6 @@ export async function getCode(req: Request, res: Response) {
       });
       res.cookie(token.RefreshKakao, signedRefreshToken, { maxAge: refresh_token_expires_in, httpOnly: true });
     }
-
     return res.redirect(process.env.KAKAO_FINISH_URI);
   }
 }
@@ -111,9 +112,13 @@ export async function getToken(req: Request, res: Response) {
       await createKakaoUser(userData.data.id);
     }
 
-    const signedAccessToken = await jwt.sign({ access_token, type: 'kakao' }, process.env.JWT, {
-      expiresIn: expires_in,
-    });
+    const signedAccessToken = await jwt.sign(
+      { access_token, type: 'kakao', kakao_id: userData.data.id },
+      process.env.JWT,
+      {
+        expiresIn: expires_in,
+      }
+    );
     const signedRefreshToken = await jwt.sign({ refresh_token, type: 'kakao' }, process.env.JWT, {
       expiresIn: refresh_token_expires_in,
     });

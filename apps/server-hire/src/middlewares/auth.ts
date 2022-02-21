@@ -1,7 +1,8 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import jwt from 'jsonwebtoken';
 import { Request, Response, NextFunction } from 'express';
 import { findCookieValue, splitCookie } from '@Libs/utils/cookie';
-import { verfiyError, envError, accessRefreshNotFound } from '@Constants/Messages';
+import { verfiyError, envError } from '@Constants/Messages';
 import { userType } from '@Libs/constants/types';
 
 import token from '@Libs/constants/token';
@@ -51,12 +52,13 @@ export async function loginCheckMiddleWare(req: Request, res: Response, next: Ne
   const splitedCookies = splitCookie(cookies);
   const accessToken = findCookieValue(splitedCookies, token.LOGIN);
   const refreshToken = findCookieValue(splitedCookies, token.RefreshKakao);
+  let needVerfiyToken = null;
+
   if (accessToken === false) {
     if (refreshToken === false) {
-      return res
-        .status(accessRefreshNotFound.statusCode)
-        .send({ msg: accessRefreshNotFound.message, category: accessRefreshNotFound.category });
+      return res.status(verfiyError.statusCode).send({ msg: verfiyError.message, category: verfiyError.category });
     }
+
     const verifyRefreshToken = await jwt.verify(refreshToken, process.env.JWT);
 
     if (typeof verifyRefreshToken === 'string') {
@@ -69,7 +71,6 @@ export async function loginCheckMiddleWare(req: Request, res: Response, next: Ne
       refresh_token: verifyRefreshToken.refresh_token,
     });
 
-    // eslint-disable-next-line @typescript-eslint/naming-convention
     const { access_token, expires_in, refresh_token, refresh_token_expires_in } = updateResult.data;
 
     const signedAccessToken = await jwt.sign({ access_token, type: 'kakao' }, process.env.JWT, {
@@ -84,9 +85,14 @@ export async function loginCheckMiddleWare(req: Request, res: Response, next: Ne
       });
       res.cookie(token.RefreshKakao, signedRefreshToken, { maxAge: refresh_token_expires_in, httpOnly: true });
     }
-    return next();
+    const verifyAccessToken = await jwt.verify(access_token, process.env.JWT);
+    if (typeof verifyAccessToken === 'string') {
+      return res.status(verfiyError.statusCode).send({ msg: verfiyError.message, category: verfiyError.category });
+    }
+    needVerfiyToken = access_token;
   }
-  const verifyAccessToken = await jwt.verify(accessToken, process.env.JWT);
+
+  const verifyAccessToken = await jwt.verify(needVerfiyToken === null ? accessToken : needVerfiyToken, process.env.JWT);
 
   if (typeof verifyAccessToken === 'string') {
     return res.status(verfiyError.statusCode).send({ msg: verfiyError.message, category: verfiyError.category });
@@ -99,7 +105,6 @@ export async function loginCheckMiddleWare(req: Request, res: Response, next: Ne
   } else if (verifyAccessToken.type === 'google') {
     req.user = verifyAccessToken.google_id;
   }
-
   return next();
 }
 

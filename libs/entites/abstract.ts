@@ -2,7 +2,7 @@ import { CreateDateColumn, PrimaryGeneratedColumn, UpdateDateColumn } from 'type
 
 export abstract class Primary {
   @PrimaryGeneratedColumn({ type: 'bigint' })
-  id?: string;
+  id: string;
 
   @CreateDateColumn({
     name: 'created_at',
