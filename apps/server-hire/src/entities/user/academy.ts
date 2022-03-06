@@ -14,6 +14,6 @@ class Academy {
 
   @OneToOne(() => AcademyBusiness)
   @JoinColumn()
-  business: AcademyBusiness;
+  business_info: AcademyBusiness;
 }
 export default Academy;
