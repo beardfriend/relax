@@ -4,7 +4,6 @@ import login from '@SH/Controllers/auth/login';
 import signUp from '@SH/Controllers/auth/signUp';
 import logout from '@SH/Controllers/auth/logout';
 import { getCode, getToken } from '@SH/Controllers/auth/kakao';
-import selectType from '@SH/Controllers/role/selectType';
 import { loginCheckMiddleWare, onlyAcademyAccess } from '@SH/MiddleWares/auth';
 import { googleGetCode, googleGetToken } from '@SH/Controllers/auth/google';
 import businessCheck from '@SH/Controllers/auth/businessCheck';
@@ -18,7 +17,6 @@ router.get('/kakao', getCode);
 router.get('/kakao/get-token', getToken);
 router.get('/google', googleGetCode);
 router.get('/google/get-token', googleGetToken);
-router.post('/select-type', loginCheckMiddleWare, selectType);
 router.post('/business-check', loginCheckMiddleWare, onlyAcademyAccess, businessCheck);
 
 export default router;

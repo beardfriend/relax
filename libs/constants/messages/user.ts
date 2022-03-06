@@ -61,7 +61,7 @@ export const businessAlreadyExist: response = {
 };
 
 export const businessCheckFail: response = {
-  statusCode: 200,
+  statusCode: 400,
   category: 'user',
   message: '존재하지 않는 사업자입니다. <br> 사업자 번호 또는 대표자명 또는 개업일자를 확인해주세요. ',
 };

@@ -2,7 +2,7 @@ import { serverError, alreadyAccessToken, googleCodeNotFound } from '@Libs/const
 import { google_getToken, goolge_authcode } from '@Libs/api/google';
 import jwt, { GoogleUserDataPayload } from 'jsonwebtoken';
 import { Response, Request } from 'express';
-import { env } from '@Libs/utils/env';
+import env from '@SH/env';
 import { findGoogleUser, createGoogleUser } from '@SH/Services/user/user';
 import { normalExpireIn, normalMaxAge } from '@Libs/constants/constant';
 import token from '@Libs/constants/token';

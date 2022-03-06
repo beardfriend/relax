@@ -3,7 +3,7 @@ import { Request, Response, NextFunction } from 'express';
 import { findCookieValue, splitCookie } from '@Libs/utils/cookie';
 import { verfiyError } from '@Constants/Messages';
 import { userType } from '@Libs/constants/types';
-import { env } from '@Libs/utils/env';
+import env from '@SH/env';
 import token from '@Libs/constants/token';
 import { kakao_token_update } from '@Libs/api/kakao';
 import { findUser } from '@SH/Services/user/user';

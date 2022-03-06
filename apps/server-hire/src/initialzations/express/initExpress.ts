@@ -2,6 +2,7 @@ import express from 'express';
 import useBodyParser from '@SH/Initializations/express/lib/useBodyParser';
 import setRoute from '@SH/Initializations/express/lib/setRoute';
 import cookieParser from 'cookie-parser';
+import env from '@SH/env';
 import cors from 'cors';
 
 const initExpress = () => {
@@ -15,7 +16,7 @@ const initExpress = () => {
   app.use(cors({ credentials: true, origin: true }));
   useBodyParser(app);
   setRoute(app);
-  const port = process.env.EXPRESS_PORT;
+  const { port } = env;
   app.set('port', port);
   app.listen(port, () => console.log(`Listening ${port}`));
   return app;

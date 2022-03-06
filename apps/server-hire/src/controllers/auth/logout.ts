@@ -1,7 +1,7 @@
 import token from '@Libs/constants/token';
 import { findCookieValue, splitCookie } from '@Libs/utils/cookie';
 import { logoutSuccess, verfiyError, cookieNotFound, tokenNotfound } from '@Constants/Messages';
-import { env } from '@Libs/utils/env';
+import env from '@SH/env';
 import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 

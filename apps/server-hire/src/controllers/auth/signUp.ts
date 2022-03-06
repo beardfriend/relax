@@ -1,7 +1,7 @@
 import { existEmail, signupSuccess } from '@Constants/Messages';
 import { normalExpireIn, normalMaxAge } from '@Libs/constants/constant';
 import token from '@Libs/constants/token';
-import { env } from '@Libs/utils/env';
+import env from '@SH/env';
 import jwt from 'jsonwebtoken';
 import { findUser, createNormalUser } from '@SH/Services/user/user';
 import bcrypt from 'bcrypt';

@@ -4,7 +4,7 @@ import token from '@Libs/constants/token';
 import { findCookieValue, splitCookie } from '@Libs/utils/cookie';
 import { createKakaoUser, findKakaoUser } from '@SH/Services/user/user';
 import { Request, Response } from 'express';
-import { env } from '@Libs/utils/env';
+import env from '@SH/env';
 import jwt from 'jsonwebtoken';
 
 export async function getCode(req: Request, res: Response) {

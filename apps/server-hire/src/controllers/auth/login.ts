@@ -4,7 +4,7 @@ import token from '@Libs/constants/token';
 import { findUser } from '@SH/Services/user/user';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { env } from '@Libs/utils/env';
+import env from '@SH/env';
 import { Request, Response } from 'express';
 import { normalUser } from '@Libs/interface/user';
 
