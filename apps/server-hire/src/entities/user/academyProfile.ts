@@ -1,15 +1,15 @@
-import { Primary } from '@Libs/entites/abstract';
+import { PrimaryJoinColumn } from '@Libs/entites/abstract';
 import { Column, Entity, JoinColumn, OneToMany, OneToOne } from 'typeorm';
 import Address from '../address';
 import Images from '../image';
 import Yoga from '../yoga/yoga';
-import User from './user';
+import Academy from './academy';
 
 @Entity()
-class AcademyProfile extends Primary {
-  @OneToOne(() => User)
-  @JoinColumn()
-  user: User;
+class AcademyProfile extends PrimaryJoinColumn {
+  @OneToOne(() => Academy, { cascade: true })
+  @JoinColumn({ name: 'id' })
+  user: Academy;
 
   @OneToOne(() => Images, { nullable: true })
   @JoinColumn()

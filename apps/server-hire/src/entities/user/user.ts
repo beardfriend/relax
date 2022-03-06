@@ -1,8 +1,6 @@
 import { Column, Entity, OneToOne, JoinColumn } from 'typeorm';
 import { userType, signUpType } from '@Constants/Types';
 import { Primary } from '@Libs/entites/abstract';
-import TeacherProfile from './teacherProfile';
-import AcademyProfile from './academyProfile';
 import Teacher from './teacher';
 import Academy from './academy';
 
@@ -28,14 +26,6 @@ class User extends Primary {
 
   @Column({ type: 'enum', enum: signUpType, default: null })
   signup_type: signUpType;
-
-  @OneToOne(() => TeacherProfile)
-  @JoinColumn()
-  teacher_profile: TeacherProfile;
-
-  @OneToOne(() => AcademyProfile)
-  @JoinColumn()
-  academy_profile: AcademyProfile;
 
   @OneToOne(() => Teacher)
   @JoinColumn()

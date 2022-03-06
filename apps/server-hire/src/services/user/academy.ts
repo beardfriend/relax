@@ -3,10 +3,10 @@ import Academy from '@SH/Entities/user/academy';
 import User from '@SH/Entities/user/user';
 import { DeepPartial, getManager } from 'typeorm';
 
-export async function createAcademy(user: DeepPartial<User>) {
+export async function createAcademy(findedUser: DeepPartial<User>) {
   const manager = getManager();
   const academy = manager.create(Academy, {
-    id: user,
+    user: findedUser,
   });
   try {
     await manager.save(academy);

@@ -5,7 +5,7 @@ import { DeepPartial, getManager } from 'typeorm';
 export async function createTeacher(findedUser: DeepPartial<User>) {
   const manager = getManager();
   const teacher = manager.create(Teacher, {
-    id: findedUser,
+    user: findedUser,
   });
   const user = findedUser;
   user.teacher = teacher;

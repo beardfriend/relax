@@ -1,12 +1,18 @@
-import { Entity, OneToOne, JoinColumn, OneToMany } from 'typeorm';
+import { PrimaryJoinColumn } from '@Libs/entites/abstract';
 import Resume from '@SH/Entities/resume/resume';
+import { Entity, JoinColumn, OneToMany, OneToOne } from 'typeorm';
+import TeacherProfile from './teacherProfile';
 import User from './user';
 
 @Entity()
-class Teacher {
-  @OneToOne(() => User, { primary: true })
+class Teacher extends PrimaryJoinColumn {
+  @OneToOne(() => User, { cascade: true })
+  @JoinColumn({ name: 'id' })
+  user: User;
+
+  @OneToOne(() => TeacherProfile)
   @JoinColumn()
-  id: User;
+  teacher_profile: TeacherProfile;
 
   @OneToMany(() => Resume, (resume) => resume.teacher)
   resume: Resume[];

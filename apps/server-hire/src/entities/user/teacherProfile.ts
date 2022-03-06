@@ -1,22 +1,20 @@
-import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryColumn } from 'typeorm';
+import { PrimaryJoinColumn } from '@Libs/entites/abstract';
+import { Column, Entity, JoinColumn, OneToMany, OneToOne } from 'typeorm';
 import Images from '../image';
 import Yoga from '../yoga/yoga';
-import User from './user';
+import Teacher from './teacher';
 
 @Entity()
-class TeacherProfile {
-  @PrimaryColumn()
-  id: number;
-
-  @OneToOne(() => User, { cascade: true })
+class TeacherProfile extends PrimaryJoinColumn {
+  @OneToOne(() => Teacher, { cascade: true })
   @JoinColumn({ name: 'id' })
-  user: User;
+  user: Teacher;
 
-  @OneToOne(() => Images)
+  @OneToOne(() => Images, { nullable: true })
   @JoinColumn()
-  profile: Images;
+  profile_image: Images;
 
-  @OneToMany(() => Yoga, (yoga) => yoga.teacher)
+  @OneToMany(() => Yoga, (yoga) => yoga.teacher, { nullable: true })
   yoga: Yoga[];
 
   @Column({ nullable: true })

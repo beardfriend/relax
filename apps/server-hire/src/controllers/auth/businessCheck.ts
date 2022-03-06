@@ -4,7 +4,7 @@ import {
   businessCheckSuccess,
   businessAlreadyExist,
 } from '@Constants/Messages';
-import { env } from '@Libs/utils/env';
+import env from '@SH/env';
 import { business_check } from '@Libs/api/openapi';
 import { findUser } from '@SH/Services/user/user';
 import { Request, Response } from 'express';
@@ -20,8 +20,8 @@ export default async function businessCheck(req: Request, res: Response) {
         businesses: [
           {
             b_no: businessNumber as string,
-            start_dt: representationName as string,
-            p_nm: openDate as string,
+            p_nm: representationName as string,
+            start_dt: openDate as string,
           },
         ],
       },
