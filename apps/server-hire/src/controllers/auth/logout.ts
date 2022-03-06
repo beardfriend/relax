@@ -1,14 +1,13 @@
 import token from '@Libs/constants/token';
 import { findCookieValue, splitCookie } from '@Libs/utils/cookie';
-import { envError, logoutSuccess, verfiyError, cookieNotFound, tokenNotfound } from '@Constants/Messages';
+import { logoutSuccess, verfiyError, cookieNotFound, tokenNotfound } from '@Constants/Messages';
+import { env } from '@Libs/utils/env';
 import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 
 async function logout(req: Request, res: Response) {
   const cookies = req.headers.cookie;
-  if (process.env.JWT === undefined) {
-    return res.status(envError.statusCode).send({ msg: envError.message, category: envError.category });
-  }
+
   if (cookies === undefined) {
     return res
       .status(cookieNotFound.statusCode)
@@ -22,7 +21,7 @@ async function logout(req: Request, res: Response) {
   }
 
   try {
-    await jwt.verify(loginToken, process.env.JWT);
+    await jwt.verify(loginToken, env.jwt);
     res.cookie(token.LOGIN, '', { maxAge: 0, httpOnly: true });
     return res.status(logoutSuccess.statusCode).send({ msg: logoutSuccess.message, category: logoutSuccess.category });
   } catch (error) {
