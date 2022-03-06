@@ -30,6 +30,7 @@ export const env = {
     sync: toBool(getOsEnv('TYPEORM_SYNCHRONIZE')),
     logging: toBool(getOsEnv('TYPEORM_LOGGING')),
     entities: getOsEnv('TYPEORM_ENTITIES'),
+    migration: getOsEnv('TYPEORM_MIGRATION'),
   },
   jwt: getOsEnv('JWT'),
 

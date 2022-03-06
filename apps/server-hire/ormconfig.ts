@@ -1,18 +1,20 @@
 import useDotenv from '@SH/Initializations/express/lib/useDotenv';
 import { ConnectionOptions } from 'typeorm';
+import { env } from '@Libs/utils/env';
 
 useDotenv();
 
 export default {
   type: 'postgres',
-  host: process.env.TYPEORM_HOST,
-  port: Number(process.env.TYPEORM_PORT),
-  username: process.env.TYPEORM_USERNAME,
-  password: process.env.TYPEORM_PASSWORD,
-  database: process.env.TYPEORM_DATABASE,
-  synchronize: Boolean(process.env.TYPEORM_SYNCHRONIZE),
-  entities: [`${process.env.TYPEORM_ENTITIES}`],
-  migrations: ['./src/migrations/**/*.ts'],
+  host: env.typeorm.host,
+  port: env.typeorm.port,
+  username: env.typeorm.username,
+  password: env.typeorm.password,
+  database: env.typeorm.database,
+  synchronize: env.typeorm.sync,
+  logging: env.typeorm.logging,
+  entities: [env.typeorm.entities],
+  migrations: [env.typeorm.migration],
   cli: {
     migrationsDir: 'src/migrations',
   },
