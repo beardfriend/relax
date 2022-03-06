@@ -39,3 +39,17 @@ export function swtichLoginType(uniqueKey: string | number, loginType: 'normal' 
   }
   return { email: uniqueKey };
 }
+
+export function swtichEnv(key: string) {
+  switch (key) {
+    case 'production':
+      return `../../config/.env.production`;
+    case 'development':
+      return `../../config/.env.development`;
+    case 'test':
+      return `./config/.env.test`;
+
+    default:
+      throw new Error('존재하지 않는 타입입니다.');
+  }
+}

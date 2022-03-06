@@ -13,5 +13,6 @@ export default {
     '@SH/Services/(.*)': '<rootDir>/apps/server-hire/src/services/$1',
     '@SH/Routers/(.*)': '<rootDir>/apps/server-hire/src/routers/$1',
     '@SH/MiddleWares/(.*)': '<rootDir>/apps/server-hire/src/middlewares/$1',
+    '@SH/env': '<rootDir>/apps/server-hire/src/env.ts',
   },
 };

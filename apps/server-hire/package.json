@@ -4,7 +4,7 @@
   "description": "yogaHire_server",
   "main": "./src/app.ts",
   "scripts": {
-    "dev": "NODE_NEV=development ts-node-dev --files --respawn -r tsconfig-paths/register src/app.ts",
+    "dev": "NODE_ENV=development ts-node-dev --files --respawn -r tsconfig-paths/register src/app.ts",
     "start": "NODE_ENV=production ts-node-dev  --files --respawn -r tsconfig-paths/register src/app.ts",
     "migration:run": "ts-node -r tsconfig-paths/register ../../node_modules/typeorm/cli.js migration:run",
     "migration:revert": "ts-node -r tsconfig-paths/register ../../node_modules/typeorm/cli.js migration:revert",

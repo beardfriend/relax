@@ -1,6 +1,6 @@
+import env from '@SH/env';
 import useDotenv from '@SH/Initializations/express/lib/useDotenv';
 import { ConnectionOptions } from 'typeorm';
-import { env } from '@Libs/utils/env';
 
 useDotenv();
 

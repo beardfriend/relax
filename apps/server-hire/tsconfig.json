@@ -6,6 +6,7 @@
     "removeComments": true,
     "baseUrl": "src",
     "paths": {
+      "@SH/env": ["./env.ts"],
       "@SH/Initializations/*": ["./initialzations/*"],
       "@SH/Entities/*": ["./entities/*"],
       "@SH/Controllers/*": ["./controllers/*"],

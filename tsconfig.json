@@ -18,6 +18,7 @@
     "typeRoots": ["./node_modules/@types", "./libs/types"],
     "baseUrl": ".",
     "paths": {
+      "@SH/env": ["./apps/server-hire/src/env.ts"],
       "@SH/Initializations/*": ["./apps/server-hire/src/initialzations/*"],
       "@SH/Entities/*": ["./apps/server-hire/src/entities/*"],
       "@SH/Controllers/*": ["./apps/server-hire/src/controllers/*"],
