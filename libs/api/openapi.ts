@@ -1,5 +1,6 @@
 import { businessCheckData } from '@Libs/interface/openAPI';
 import axios from 'axios';
+import { axiosError } from '@Libs/constants/messages';
 
 const baseURL = 'http://api.odcloud.kr/';
 
@@ -17,6 +18,7 @@ export async function business_check(data: businessCheckData, key: string) {
     });
     return result;
   } catch (error) {
-    return console.log(error);
+    console.log(error);
+    throw new Error(`${axiosError.message} , openAPI businessCheck`);
   }
 }

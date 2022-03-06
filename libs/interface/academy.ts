@@ -8,3 +8,9 @@ export interface profileData {
   yogaType: yogaSortType;
   address: addressType;
 }
+
+export interface businessInfoData {
+  businessNumber: string;
+  representationName: string;
+  openDate: string;
+}

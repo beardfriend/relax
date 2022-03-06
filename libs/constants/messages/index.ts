@@ -6,3 +6,4 @@ export * from './auth';
 export * from './env';
 export * from './axios';
 export * from './profile';
+export * from './database';
