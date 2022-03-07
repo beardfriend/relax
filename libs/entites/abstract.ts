@@ -1,4 +1,4 @@
-import { CreateDateColumn, PrimaryColumn, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { CreateDateColumn, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 
 export abstract class Primary {
   @PrimaryGeneratedColumn({ type: 'bigint' })
@@ -15,10 +15,7 @@ export abstract class Primary {
   updated_at?: Date;
 }
 
-export abstract class PrimaryJoinColumn {
-  @PrimaryColumn()
-  id: number;
-
+export abstract class UpdateColumn {
   @UpdateDateColumn({
     name: 'updated_at',
   })
