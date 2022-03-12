@@ -13,7 +13,7 @@ class Yoga extends Primary {
   teacher: TeacherProfile;
 
   @ManyToOne(() => AcademyProfile, (profile) => profile.yoga)
-  acadmey: AcademyProfile;
+  academy: AcademyProfile;
 }
 
 export default Yoga;

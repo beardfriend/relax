@@ -10,18 +10,20 @@ class Images extends Image {
   @Column({ type: 'enum', enum: imageType })
   category: imageType;
 
-  @OneToOne(() => TeacherProfile)
+  @OneToOne(() => TeacherProfile, { nullable: true })
   @JoinColumn()
   teacher_profile: TeacherProfile;
 
-  @ManyToOne(() => Resume, (resume) => resume.images)
+  @ManyToOne(() => Resume, (resume) => resume.images, { nullable: true })
   resume: Resume;
 
-  @OneToOne(() => AcademyProfile)
-  @JoinColumn()
+  @OneToOne(() => AcademyProfile, { cascade: true, nullable: true })
   academy_logo: AcademyProfile;
 
-  @ManyToOne(() => AcademyProfile, (profile) => profile.introduce_image)
+  @ManyToOne(() => AcademyProfile, (profile) => profile.introduce_image, {
+    nullable: true,
+    createForeignKeyConstraints: false,
+  })
   academy_introduce: AcademyProfile;
 }
 

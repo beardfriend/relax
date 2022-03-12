@@ -1,17 +1,20 @@
-import { PrimaryJoinColumn } from '@Libs/entites/abstract';
-import { Column, Entity, JoinColumn, OneToMany, OneToOne } from 'typeorm';
+import { UpdateColumn } from '@Libs/entites/abstract';
+import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryColumn } from 'typeorm';
 import Address from '../address';
 import Images from '../image';
 import Yoga from '../yoga/yoga';
 import Academy from './academy';
 
 @Entity()
-class AcademyProfile extends PrimaryJoinColumn {
+class AcademyProfile extends UpdateColumn {
+  @PrimaryColumn()
+  id: number;
+
   @OneToOne(() => Academy, { cascade: true })
   @JoinColumn({ name: 'id' })
   user: Academy;
 
-  @OneToOne(() => Images, { nullable: true })
+  @OneToOne(() => Images, { cascade: true })
   @JoinColumn()
   logo: Images;
 
@@ -24,14 +27,13 @@ class AcademyProfile extends PrimaryJoinColumn {
   @Column({ default: null })
   introduce: string;
 
-  @OneToMany(() => Images, (image) => image.academy_introduce, { nullable: true })
-  @JoinColumn()
+  @OneToMany(() => Images, (image) => image.academy_introduce)
   introduce_image: Images[];
 
-  @OneToMany(() => Yoga, (yoga) => yoga.acadmey)
+  @OneToMany(() => Yoga, (yoga) => yoga.academy)
   yoga: Yoga[];
 
-  @OneToOne(() => Address, { nullable: true })
+  @OneToOne(() => Address)
   @JoinColumn()
   address: Address;
 }

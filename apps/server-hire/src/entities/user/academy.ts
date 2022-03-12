@@ -1,13 +1,16 @@
-import { PrimaryJoinColumn } from '@Libs/entites/abstract';
-import { Entity, JoinColumn, OneToMany, OneToOne } from 'typeorm';
+import { UpdateColumn } from '@Libs/entites/abstract';
+import { Entity, JoinColumn, OneToMany, OneToOne, PrimaryColumn } from 'typeorm';
 import Recruitement from '../recruitment/recruitment';
 import AcademyBusiness from './academyBusiness';
 import AcademyProfile from './academyProfile';
 import User from './user';
 
 @Entity()
-class Academy extends PrimaryJoinColumn {
-  @OneToOne(() => User, { cascade: true })
+class Academy extends UpdateColumn {
+  @PrimaryColumn()
+  id: number;
+
+  @OneToOne(() => User, { primary: true })
   @JoinColumn({ name: 'id' })
   user: User;
 
@@ -22,4 +25,5 @@ class Academy extends PrimaryJoinColumn {
   @JoinColumn()
   academy_profile: AcademyProfile;
 }
+
 export default Academy;
