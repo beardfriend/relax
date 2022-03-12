@@ -24,7 +24,7 @@ export async function findGoogleUser(googleId: string) {
 }
 
 export async function createGoogleUser(sub: string, email: string) {
-  const manager = await getManager();
+  const manager = getManager();
   const user = manager.create(User, {
     signup_type: signUpType.GOOGLE,
     google_id: sub,
@@ -34,7 +34,7 @@ export async function createGoogleUser(sub: string, email: string) {
 }
 
 export async function createKakaoUser(id: number, email?: string) {
-  const manager = await getManager();
+  const manager = getManager();
   const user = manager.create(User, {
     signup_type: signUpType.KAKAO,
     kakao_id: id,
@@ -44,7 +44,7 @@ export async function createKakaoUser(id: number, email?: string) {
 }
 
 export async function createNormalUser(email: string, password: string) {
-  const manager = await getManager();
+  const manager = getManager();
   const user = manager.create(User, {
     signup_type: signUpType.NORMAL,
     email,
