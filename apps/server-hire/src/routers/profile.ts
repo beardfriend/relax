@@ -1,9 +1,10 @@
 import express from 'express';
-import getTeacherProfile from '@SH/Controllers/profile/teacher';
-import { loginCheckMiddleWare, onlyTeacherAccess } from '@SH/MiddleWares/auth';
+import academyProfile from '@SH/Controllers/profile/academyProfile';
+import { loginCheckMiddleWare, onlyAcademyAccess } from '@SH/MiddleWares/auth';
+import { academyMulter } from '@SH/MiddleWares/multer';
 
 const router = express.Router();
 
-router.get('/teacher', loginCheckMiddleWare, onlyTeacherAccess, getTeacherProfile);
+router.put('/academy', loginCheckMiddleWare, academyMulter, onlyAcademyAccess, academyProfile);
 
 export default router;
