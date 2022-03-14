@@ -5,13 +5,13 @@ import Academy from './academy';
 @Entity()
 class AcademyBusiness extends Primary {
   @Column()
-  bussiness_number: string;
+  businessNumber: number;
 
   @Column()
-  representation_name: string;
+  representationName: string;
 
   @Column()
-  open_date: string;
+  openDate: string;
 
   @OneToOne(() => Academy)
   @JoinColumn()

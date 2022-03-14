@@ -8,7 +8,7 @@ class Address extends AddressBasic {
   academy: AcademyProfile;
 
   getFullAddress() {
-    return this.region_1_depth + this.region_2_depth + this.region_3_depth;
+    return this.region1Depth + this.region2Depth + this.region3Depth;
   }
 }
 

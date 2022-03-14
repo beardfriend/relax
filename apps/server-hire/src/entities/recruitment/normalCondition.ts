@@ -13,7 +13,7 @@ class NormalCondition extends Primary {
   yogaSort: yogaSortType;
 
   @Column()
-  min_career: number;
+  minCareer: number;
 
   @Column()
   pay: number;

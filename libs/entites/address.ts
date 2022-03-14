@@ -9,22 +9,22 @@ abstract class AddressBasic extends Primary {
   y: number;
 
   @Column()
-  region_1_depth: string;
+  region1Depth: string;
 
   @Column()
-  region_2_depth: string;
+  region2Depth: string;
 
   @Column()
-  region_3_depth: string;
+  region3Depth: string;
 
   @Column()
-  road_name: string;
+  roadName: string;
 
   @Column()
-  main_building_no: string;
+  mainBuildingNo: string;
 
   @Column()
-  sub_building_no: string;
+  subBuildingNo: string;
 }
 
 export default AddressBasic;

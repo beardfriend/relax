@@ -1,6 +1,9 @@
+import 'reflect-metadata';
+import 'es6-shim';
 import env from '@SH/env';
 import useDotenv from '@SH/Initializations/express/lib/useDotenv';
 import { ConnectionOptions } from 'typeorm';
+import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 
 useDotenv();
 
@@ -18,4 +21,5 @@ export default {
   cli: {
     migrationsDir: 'src/migrations',
   },
+  namingStrategy: new SnakeNamingStrategy(),
 } as ConnectionOptions;

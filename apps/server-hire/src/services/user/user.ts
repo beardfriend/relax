@@ -30,8 +30,8 @@ export async function findGoogleUser(googleId: string) {
 export async function createGoogleUser(sub: string, email: string) {
   const manager = getManager();
   const user = manager.create(User, {
-    signup_type: signUpType.GOOGLE,
-    google_id: sub,
+    signupType: signUpType.GOOGLE,
+    googleId: sub,
     email,
   });
   await manager.save(user);
@@ -40,8 +40,8 @@ export async function createGoogleUser(sub: string, email: string) {
 export async function createKakaoUser(id: number, email?: string) {
   const manager = getManager();
   const user = manager.create(User, {
-    signup_type: signUpType.KAKAO,
-    kakao_id: id,
+    signupType: signUpType.KAKAO,
+    kakaoId: id,
     email,
   });
   await manager.save(user);
@@ -50,7 +50,7 @@ export async function createKakaoUser(id: number, email?: string) {
 export async function createNormalUser(email: string, password: string) {
   const manager = getManager();
   const user = manager.create(User, {
-    signup_type: signUpType.NORMAL,
+    signupType: signUpType.NORMAL,
     email,
     password,
   });

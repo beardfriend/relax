@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import {
   requsetBodyNotFound,
   businessCheckFail,
@@ -46,9 +47,9 @@ export default async function businessCheck(req: Request, res: Response) {
         const academy = await createAcademy(user);
         await createBusinessInfo(
           {
-            businessNumber: b_no,
-            representationName: start_dt,
-            openDate: p_nm,
+            businessNumber: Number(b_no),
+            representationName: p_nm,
+            openDate: start_dt,
           },
           academy
         );

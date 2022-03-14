@@ -5,7 +5,7 @@ import Resume from './resume';
 @Entity()
 class Education extends Primary {
   @Column()
-  school_name: string;
+  schoolName: string;
 
   @Column()
   major: string;
@@ -14,13 +14,13 @@ class Education extends Primary {
   degree: string;
 
   @Column()
-  admission_date: string;
+  admissionDate: string;
 
   @Column()
-  graduated_date: string;
+  graduatedDate: string;
 
   @Column()
-  etc_explain: string;
+  etcExplain: string;
 
   @ManyToOne(() => Resume)
   resume: Resume;

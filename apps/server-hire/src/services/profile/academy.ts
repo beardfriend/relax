@@ -19,10 +19,10 @@ export async function createAndSaveAcademyProfile(stringData: profileData, finde
     user: findedAcademy,
     academyName: stringData.academyName,
     address: stringData.address,
-    representation_number: stringData.representationNumber,
+    representationNumber: stringData.representationNumber,
     introduce: stringData.introduce,
     yoga: stringData.yoga,
-    introduce_image: stringData.introduceImage,
+    introduceImage: stringData.introduceImage,
     logo: stringData.logo,
   });
 
@@ -39,9 +39,9 @@ export async function findAcademyProfile(uniqueKey: string | number, loginType: 
   const res = await getRepository(User)
     .createQueryBuilder('user')
     .innerJoinAndSelect('user.academy', 'academy')
-    .innerJoinAndSelect('academy.academy_profile', 'profile')
+    .innerJoinAndSelect('academy.academyProfile', 'profile')
     .where(switchLoginType2(loginType), { uniqueKey })
-    .andWhere('academy.academy_profile = profile.id')
+    .andWhere('academy.academyProfile = profile.id')
     .getOne();
   return res;
 }
@@ -51,11 +51,11 @@ export async function findAcademyProfile2(uniqueKey: string | number, loginType:
     .createQueryBuilder('user')
     .select(['user.id', 'academy.id'])
     .innerJoin('user.academy', 'academy')
-    .innerJoinAndSelect('academy.academy_profile', 'profile')
+    .innerJoinAndSelect('academy.academyProfile', 'profile')
     .leftJoinAndSelect('profile.address', 'address')
     .leftJoinAndSelect('profile.logo', 'logo')
     .leftJoinAndSelect('profile.yoga', 'yoga')
-    .leftJoinAndSelect('profile.introduce_image', 'image')
+    .leftJoinAndSelect('profile.introduceImage', 'image')
     .where(switchLoginType2(loginType), { uniqueKey })
     .getOne();
   if (res === undefined) {
@@ -147,38 +147,33 @@ export async function updateProfile(
   const manager = getManager();
   const academyProfile = findedProfile;
   academyProfile.academyName = data.academyName;
-  academyProfile.representation_number = data.representationNumber;
+  academyProfile.representationNumber = data.representationNumber;
   academyProfile.introduce = data.introduce;
   academyProfile.yoga = join?.yoga;
   academyProfile.logo = join?.logo;
-  academyProfile.introduce_image = join?.introduceImage;
+  academyProfile.introduceImage = join?.introduceImage;
 
   manager.save(academyProfile);
 }
 
 export async function updateAddress2(address: addressType, findedAddress: DeepPartial<Address>) {
-  const { x, y, region_1_depth, region_2_depth, region_3_depth, road_name, main_building_no, sub_building_no } =
-    address;
+  const { x, y, region1Depth, region2Depth, region3Depth, roadName, mainBuildingNo, subBuildingNo } = address;
   const manager = getManager();
   const findaddress = findedAddress;
   findaddress.x = x;
   findaddress.y = y;
-  findaddress.region_1_depth = region_1_depth;
-  findaddress.region_2_depth = region_2_depth;
-  findaddress.region_3_depth = region_3_depth;
-  findaddress.road_name = road_name;
-  findaddress.main_building_no = main_building_no;
-  findaddress.sub_building_no = sub_building_no;
+  findaddress.region1Depth = region1Depth;
+  findaddress.region2Depth = region2Depth;
+  findaddress.region3Depth = region3Depth;
+  findaddress.roadName = roadName;
+  findaddress.mainBuildingNo = mainBuildingNo;
+  findaddress.subBuildingNo = subBuildingNo;
   await manager.save(findaddress);
 }
 
 export async function updateLogo(id: number, data: image.data) {
   const manager = getManager();
-  await manager.update(
-    Images,
-    { id },
-    { file_type: data.fileType, path: data.path, volume: data.volume, category: data.category }
-  );
+  await manager.update(Images, { id }, { ...data });
 }
 
 async function createLogo(ACADEMY_LOGO: Express.Multer.File[]) {
@@ -194,11 +189,7 @@ async function createLogo(ACADEMY_LOGO: Express.Multer.File[]) {
 
 export async function updateIntroduceImage(academyIntroduce: DeepPartial<AcademyProfile>, data: image.data) {
   const manager = getManager();
-  await manager.update(
-    Images,
-    { academy_introduce: academyIntroduce },
-    { file_type: data.fileType, path: data.path, volume: data.volume, category: data.category }
-  );
+  await manager.update(Images, { academy_introduce: academyIntroduce }, { ...data });
 }
 
 export async function logoIntroduceImage(images: { [fieldname: string]: Express.Multer.File[] }) {
@@ -287,10 +278,10 @@ export async function updateLogoIntroudceImage2(
   }
 
   async function createUpdateIntroduceImage() {
-    if (academyProfile.introduce_image?.length === 0) {
+    if (academyProfile.introduceImage?.length === 0) {
       await createIntroduce();
     }
-    await academyProfile.introduce_image?.map(async (datas) => {
+    await academyProfile.introduceImage?.map(async (datas) => {
       if (datas?.id === undefined) {
         return;
       }

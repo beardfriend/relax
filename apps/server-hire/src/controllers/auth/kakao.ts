@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import { kakao_getToken, kakao_getUserData, kakao_token_update, kakao_authCode } from '@Libs/api/kakao';
 import { serverError, alreadyAccessToken, verfiyError } from '@Libs/constants/messages';
 import token from '@Libs/constants/token';

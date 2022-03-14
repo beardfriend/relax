@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import { serverError, alreadyAccessToken, googleCodeNotFound } from '@Libs/constants/messages';
 import { google_getToken, goolge_authcode } from '@Libs/api/google';
 import jwt, { GoogleUserDataPayload } from 'jsonwebtoken';

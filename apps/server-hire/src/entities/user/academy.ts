@@ -21,11 +21,11 @@ class Academy extends UpdateColumn {
 
   @OneToOne(() => AcademyBusiness)
   @JoinColumn()
-  business_info: AcademyBusiness;
+  businessInfo: AcademyBusiness;
 
   @OneToOne(() => AcademyProfile)
   @JoinColumn()
-  academy_profile: AcademyProfile;
+  academyProfile: AcademyProfile;
 }
 
 export default Academy;

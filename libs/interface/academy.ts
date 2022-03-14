@@ -27,7 +27,7 @@ export interface profileData {
 }
 
 export interface businessInfoData {
-  businessNumber: string;
+  businessNumber: number;
   representationName: string;
   openDate: string;
 }

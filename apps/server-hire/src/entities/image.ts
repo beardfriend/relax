@@ -14,19 +14,19 @@ class Images extends Image {
 
   @OneToOne(() => TeacherProfile, { nullable: true })
   @JoinColumn()
-  teacher_profile: TeacherProfile;
+  teacherProfile: TeacherProfile;
 
   @ManyToOne(() => Resume, (resume) => resume.images, { nullable: true })
   resume: Resume;
 
   @OneToOne(() => AcademyProfile, { cascade: true, nullable: true })
-  academy_logo: AcademyProfile;
+  academyLogo: AcademyProfile;
 
-  @ManyToOne(() => AcademyProfile, (profile) => profile.introduce_image, {
+  @ManyToOne(() => AcademyProfile, (profile) => profile.introduceImage, {
     nullable: true,
     createForeignKeyConstraints: false,
   })
-  academy_introduce: AcademyProfile;
+  academyIntroduce: AcademyProfile;
 }
 
 export default Images;

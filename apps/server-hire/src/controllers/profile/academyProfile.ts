@@ -27,36 +27,38 @@ export default async function academyProfile(req: Request, res: Response) {
     yoga,
     x,
     y,
-    region_1_depth,
-    region_2_depth,
-    region_3_depth,
-    road_name,
-    main_building_no,
-    sub_building_no,
+    region1Depth,
+    region2Depth,
+    region3Depth,
+    roadName,
+    mainBuildingNo,
+    subBuildingNo,
   } = req.body;
   const manager = getManager();
   try {
     const findedProfile = await findAcademyProfile(req.user, req.type);
 
+    const address = {
+      x: Number(x),
+      y: Number(y),
+      region1Depth,
+      region2Depth,
+      region3Depth,
+      roadName,
+      mainBuildingNo,
+      subBuildingNo,
+    };
+
     if (findedProfile === undefined) {
       const findedAcademy = await findAcademy(req.user, req.type);
       const { logo, introduceImage } = await logoIntroduceImage(images);
       const yogaList = await createYogaList(yoga);
-      const createdAddress = await createAddress({
-        x: Number(x),
-        y: Number(y),
-        region_1_depth,
-        region_2_depth,
-        region_3_depth,
-        road_name,
-        main_building_no,
-        sub_building_no,
-      });
+      const createdAddress = await createAddress(address);
       const profile = await createAndSaveAcademyProfile(
         { academyName, representationNumber, introduce, logo, introduceImage, yoga: yogaList, address: createdAddress },
         findedAcademy.academy
       );
-      await manager.update(Academy, { id: findedAcademy.id }, { academy_profile: profile });
+      await manager.update(Academy, { id: findedAcademy.id }, { academyProfile: profile });
       return res
         .status(createProfileSuccess.statusCode)
         .send({ cateogry: createProfileSuccess.category, msg: createProfileSuccess.message });
@@ -64,18 +66,9 @@ export default async function academyProfile(req: Request, res: Response) {
 
     const findedProfileAllInfo = await findAcademyProfile2(req.user, req.type);
 
-    const profile = findedProfileAllInfo.academy.academy_profile;
+    const profile = findedProfileAllInfo.academy.academyProfile;
 
-    await updateAddress(profile.address.id, {
-      x: Number(x),
-      y: Number(y),
-      region_1_depth,
-      region_2_depth,
-      region_3_depth,
-      road_name,
-      main_building_no,
-      sub_building_no,
-    });
+    await updateAddress(profile.address.id, address);
     await updateYogaList(yoga, profile.yoga, profile);
     await updateLogoIntroudceImage2(images, profile);
     await updateProfile(profile, { academyName, representationNumber, introduce });
@@ -92,7 +85,7 @@ export async function academyProfileGet(req: Request, res: Response) {
   const profile = await findAcademyProfile2(req.user, req.body);
   const data = plainToClass(User, profile);
 
-  const profileData = data.academy.academy_profile;
+  const profileData = data.academy.academyProfile;
 
   return res.status(getProfileSuccess.statusCode).send({
     category: getProfileSuccess.category,

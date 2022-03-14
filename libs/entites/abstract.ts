@@ -9,29 +9,29 @@ export abstract class Primary {
   @CreateDateColumn({
     name: 'created_at',
   })
-  created_at?: Date;
+  createdAt?: Date;
 
   @UpdateDateColumn({
     name: 'updated_at',
   })
-  updated_at?: Date;
+  updatedAt?: Date;
 }
 
 export abstract class UpdateColumn {
   @UpdateDateColumn({
     name: 'updated_at',
   })
-  updated_at?: Date;
+  updatedAt?: Date;
 }
 
 export abstract class UnPrimary {
   @CreateDateColumn({
     name: 'created_at',
   })
-  created_at?: Date;
+  createdAt?: Date;
 
   @UpdateDateColumn({
     name: 'updated_at',
   })
-  updated_at?: Date;
+  updatedAt?: Date;
 }

@@ -8,8 +8,7 @@
   },
   "rules": {
     "import/no-extraneous-dependencies": "off",
-    "class-methods-use-this": "off",
-    "@typescript-eslint/naming-convention": "off"
+    "class-methods-use-this": "off"
   },
   "settings": {
     "import/parsers": {

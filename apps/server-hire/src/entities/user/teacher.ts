@@ -12,7 +12,7 @@ class Teacher extends UpdateColumn {
 
   @OneToOne(() => TeacherProfile)
   @JoinColumn()
-  teacher_profile: TeacherProfile;
+  teacherProfile: TeacherProfile;
 
   @OneToMany(() => Resume, (resume) => resume.teacher)
   resume: Resume[];

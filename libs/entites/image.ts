@@ -12,7 +12,7 @@ abstract class Image extends Primary {
 
   @Column()
   @Exclude()
-  file_type: string;
+  fileType: string;
 }
 
 export default Image;

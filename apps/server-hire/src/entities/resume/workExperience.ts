@@ -6,7 +6,7 @@ import Resume from './resume';
 @Entity()
 class WorkExperience extends Primary {
   @Column()
-  academy_name: string;
+  academyName: string;
 
   @Column()
   work_start: string;
@@ -17,8 +17,8 @@ class WorkExperience extends Primary {
   @Column()
   etc_explain: string;
 
-  @OneToMany(() => ClassContent, (data) => data.work_experience)
-  class_content: ClassContent[];
+  @OneToMany(() => ClassContent, (data) => data.workExperience)
+  classContent: ClassContent[];
 
   @ManyToOne(() => Resume)
   resume: Resume;

@@ -24,13 +24,13 @@ class AcademyProfile extends UpdateColumn {
   academyName: string;
 
   @Column({ default: null })
-  representation_number: string;
+  representationNumber: string;
 
   @Column({ default: null })
   introduce: string;
 
-  @OneToMany(() => Images, (image) => image.academy_introduce)
-  introduce_image: Images[];
+  @OneToMany(() => Images, (image) => image.academyIntroduce)
+  introduceImage: Images[];
 
   @OneToMany(() => Yoga, (yoga) => yoga.academy, { cascade: true })
   yoga: Yoga[];

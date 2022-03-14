@@ -9,10 +9,10 @@ import Academy from './academy';
 @Entity()
 class User extends Primary {
   @Column({ nullable: true })
-  kakao_id: number;
+  kakaoId: number;
 
   @Column({ nullable: true })
-  google_id: string;
+  googleId: string;
 
   @Column({ nullable: true })
   @IsEmail()
@@ -23,13 +23,13 @@ class User extends Primary {
   password: string;
 
   @Column({ nullable: true })
-  phone_number: string;
+  phoneNumber: string;
 
   @Column({ type: 'enum', enum: userType, default: null })
   role: userType;
 
   @Column({ type: 'enum', enum: signUpType, default: null })
-  signup_type: signUpType;
+  signupType: signUpType;
 
   @OneToOne(() => Teacher)
   @JoinColumn()

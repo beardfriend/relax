@@ -17,13 +17,13 @@ class Recruitement extends Primary {
   type: recruitType;
 
   @Column()
-  task_introduction: string;
+  taskIntroduction: string;
 
   @Column()
   qualifications: string;
 
   @Column()
-  treat_list: string;
+  treatList: string;
 
   @OneToMany(() => InsteadCondition, (insteadCondition) => insteadCondition.recruit)
   instead: InsteadCondition[];

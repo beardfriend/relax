@@ -12,16 +12,16 @@ class RecruitTime extends Primary {
   date: string;
 
   @Column()
-  start_time: string;
+  startTime: string;
 
   @Column()
-  end_time: string;
+  endTime: string;
 
   @ManyToOne(() => NormalCondition, (normalCondition) => normalCondition.time)
-  noraml_condition: NormalCondition;
+  noramlCondition: NormalCondition;
 
   @ManyToOne(() => InsteadCondition, (insteadCondition) => insteadCondition.time)
-  instead_condition: InsteadCondition;
+  insteadCondition: InsteadCondition;
 }
 
 export default RecruitTime;

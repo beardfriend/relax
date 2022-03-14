@@ -16,12 +16,14 @@
     "body-parser": "^1.19.0",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
+    "es6-shim": "^0.35.6",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
     "multer": "^1.4.4",
     "pg": "^8.7.1",
     "type-check": "^0.4.0",
-    "typeorm": "^0.2.41"
+    "typeorm": "^0.2.41",
+    "typeorm-naming-strategies": "^4.0.0"
   },
   "license": "ISC",
   "devDependencies": {

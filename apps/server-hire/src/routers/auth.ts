@@ -1,17 +1,18 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import express from 'express';
-import login from '@SH/Controllers/auth/login';
-import signUp from '@SH/Controllers/auth/signUp';
-import logout from '@SH/Controllers/auth/logout';
-import { getCode, getToken } from '@SH/Controllers/auth/kakao';
-import { loginCheckMiddleWare, onlyAcademyAccess } from '@SH/MiddleWares/auth';
-import { googleGetCode, googleGetToken } from '@SH/Controllers/auth/google';
 import businessCheck from '@SH/Controllers/auth/businessCheck';
+import { googleGetCode, googleGetToken } from '@SH/Controllers/auth/google';
+import { getCode, getToken } from '@SH/Controllers/auth/kakao';
+import login from '@SH/Controllers/auth/login';
+import logout from '@SH/Controllers/auth/logout';
+import signUp from '@SH/Controllers/auth/signUp';
+import { loginCheckMiddleWare, onlyAcademyAccess } from '@SH/MiddleWares/auth';
+import express from 'express';
+import validatorFunc from '@SH/MiddleWares/validator';
 
 const router = express.Router();
 
 router.post('/login', login);
-router.post('/signup', signUp);
+router.post('/signup', validatorFunc, signUp);
 router.get('/logout', logout);
 router.get('/kakao', getCode);
 router.get('/kakao/get-token', getToken);

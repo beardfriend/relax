@@ -14,7 +14,7 @@ class TeacherProfile extends UpdateColumn {
   user: Teacher;
 
   @OneToOne(() => Images)
-  profile_image: Images;
+  profileImage: Images;
 
   @OneToMany(() => Yoga, (yoga) => yoga.teacher)
   yoga: Yoga[];

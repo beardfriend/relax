@@ -7,7 +7,7 @@ import Academy from '@SH/Entities/user/academy';
 export default async function findAcademyBusiness(businessNumber: string) {
   const academyBusinessRepo = getRepository(AcademyBusiness);
   try {
-    const res = await academyBusinessRepo.findOne({ where: { bussiness_number: businessNumber } });
+    const res = await academyBusinessRepo.findOne({ where: { businessNumber } });
     return res;
   } catch (error) {
     console.log(error);
@@ -17,13 +17,9 @@ export default async function findAcademyBusiness(businessNumber: string) {
 
 export async function createBusinessInfo(data: businessInfoData, findedAcademy: DeepPartial<Academy>) {
   const manager = getManager();
-  const academyBusinessInfo = manager.create(AcademyBusiness, {
-    bussiness_number: data.businessNumber,
-    representation_name: data.representationName,
-    open_date: data.openDate,
-  });
+  const academyBusinessInfo = manager.create(AcademyBusiness, data);
   const academy = findedAcademy;
-  academy.business_info = academyBusinessInfo;
+  academy.businessInfo = academyBusinessInfo;
   try {
     await manager.save(academyBusinessInfo);
     await manager.save(academy);

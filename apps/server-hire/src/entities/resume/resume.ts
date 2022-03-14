@@ -16,10 +16,10 @@ class Resume extends Primary {
   teacher: Teacher;
 
   @Column()
-  resume_name: string;
+  resumeName: string;
 
   @Column({ nullable: true })
-  is_open: boolean;
+  isOpen: boolean;
 
   @OneToMany(() => Images, (image) => image.resume, { nullable: true })
   images: Images[];
@@ -31,7 +31,7 @@ class Resume extends Primary {
   education?: Education[];
 
   @OneToMany(() => WorkExperience, (work_experience) => work_experience.resume, { nullable: true })
-  work_experience?: WorkExperience[];
+  workExperience?: WorkExperience[];
 }
 
 export default Resume;
