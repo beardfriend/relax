@@ -4,10 +4,12 @@ import { imageType } from '@Constants/Types';
 import TeacherProfile from '@SH/Entities/user/teacherProfile';
 import AcademyProfile from '@SH/Entities/user/academyProfile';
 import Resume from '@SH/Entities/resume/resume';
+import { Exclude } from 'class-transformer';
 
 @Entity()
 class Images extends Image {
   @Column({ type: 'enum', enum: imageType })
+  @Exclude()
   category: imageType;
 
   @OneToOne(() => TeacherProfile, { nullable: true })

@@ -17,7 +17,7 @@ export async function createAndSaveAcademyProfile(stringData: profileData, finde
 
   const academyProfile = manager.create(AcademyProfile, {
     user: findedAcademy,
-    academy_name: stringData.academyName,
+    academyName: stringData.academyName,
     address: stringData.address,
     representation_number: stringData.representationNumber,
     introduce: stringData.introduce,
@@ -61,6 +61,13 @@ export async function findAcademyProfile2(uniqueKey: string | number, loginType:
   if (res === undefined) {
     throw new Error('academyProfile not found');
   }
+  return res;
+}
+
+export async function getAcademyProfile(id: number) {
+  const acadmeyRepo = await getRepository(AcademyProfile);
+  const res = await acadmeyRepo.findOne({ where: { id }, relations: ['yoga'] });
+
   return res;
 }
 
@@ -139,7 +146,7 @@ export async function updateProfile(
   // 프로필 업데이트 다른 것들은 영향 끼치지 않고 하는 방법 연구.
   const manager = getManager();
   const academyProfile = findedProfile;
-  academyProfile.academy_name = data.academyName;
+  academyProfile.academyName = data.academyName;
   academyProfile.representation_number = data.representationNumber;
   academyProfile.introduce = data.introduce;
   academyProfile.yoga = join?.yoga;

@@ -1,4 +1,6 @@
+import { createProfileSuccess, getProfileSuccess, updateProfileSuccess } from '@Constants/Messages';
 import Academy from '@SH/Entities/user/academy';
+import User from '@SH/Entities/user/user';
 import createAddress from '@SH/Services/address';
 import {
   createAndSaveAcademyProfile,
@@ -12,8 +14,8 @@ import {
   updateYogaList,
 } from '@SH/Services/profile/academy';
 import { findAcademy } from '@SH/Services/user/academy';
+import { plainToClass } from 'class-transformer';
 import { Request, Response } from 'express';
-import { profileCreate, profileUpdate } from '@Constants/Messages';
 import { getManager } from 'typeorm';
 
 export default async function academyProfile(req: Request, res: Response) {
@@ -56,8 +58,8 @@ export default async function academyProfile(req: Request, res: Response) {
       );
       await manager.update(Academy, { id: findedAcademy.id }, { academy_profile: profile });
       return res
-        .status(profileCreate.statusCode)
-        .send({ cateogry: profileCreate.category, msg: profileCreate.message });
+        .status(createProfileSuccess.statusCode)
+        .send({ cateogry: createProfileSuccess.category, msg: createProfileSuccess.message });
     }
 
     const findedProfileAllInfo = await findAcademyProfile2(req.user, req.type);
@@ -77,9 +79,27 @@ export default async function academyProfile(req: Request, res: Response) {
     await updateYogaList(yoga, profile.yoga, profile);
     await updateLogoIntroudceImage2(images, profile);
     await updateProfile(profile, { academyName, representationNumber, introduce });
-    return res.status(profileUpdate.statusCode).send({ msg: profileUpdate.message, category: profileUpdate.category });
+    return res
+      .status(updateProfileSuccess.statusCode)
+      .send({ msg: updateProfileSuccess.message, category: updateProfileSuccess.category });
   } catch (error) {
     console.log(error);
     return res.status(500).send('error');
   }
+}
+
+export async function academyProfileGet(req: Request, res: Response) {
+  const profile = await findAcademyProfile2(req.user, req.body);
+  const data = plainToClass(User, profile);
+
+  const profileData = data.academy.academy_profile;
+
+  return res.status(getProfileSuccess.statusCode).send({
+    category: getProfileSuccess.category,
+    msg: getProfileSuccess.message,
+    data: {
+      ...profileData,
+      address: profileData.address.getFullAddress(),
+    },
+  });
 }

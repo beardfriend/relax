@@ -1,5 +1,7 @@
+import { IsEmail } from 'class-validator';
 import { Column, Entity, OneToOne, JoinColumn } from 'typeorm';
 import { userType, signUpType } from '@Constants/Types';
+import { Exclude } from 'class-transformer';
 import { Primary } from '@Libs/entites/abstract';
 import Teacher from './teacher';
 import Academy from './academy';
@@ -13,9 +15,11 @@ class User extends Primary {
   google_id: string;
 
   @Column({ nullable: true })
+  @IsEmail()
   email: string;
 
   @Column({ nullable: true })
+  @Exclude()
   password: string;
 
   @Column({ nullable: true })

@@ -1,4 +1,5 @@
 import { UpdateColumn } from '@Libs/entites/abstract';
+import { Exclude } from 'class-transformer';
 import { Entity, JoinColumn, OneToMany, OneToOne, PrimaryColumn } from 'typeorm';
 import Recruitement from '../recruitment/recruitment';
 import AcademyBusiness from './academyBusiness';
@@ -8,6 +9,7 @@ import User from './user';
 @Entity()
 class Academy extends UpdateColumn {
   @PrimaryColumn()
+  @Exclude()
   id: number;
 
   @OneToOne(() => User, { primary: true })

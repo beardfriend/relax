@@ -6,6 +6,10 @@ import AcademyProfile from './user/academyProfile';
 class Address extends AddressBasic {
   @OneToOne(() => AcademyProfile)
   academy: AcademyProfile;
+
+  getFullAddress() {
+    return this.region_1_depth + this.region_2_depth + this.region_3_depth;
+  }
 }
 
 export default Address;

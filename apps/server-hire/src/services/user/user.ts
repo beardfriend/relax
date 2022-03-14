@@ -5,10 +5,14 @@ import { getManager, getRepository } from 'typeorm';
 
 export async function findUser(uniqueKey: string | number, loginType: 'normal' | 'kakao' | 'google') {
   const userRepo = getRepository(User);
-  const res = await userRepo.findOne({
-    where: swtichLoginType(uniqueKey, loginType),
-  });
-  return res;
+  try {
+    const res = await userRepo.findOne({
+      where: swtichLoginType(uniqueKey, loginType),
+    });
+    return res;
+  } catch (error) {
+    throw new Error('user find not clear');
+  }
 }
 
 export async function findKakaoUser(kakaoId: string) {
@@ -50,5 +54,6 @@ export async function createNormalUser(email: string, password: string) {
     email,
     password,
   });
+
   await manager.save(user);
 }

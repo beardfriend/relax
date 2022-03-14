@@ -1,4 +1,5 @@
 import 'reflect-metadata';
+import 'es6-shim';
 import { createConnection } from 'typeorm';
 import connectionOptions from '../../../ormconfig';
 

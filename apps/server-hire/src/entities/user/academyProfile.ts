@@ -1,4 +1,5 @@
 import { UpdateColumn } from '@Libs/entites/abstract';
+import { Exclude } from 'class-transformer';
 import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryColumn } from 'typeorm';
 import Address from '../address';
 import Images from '../image';
@@ -8,6 +9,7 @@ import Academy from './academy';
 @Entity()
 class AcademyProfile extends UpdateColumn {
   @PrimaryColumn()
+  @Exclude()
   id: number;
 
   @OneToOne(() => Academy, { cascade: true })
@@ -19,7 +21,7 @@ class AcademyProfile extends UpdateColumn {
   logo: Images;
 
   @Column({ default: null })
-  academy_name: string;
+  academyName: string;
 
   @Column({ default: null })
   representation_number: string;
@@ -30,7 +32,7 @@ class AcademyProfile extends UpdateColumn {
   @OneToMany(() => Images, (image) => image.academy_introduce)
   introduce_image: Images[];
 
-  @OneToMany(() => Yoga, (yoga) => yoga.academy)
+  @OneToMany(() => Yoga, (yoga) => yoga.academy, { cascade: true })
   yoga: Yoga[];
 
   @OneToOne(() => Address)

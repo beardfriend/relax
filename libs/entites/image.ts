@@ -1,3 +1,4 @@
+import { Exclude } from 'class-transformer';
 import { Column } from 'typeorm';
 import { Primary } from './abstract';
 
@@ -6,9 +7,11 @@ abstract class Image extends Primary {
   path: string;
 
   @Column()
+  @Exclude()
   volume: number;
 
   @Column()
+  @Exclude()
   file_type: string;
 }
 
