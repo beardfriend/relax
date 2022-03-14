@@ -17,13 +17,13 @@ export async function findUser(uniqueKey: string | number, loginType: 'normal' |
 
 export async function findKakaoUser(kakaoId: string) {
   const userRepo = getRepository(User);
-  const res = await userRepo.findOne({ where: { kakao_id: kakaoId, signup_type: signUpType.KAKAO } });
+  const res = await userRepo.findOne({ where: { kakaoId, signupType: signUpType.KAKAO } });
   return res;
 }
 
 export async function findGoogleUser(googleId: string) {
   const userRepo = getRepository(User);
-  const res = await userRepo.findOne({ where: { google_id: googleId, signup_type: signUpType.GOOGLE } });
+  const res = await userRepo.findOne({ where: { googleId, signupType: signUpType.GOOGLE } });
   return res;
 }
 

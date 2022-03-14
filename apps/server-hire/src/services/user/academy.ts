@@ -40,7 +40,7 @@ export async function findAcademy(uniqueKey: userKey.uniqueKey, loginType: userK
 export async function findAcademy2(email: string | number) {
   const res = await getRepository(Academy)
     .createQueryBuilder('academy')
-    .select(['user.id', 'academy.id', 'academy.academy_profile'])
+    .select(['user.id', 'academy.id', 'academy.academyProfile'])
     .leftJoinAndSelect('academy.user', 'user')
     .where('user.email = :email', { email })
     .getOne();
