@@ -1,4 +1,4 @@
-import { profile, profileData } from '@Libs/interface/academy';
+import { profileData, academyProfileType } from '@Libs/interface/academy';
 import { addressType } from '@Libs/interface/address';
 import { image } from '@Libs/interface/image';
 import { switchLoginType2, switchYogaType, switchYogaTypeReverse, swtichImageCategory } from '@Libs/utils/switch';
@@ -10,22 +10,14 @@ import User from '@SH/Entities/user/user';
 import Yoga from '@SH/Entities/yoga/yoga';
 import { DeepPartial, getManager, getRepository } from 'typeorm';
 import createImage from '../image';
-import createYoga, { deleteYoga } from '../yoga';
+import createYoga, { deleteYoga, deleteYogaALL } from '../yoga';
 
 export async function createAndSaveAcademyProfile(stringData: profileData, findedAcademy: DeepPartial<Academy>) {
   const manager = getManager();
-
   const academyProfile = manager.create(AcademyProfile, {
+    ...stringData,
     user: findedAcademy,
-    academyName: stringData.academyName,
-    address: stringData.address,
-    representationNumber: stringData.representationNumber,
-    introduce: stringData.introduce,
-    yoga: stringData.yoga,
-    introduceImage: stringData.introduceImage,
-    logo: stringData.logo,
   });
-
   try {
     await manager.save(academyProfile);
     return academyProfile;
@@ -71,13 +63,18 @@ export async function getAcademyProfile(id: number) {
   return res;
 }
 
-export async function createYogaList(yoga: string[] | undefined, key?: DeepPartial<AcademyProfile>) {
+export async function createYogaList(yoga: string[] | undefined | string, key?: DeepPartial<AcademyProfile>) {
   if (yoga === undefined) {
     return undefined;
   }
+  let newYogaList = yoga;
+  if (typeof newYogaList === 'string') {
+    newYogaList = [newYogaList];
+  }
+
   // const yogaList: DeepPartial<Yoga>[] = [];
   const yogaList = await Promise.all(
-    yoga.map((data) => {
+    newYogaList.map((data) => {
       return createYoga(switchYogaType(data), key);
     })
   );
@@ -85,25 +82,26 @@ export async function createYogaList(yoga: string[] | undefined, key?: DeepParti
 }
 
 export async function updateYogaList(
-  newYogaList: string[],
+  newYogaList: string[] | string | undefined,
   beforeYogaList: DeepPartial<Yoga>[],
-  academyProfile?: DeepPartial<AcademyProfile>
+  academyProfile: DeepPartial<AcademyProfile>
 ) {
   // 중복이 없으면, 전체 삭제 후 새로운 리스트 업데이트
   // 중복이 있으면, 중복된 것 남기고 나머지 지우고 새로운 것들 업데이트
   // 빈 값이면, 전체 삭제
   let yogaList = newYogaList;
-  if (typeof newYogaList === 'string') {
-    yogaList = [newYogaList];
+  if (typeof yogaList === 'string') {
+    yogaList = [yogaList];
   }
-  if (newYogaList === undefined) {
+  if (yogaList === undefined) {
+    await deleteYogaALL(academyProfile);
     return;
   }
 
   const beforeList: string[] = [];
 
   const Deletelist = beforeYogaList.filter((yoga) => {
-    if (yoga.name === undefined) {
+    if (yoga.name === undefined || yogaList === undefined) {
       return undefined;
     }
     const yoganame = switchYogaTypeReverse(yoga.name) as string;
@@ -140,8 +138,8 @@ export async function updateAddress(id: number, address: addressType) {
 
 export async function updateProfile(
   findedProfile: DeepPartial<AcademyProfile>,
-  data: profile.data,
-  join?: profile.join
+  data: academyProfileType.data,
+  join?: academyProfileType.join
 ) {
   // 프로필 업데이트 다른 것들은 영향 끼치지 않고 하는 방법 연구.
   const manager = getManager();

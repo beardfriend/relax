@@ -18,4 +18,9 @@ export async function deleteYoga(id: number) {
   await manager.delete(Yoga, { id });
 }
 
+export async function deleteYogaALL(academyProfile: DeepPartial<AcademyProfile>) {
+  const manager = getManager();
+  await manager.delete(Yoga, { academy: academyProfile });
+}
+
 export default createYoga;

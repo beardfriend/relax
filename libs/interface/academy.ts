@@ -3,11 +3,12 @@ import Address from '@SH/Entities/address';
 import Yoga from '@SH/Entities/yoga/yoga';
 import { DeepPartial } from 'typeorm';
 
-export declare module profile {
+export declare module academyProfileType {
   type data = {
     academyName: string;
     representationNumber: string;
     introduce?: string;
+    yoga?: string[] | string;
   };
   type join = {
     address?: DeepPartial<Address>;
@@ -31,5 +32,3 @@ export interface businessInfoData {
   representationName: string;
   openDate: string;
 }
-
-export interface profileImage {}

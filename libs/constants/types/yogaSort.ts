@@ -12,3 +12,18 @@ export enum yogaSortType {
   INSIDE_FLOW = '인사이드 플로우',
   KIDS = '키즈',
 }
+
+export enum yogaSortTypeEnglish {
+  IYENGAR = 'IYENGAR',
+  HATA = 'HATA',
+  ASHTANGA = 'ASHTANGA',
+  FLYING = 'FLYING',
+  VINYASA = 'VINYASA',
+  HEALING = 'HEALING',
+  RELAX = 'RELAX',
+  THERAPY = 'THERAPY',
+  ACRO = 'ACRO',
+  ADIDAS = 'ADIDAS',
+  INSIDE_FLOW = 'INSIDE_FLOW',
+  KIDS = 'KIDS',
+}
