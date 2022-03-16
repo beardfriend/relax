@@ -7,10 +7,12 @@ import logout from '@SH/Controllers/auth/logout';
 import signUp from '@SH/Controllers/auth/signUp';
 import { loginCheckMiddleWare, onlyAcademyAccess } from '@SH/MiddleWares/auth';
 import express from 'express';
+import validatorFunc from '@SH/MiddleWares/validator';
+import { UserDto } from '@Libs/dto/user';
 
 const router = express.Router();
 
-router.post('/login', login);
+router.post('/login', validatorFunc(UserDto, { groups: ['login'] }), login);
 router.post('/signup', signUp);
 router.get('/logout', logout);
 router.get('/kakao', getCode);

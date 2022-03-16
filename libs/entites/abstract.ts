@@ -1,4 +1,4 @@
-import { PrimaryDto } from '@Libs/dto/abstract';
+import { PrimaryDto, UpdateDto } from '@Libs/dto/abstract';
 import { CreateDateColumn, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 
 export abstract class Primary {
@@ -16,7 +16,7 @@ export abstract class Primary {
   updatedAt?: Date;
 }
 
-export abstract class PrimaryTest<T> extends PrimaryDto {
+export abstract class PrimaryTest extends PrimaryDto {
   @PrimaryGeneratedColumn({ type: 'bigint' })
   id: number;
 
@@ -29,14 +29,16 @@ export abstract class PrimaryTest<T> extends PrimaryDto {
     name: 'updated_at',
   })
   updatedAt?: Date;
-
-  constructor(data: Partial<T>) {
-    super();
-    Object.assign(this, data);
-  }
 }
 
-export abstract class UpdateColumn {
+export abstract class UpdateColumn extends UpdateDto {
+  @UpdateDateColumn({
+    name: 'updated_at',
+  })
+  updatedAt?: Date;
+}
+
+export abstract class UpdateColumnTest extends UpdateDto {
   @UpdateDateColumn({
     name: 'updated_at',
   })

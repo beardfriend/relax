@@ -1,9 +1,9 @@
-import { Primary } from '@Libs/entites/abstract';
-import { Column, OneToOne, JoinColumn, Entity } from 'typeorm';
+import { AcadmeyBusinessDto } from '@Libs/dto/academy';
+import { Column, Entity, JoinColumn, OneToOne } from 'typeorm';
 import Academy from './academy';
 
 @Entity()
-class AcademyBusiness extends Primary {
+class AcademyBusiness extends AcadmeyBusinessDto {
   @Column()
   businessNumber: number;
 

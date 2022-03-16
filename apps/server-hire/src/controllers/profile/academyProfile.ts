@@ -1,5 +1,4 @@
 import { createProfileSuccess, getProfileSuccess, updateProfileSuccess } from '@Constants/Messages';
-import { UserDto } from '@Libs/dto/user';
 import Academy from '@SH/Entities/user/academy';
 import createAddress from '@SH/Services/address';
 import {
@@ -14,7 +13,7 @@ import {
   updateYogaList,
 } from '@SH/Services/profile/academy';
 import { findAcademy } from '@SH/Services/user/academy';
-import { plainToClass } from 'class-transformer';
+import { classToPlain } from 'class-transformer';
 import { Request, Response } from 'express';
 import { getManager } from 'typeorm';
 
@@ -83,16 +82,17 @@ export default async function academyProfile(req: Request, res: Response) {
 
 export async function academyProfileGet(req: Request, res: Response) {
   const profile = await findAcademyProfile2(req.user, req.body);
-  console.log(profile);
-  const data = plainToClass(UserDto, profile);
-  console.log(data);
-  // const profileData = data.academy.academyProfile;
+  const datas = classToPlain(profile, { exposeUnsetFields: false });
+  console.log(datas);
+  const address = profile.academy.academyProfile.address.getFullAddress();
+  const profileData = datas.academy.academyProfile;
 
   return res.status(getProfileSuccess.statusCode).send({
     category: getProfileSuccess.category,
     msg: getProfileSuccess.message,
     data: {
-      ...data,
+      ...profileData,
+      address,
     },
   });
 }

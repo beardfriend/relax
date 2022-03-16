@@ -1,6 +1,7 @@
+import { PrimaryTest, UpdateColumn } from '@Libs/entites/abstract';
 import { Exclude, Expose, Type } from 'class-transformer';
 
-export class AcademyProfileDto {
+export class AcademyProfileDto extends UpdateColumn {
   @Exclude()
   id: number;
 
@@ -14,11 +15,24 @@ export class AcademyProfileDto {
   introduce: string;
 }
 
-export class AcademyDto {
+export class AcadmeyBusinessDto extends PrimaryTest {
+  @Expose()
+  businessNumber: number;
+
+  @Expose()
+  representationName: string;
+
+  @Expose()
+  openDate: string;
+}
+
+export class AcademyDto extends UpdateColumn {
   @Exclude()
   id: number;
 
-  @Expose()
   @Type(() => AcademyProfileDto)
   academyProfile: AcademyProfileDto;
+
+  @Type(() => AcadmeyBusinessDto)
+  businessInfo: AcadmeyBusinessDto;
 }
