@@ -1,6 +1,6 @@
 import { createProfileSuccess, getProfileSuccess, updateProfileSuccess } from '@Constants/Messages';
+import { UserDto } from '@Libs/dto/user';
 import Academy from '@SH/Entities/user/academy';
-import User from '@SH/Entities/user/user';
 import createAddress from '@SH/Services/address';
 import {
   createAndSaveAcademyProfile,
@@ -83,16 +83,16 @@ export default async function academyProfile(req: Request, res: Response) {
 
 export async function academyProfileGet(req: Request, res: Response) {
   const profile = await findAcademyProfile2(req.user, req.body);
-  const data = plainToClass(User, profile);
-
-  const profileData = data.academy.academyProfile;
+  console.log(profile);
+  const data = plainToClass(UserDto, profile);
+  console.log(data);
+  // const profileData = data.academy.academyProfile;
 
   return res.status(getProfileSuccess.statusCode).send({
     category: getProfileSuccess.category,
     msg: getProfileSuccess.message,
     data: {
-      ...profileData,
-      address: profileData.address.getFullAddress(),
+      ...data,
     },
   });
 }

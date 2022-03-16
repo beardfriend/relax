@@ -1,13 +1,12 @@
-import { IsEmail } from 'class-validator';
-import { Column, Entity, OneToOne, JoinColumn } from 'typeorm';
-import { userType, signUpType } from '@Constants/Types';
-import { Exclude } from 'class-transformer';
-import { Primary } from '@Libs/entites/abstract';
-import Teacher from './teacher';
+import { signUpType, userType } from '@Constants/Types';
+import { UserDto } from '@Libs/dto/user';
+import { PrimaryTest } from '@Libs/entites/abstract';
+import { Column, Entity, JoinColumn, OneToOne } from 'typeorm';
 import Academy from './academy';
+import Teacher from './teacher';
 
 @Entity()
-class User extends Primary {
+class User extends PrimaryTest<UserDto> {
   @Column({ nullable: true })
   kakaoId: number;
 
@@ -15,11 +14,9 @@ class User extends Primary {
   googleId: string;
 
   @Column({ nullable: true })
-  @IsEmail()
   email: string;
 
   @Column({ nullable: true })
-  @Exclude()
   password: string;
 
   @Column({ nullable: true })

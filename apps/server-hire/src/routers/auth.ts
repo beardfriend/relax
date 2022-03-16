@@ -7,12 +7,11 @@ import logout from '@SH/Controllers/auth/logout';
 import signUp from '@SH/Controllers/auth/signUp';
 import { loginCheckMiddleWare, onlyAcademyAccess } from '@SH/MiddleWares/auth';
 import express from 'express';
-import validatorFunc from '@SH/MiddleWares/validator';
 
 const router = express.Router();
 
 router.post('/login', login);
-router.post('/signup', validatorFunc, signUp);
+router.post('/signup', signUp);
 router.get('/logout', logout);
 router.get('/kakao', getCode);
 router.get('/kakao/get-token', getToken);
