@@ -35,7 +35,7 @@ export function swtichImageCategory(key: string) {
     case 'ACADEMY_LOGO':
       return imageType.ACADEMY_LOGO;
     case 'TEACHER_PROFILE':
-      return imageType.TEACEHR_PROFILE;
+      return imageType.TEACHER_PROFILE;
     case 'ACADEMY_INTRODUCE':
       return imageType.ACADEMY_INTRODUCE;
     case 'RESUME_INTROUDCE':
