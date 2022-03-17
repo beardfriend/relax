@@ -144,6 +144,7 @@ export async function updateProfile(
   // 프로필 업데이트 다른 것들은 영향 끼치지 않고 하는 방법 연구.
   const manager = getManager();
   const academyProfile = findedProfile;
+
   academyProfile.academyName = data.academyName;
   academyProfile.representationNumber = data.representationNumber;
   academyProfile.introduce = data.introduce;
@@ -151,7 +152,7 @@ export async function updateProfile(
   academyProfile.logo = join?.logo;
   academyProfile.introduceImage = join?.introduceImage;
 
-  manager.save(academyProfile);
+  await manager.save(academyProfile);
 }
 
 export async function updateAddress2(address: addressType, findedAddress: DeepPartial<Address>) {
