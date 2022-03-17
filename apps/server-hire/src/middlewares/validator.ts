@@ -8,7 +8,6 @@ function validatorFunc(validator: ClassConstructor<object>, options?: { [key: st
     const test = plainToClass(validator, req.body, options);
     console.log(test);
     validate(test).then((errors) => {
-      // errors is an array of validation errors
       if (errors.length > 0) {
         console.log('validation failed. errors: ', errors);
         return res.send(errors);

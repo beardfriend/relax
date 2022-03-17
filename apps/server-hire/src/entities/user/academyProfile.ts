@@ -18,10 +18,10 @@ class AcademyProfile extends AcademyProfileDto {
   @JoinColumn()
   logo: Images;
 
-  @Column({ default: null })
+  @Column()
   academyName: string;
 
-  @Column({ default: null })
+  @Column()
   representationNumber: string;
 
   @Column({ default: null })

@@ -7,7 +7,7 @@ export declare module academyProfileType {
   type data = {
     academyName: string;
     representationNumber: string;
-    introduce?: string;
+    introduce: string;
     yoga?: string[] | string;
   };
   type join = {
