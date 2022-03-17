@@ -1,11 +1,12 @@
 import { yogaSortType } from '@Libs/constants/types';
+import { YogaDto } from '@Libs/dto/yoga';
 import { Primary } from '@Libs/entites/abstract';
-import { Entity, Column, ManyToOne } from 'typeorm';
+import { Column, Entity, ManyToOne } from 'typeorm';
 import AcademyProfile from '../user/academyProfile';
 import TeacherProfile from '../user/teacherProfile';
 
 @Entity()
-class Yoga extends Primary {
+class Yoga extends YogaDto implements Primary {
   @Column({ type: 'enum', enum: yogaSortType })
   name: yogaSortType;
 

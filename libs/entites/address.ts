@@ -1,7 +1,8 @@
+import { AddressDto } from '@Libs/dto/address';
 import { Column } from 'typeorm';
 import { Primary } from './abstract';
 
-abstract class AddressBasic extends Primary {
+abstract class AddressBasic extends AddressDto implements Primary {
   @Column({ type: 'float' })
   x: number;
 

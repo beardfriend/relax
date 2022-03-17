@@ -1,34 +1,34 @@
 import { signUpType, userType } from '@Libs/constants/types';
-import { PrimaryTest } from '@Libs/entites/abstract';
-import Academy from '@SH/Entities/user/academy';
+import { Primary } from '@Libs/entites/abstract';
 import { Exclude, Expose, Type } from 'class-transformer';
 import { IsNotEmpty } from 'class-validator';
 import { AcademyDto } from './academy';
 
-export class UserDto extends PrimaryTest {
-  @Expose()
+export class UserDto extends Primary {
+  @Expose({ groups: ['me'] })
   kakaoId: number;
 
-  @Expose()
+  @Expose({ groups: ['me'] })
   googleId: string;
 
-  @Expose()
+  @Expose({ groups: ['signup', 'login'] })
   @IsNotEmpty()
   email: string;
 
+  @Expose({ groups: ['signup', 'login'] })
   @Exclude({ toPlainOnly: true })
   @IsNotEmpty()
   password: string;
 
-  @Expose()
+  @Expose({ groups: ['me'] })
   phoneNumber: string;
 
-  @Expose()
+  @Expose({ groups: ['me'] })
   role: userType;
 
-  @Expose()
+  @Expose({ groups: ['me'] })
   signupType: signUpType;
 
   @Type(() => AcademyDto)
-  academy: Academy;
+  academy: AcademyDto;
 }
