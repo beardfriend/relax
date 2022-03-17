@@ -9,16 +9,23 @@ import { loginCheckMiddleWare, onlyAcademyAccess } from '@SH/MiddleWares/auth';
 import express from 'express';
 import validatorFunc from '@SH/MiddleWares/validator';
 import { UserDto } from '@Libs/dto/user';
+import { AcadmeyBusinessDto } from '@Libs/dto/academy';
 
 const router = express.Router();
 
 router.post('/login', validatorFunc(UserDto, { groups: ['login'] }), login);
-router.post('/signup', signUp);
+router.post('/signup', validatorFunc(UserDto, { groups: ['signup'] }), signUp);
 router.get('/logout', logout);
 router.get('/kakao', getCode);
 router.get('/kakao/get-token', getToken);
 router.get('/google', googleGetCode);
 router.get('/google/get-token', googleGetToken);
-router.post('/business-check', loginCheckMiddleWare, onlyAcademyAccess, businessCheck);
+router.post(
+  '/business-check',
+  loginCheckMiddleWare,
+  onlyAcademyAccess,
+  validatorFunc(AcadmeyBusinessDto),
+  businessCheck
+);
 
 export default router;
