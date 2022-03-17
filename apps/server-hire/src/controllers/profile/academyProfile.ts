@@ -83,7 +83,7 @@ export default async function academyProfile(req: Request, res: Response) {
 export async function academyProfileGet(req: Request, res: Response) {
   const profile = await findAcademyProfile2(req.user, req.body);
   const datas = classToPlain(profile, { exposeUnsetFields: false });
-  console.log(datas);
+
   const address = profile.academy.academyProfile.address.getFullAddress();
   const profileData = datas.academy.academyProfile;
 
