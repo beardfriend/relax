@@ -3,16 +3,15 @@ import Academy from '@SH/Entities/user/academy';
 import createAddress from '@SH/Services/address';
 import {
   createAndSaveAcademyProfile,
-  createYogaList,
   findAcademyProfile,
   findAcademyProfile2,
   logoIntroduceImage,
   updateAddress,
   updateLogoIntroudceImage2,
   updateProfile,
-  updateYogaList,
 } from '@SH/Services/profile/academy';
 import { findAcademy } from '@SH/Services/user/academy';
+import { createYogaList, updateYogaList } from '@SH/Services/yoga';
 import { classToPlain } from 'class-transformer';
 import { Request, Response } from 'express';
 import { getManager } from 'typeorm';
@@ -33,7 +32,7 @@ export default async function academyProfile(req: Request, res: Response) {
     mainBuildingNo,
     subBuildingNo,
   } = req.body;
-  const manager = getManager();
+
   try {
     const findedProfile = await findAcademyProfile(req.user, req.type);
 
@@ -57,6 +56,7 @@ export default async function academyProfile(req: Request, res: Response) {
         { academyName, representationNumber, introduce, logo, introduceImage, yoga: yogaList, address: createdAddress },
         findedAcademy.academy
       );
+      const manager = getManager();
       await manager.update(Academy, { id: findedAcademy.id }, { academyProfile: profile });
       return res
         .status(createProfileSuccess.statusCode)
