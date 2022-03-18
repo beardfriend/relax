@@ -30,7 +30,7 @@ export async function googleGetCode(req: Request, res: Response) {
     const splitedCookies = splitCookie(cookies);
     const accessToken = findCookieValue(splitedCookies, token.LOGIN);
 
-    if (accessToken === false) {
+    if (accessToken === undefined) {
       const url = await googleAuthUrl();
       return res.redirect(url);
     }

@@ -16,7 +16,7 @@ async function logout(req: Request, res: Response) {
 
   const splitedCookies = splitCookie(cookies);
   const loginToken = findCookieValue(splitedCookies, token.LOGIN);
-  if (loginToken === false) {
+  if (loginToken === undefined) {
     return res.status(tokenNotfound.statusCode).send({ msg: tokenNotfound.message, category: tokenNotfound.category });
   }
 

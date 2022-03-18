@@ -36,6 +36,8 @@ export default async function academyProfile(req: Request, res: Response) {
   try {
     const findedProfile = await findAcademyProfile(req.user, req.type);
 
+    const isUpdate = findedProfile === undefined;
+
     const address = {
       x: Number(x),
       y: Number(y),
@@ -47,7 +49,7 @@ export default async function academyProfile(req: Request, res: Response) {
       subBuildingNo,
     };
 
-    if (findedProfile === undefined) {
+    if (isUpdate) {
       const findedAcademy = await findAcademy(req.user, req.type);
       const { logo, introduceImage } = await logoIntroduceImage(images);
       const yogaList = await createYogaList(yoga);

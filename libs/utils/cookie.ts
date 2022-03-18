@@ -17,7 +17,7 @@ export function splitCookie(cookie: string) {
 export function findCookieValue(array: { [key: string]: string }[], keyname: string) {
   const findCookie = array.find((data) => Object.keys(data).includes(keyname));
   if (findCookie === undefined) {
-    return false;
+    return undefined;
   }
   return findCookie[keyname];
 }
