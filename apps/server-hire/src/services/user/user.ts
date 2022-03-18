@@ -16,7 +16,7 @@ export async function findUser(uniqueKey: string | number, loginType: 'normal' |
   }
 }
 
-export async function findKakaoUser(kakaoId: string) {
+export async function findKakaoUser(kakaoId: number) {
   const userRepo = getRepository(User);
   const res = await userRepo.findOne({ where: { kakaoId, signupType: signUpType.KAKAO } });
   return res;
