@@ -1,12 +1,14 @@
-import jwt from 'jsonwebtoken';
-import { Request, Response, NextFunction } from 'express';
-import { findCookieValue, splitCookie } from '@Libs/utils/cookie';
 import { verfiyError } from '@Constants/Messages';
-import { userType } from '@Libs/constants/types';
-import env from '@SH/env';
 import token from '@Libs/constants/token';
-import { kakao_token_update } from '@Libs/api/kakao';
+import { userType } from '@Libs/constants/types';
+import {
+  getAccessRefreshToken,
+  getSignedAccessRefreshToken,
+  isLoginStatusFunc,
+  setUserInfo,
+} from '@SH/Services/common/middlewares';
 import { findUser } from '@SH/Services/user/user';
+import { NextFunction, Request, Response } from 'express';
 
 export async function loginCheckMiddleWare(req: Request, res: Response, next: NextFunction) {
   const cookies = req.headers.cookie;
@@ -15,66 +17,40 @@ export async function loginCheckMiddleWare(req: Request, res: Response, next: Ne
     return res.status(verfiyError.statusCode).send({ msg: verfiyError.message, category: verfiyError.category });
   }
 
-  const splitedCookies = splitCookie(cookies);
-  const accessToken = findCookieValue(splitedCookies, token.LOGIN);
-  const refreshToken = findCookieValue(splitedCookies, token.RefreshKakao);
-  let needVerfiyToken = null;
+  const { accessToken, refreshToken } = await getAccessRefreshToken(cookies);
+
+  const [status, accessOrRefreshToken] = isLoginStatusFunc({ accessToken, refreshToken });
+
+  let needVerifyToken = accessOrRefreshToken;
+
   try {
-    if (accessToken === false) {
-      if (refreshToken === false) {
-        return res.status(verfiyError.statusCode).send({ msg: verfiyError.message, category: verfiyError.category });
-      }
-
-      const verifyRefreshToken = await jwt.verify(refreshToken, env.jwt);
-
-      if (typeof verifyRefreshToken === 'string') {
-        return res.status(verfiyError.statusCode).send({ msg: verfiyError.message, category: verfiyError.category });
-      }
-
-      const updateResult = await kakao_token_update({
-        grant_type: 'refresh_token',
-        client_id: env.kakao.key,
-        refresh_token: verifyRefreshToken.refresh_token,
-      });
-
-      const { access_token, expires_in, refresh_token, refresh_token_expires_in } = updateResult.data;
-
-      const signedAccessToken = await jwt.sign({ access_token, type: 'kakao' }, env.jwt, {
-        expiresIn: expires_in,
-      });
-
-      res.cookie(token.LOGIN, signedAccessToken, { maxAge: expires_in * 1000, httpOnly: true });
-
-      if (refresh_token !== undefined && refresh_token_expires_in !== undefined) {
-        const signedRefreshToken = await jwt.sign({ refresh_token, type: 'kakao' }, env.jwt, {
-          expiresIn: refresh_token_expires_in,
-        });
-        res.cookie(token.RefreshKakao, signedRefreshToken, { maxAge: refresh_token_expires_in, httpOnly: true });
-      }
-      const verifyAccessToken = await jwt.verify(access_token, env.jwt);
-      if (typeof verifyAccessToken === 'string') {
-        return res.status(verfiyError.statusCode).send({ msg: verfiyError.message, category: verfiyError.category });
-      }
-      needVerfiyToken = access_token;
-    }
-
-    const verifyAccessToken = await jwt.verify(needVerfiyToken === null ? accessToken : needVerfiyToken, env.jwt);
-
-    if (typeof verifyAccessToken === 'string') {
+    if (status === 'loginFail') {
+      // redirect 메세지로 변경하기
       return res.status(verfiyError.statusCode).send({ msg: verfiyError.message, category: verfiyError.category });
     }
 
-    req.type = verifyAccessToken.type;
-    if (verifyAccessToken.type === 'normal') {
-      req.user = verifyAccessToken.email;
-    } else if (verifyAccessToken.type === 'kakao') {
-      req.user = verifyAccessToken.kakao_id;
-    } else if (verifyAccessToken.type === 'google') {
-      req.user = verifyAccessToken.google_id;
+    if (status === 'getKakaoAccess') {
+      const { accessTokenInfo, refreshToeknInfo } = await getSignedAccessRefreshToken(accessOrRefreshToken);
+
+      res.cookie(token.LOGIN, accessTokenInfo.signedAccessToken, {
+        maxAge: accessTokenInfo.expiresIn * 1000,
+        httpOnly: true,
+      });
+
+      if (refreshToeknInfo !== undefined) {
+        res.cookie(token.RefreshKakao, refreshToeknInfo.signedRefreshToken, {
+          maxAge: refreshToeknInfo.refreshExpiresIn * 1000,
+          httpOnly: true,
+        });
+      }
+
+      needVerifyToken = accessTokenInfo.signedAccessToken;
     }
+    const [type, user] = await setUserInfo(needVerifyToken);
+    req.type = type;
+    req.user = user;
     return next();
   } catch (error) {
-    console.log(error);
     throw new Error('Login MiddleWare Error');
   }
 }
