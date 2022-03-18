@@ -1,4 +1,4 @@
-import { accessRefreshNotFound, cookieNotFound } from '@Constants/Messages';
+import { accessRefreshNotFound } from '@Constants/Messages';
 import token from '@Libs/constants/token';
 import { userType } from '@Libs/constants/types';
 import {
@@ -15,8 +15,8 @@ export async function loginCheckMiddleWare(req: Request, res: Response, next: Ne
 
   if (cookies === undefined) {
     return res
-      .status(cookieNotFound.statusCode)
-      .send({ msg: cookieNotFound.message, category: cookieNotFound.category });
+      .status(accessRefreshNotFound.statusCode)
+      .send({ msg: accessRefreshNotFound.message, category: accessRefreshNotFound.category });
   }
 
   const { accessToken, refreshToken } = getAccessRefreshToken(cookies);
