@@ -47,10 +47,10 @@ export function swtichImageCategory(key: string) {
 
 export function swtichLoginType(uniqueKey: string | number, loginType: 'normal' | 'kakao' | 'google') {
   if (loginType === 'google') {
-    return { google_id: uniqueKey };
+    return { googleId: uniqueKey };
   }
   if (loginType === 'kakao') {
-    return { kakao_id: uniqueKey };
+    return { kakaoId: uniqueKey };
   }
   return { email: uniqueKey };
 }
