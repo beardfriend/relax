@@ -1,4 +1,4 @@
-import { verfiyError } from '@Constants/Messages';
+import { accessRefreshNotFound, cookieNotFound } from '@Constants/Messages';
 import token from '@Libs/constants/token';
 import { userType } from '@Libs/constants/types';
 import {
@@ -14,10 +14,12 @@ export async function loginCheckMiddleWare(req: Request, res: Response, next: Ne
   const cookies = req.headers.cookie;
 
   if (cookies === undefined) {
-    return res.status(verfiyError.statusCode).send({ msg: verfiyError.message, category: verfiyError.category });
+    return res
+      .status(cookieNotFound.statusCode)
+      .send({ msg: cookieNotFound.message, category: cookieNotFound.category });
   }
 
-  const { accessToken, refreshToken } = await getAccessRefreshToken(cookies);
+  const { accessToken, refreshToken } = getAccessRefreshToken(cookies);
 
   const [status, accessOrRefreshToken] = isLoginStatusFunc({ accessToken, refreshToken });
 
@@ -25,8 +27,9 @@ export async function loginCheckMiddleWare(req: Request, res: Response, next: Ne
 
   try {
     if (status === 'loginFail') {
-      // redirect 메세지로 변경하기
-      return res.status(verfiyError.statusCode).send({ msg: verfiyError.message, category: verfiyError.category });
+      return res
+        .status(accessRefreshNotFound.statusCode)
+        .send({ msg: accessRefreshNotFound.message, category: accessRefreshNotFound.category });
     }
 
     if (status === 'getKakaoAccess') {
