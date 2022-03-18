@@ -1,16 +1,14 @@
-import { profileData, academyProfileType } from '@Libs/interface/academy';
+import { academyProfileType, profileData } from '@Libs/interface/academy';
 import { addressType } from '@Libs/interface/address';
 import { image } from '@Libs/interface/image';
-import { switchLoginType2, switchYogaType, switchYogaTypeReverse, swtichImageCategory } from '@Libs/utils/switch';
+import { switchLoginType2, swtichImageCategory } from '@Libs/utils/switch';
 import Address from '@SH/Entities/address';
 import Images from '@SH/Entities/image';
 import Academy from '@SH/Entities/user/academy';
 import AcademyProfile from '@SH/Entities/user/academyProfile';
 import User from '@SH/Entities/user/user';
-import Yoga from '@SH/Entities/yoga/yoga';
 import { DeepPartial, getManager, getRepository } from 'typeorm';
 import createImage from '../image';
-import createYoga, { deleteYoga, deleteYogaALL } from '../yoga';
 
 export async function createAndSaveAcademyProfile(stringData: profileData, findedAcademy: DeepPartial<Academy>) {
   const manager = getManager();
@@ -63,65 +61,6 @@ export async function getAcademyProfile(id: number) {
   return res;
 }
 
-export async function createYogaList(yoga: string[] | undefined | string, key?: DeepPartial<AcademyProfile>) {
-  if (yoga === undefined) {
-    return undefined;
-  }
-  let newYogaList = yoga;
-  if (typeof newYogaList === 'string') {
-    newYogaList = [newYogaList];
-  }
-
-  // const yogaList: DeepPartial<Yoga>[] = [];
-  const yogaList = await Promise.all(
-    newYogaList.map((data) => {
-      return createYoga(switchYogaType(data), key);
-    })
-  );
-  return yogaList;
-}
-
-export async function updateYogaList(
-  newYogaList: string[] | string | undefined,
-  beforeYogaList: DeepPartial<Yoga>[],
-  academyProfile: DeepPartial<AcademyProfile>
-) {
-  // 중복이 없으면, 전체 삭제 후 새로운 리스트 업데이트
-  // 중복이 있으면, 중복된 것 남기고 나머지 지우고 새로운 것들 업데이트
-  // 빈 값이면, 전체 삭제
-  let yogaList = newYogaList;
-  if (typeof yogaList === 'string') {
-    yogaList = [yogaList];
-  }
-  if (yogaList === undefined) {
-    await deleteYogaALL(academyProfile);
-    return;
-  }
-
-  const beforeList: string[] = [];
-
-  const Deletelist = beforeYogaList.filter((yoga) => {
-    if (yoga.name === undefined || yogaList === undefined) {
-      return undefined;
-    }
-    const yoganame = switchYogaTypeReverse(yoga.name) as string;
-    beforeList.push(yoganame);
-    return !yogaList.includes(yoganame);
-  });
-
-  const updateList = yogaList.filter((data) => {
-    return !beforeList.includes(data);
-  });
-
-  Deletelist.map(async (data) => {
-    if (data.id === undefined) {
-      return;
-    }
-    await deleteYoga(data.id);
-  });
-  await createYogaList(updateList, academyProfile);
-}
-
 export async function updateAddress(id: number, address: addressType) {
   if (address === undefined) {
     return;
@@ -153,21 +92,6 @@ export async function updateProfile(
   academyProfile.introduceImage = join?.introduceImage;
 
   await manager.save(academyProfile);
-}
-
-export async function updateAddress2(address: addressType, findedAddress: DeepPartial<Address>) {
-  const { x, y, region1Depth, region2Depth, region3Depth, roadName, mainBuildingNo, subBuildingNo } = address;
-  const manager = getManager();
-  const findaddress = findedAddress;
-  findaddress.x = x;
-  findaddress.y = y;
-  findaddress.region1Depth = region1Depth;
-  findaddress.region2Depth = region2Depth;
-  findaddress.region3Depth = region3Depth;
-  findaddress.roadName = roadName;
-  findaddress.mainBuildingNo = mainBuildingNo;
-  findaddress.subBuildingNo = subBuildingNo;
-  await manager.save(findaddress);
 }
 
 export async function updateLogo(id: number, data: image.data) {
@@ -301,6 +225,8 @@ export async function updateLogoIntroudceImage2(
     await createUpdateLogo();
   }
 }
+
+export async function generateAcademyProfile() {}
 
 /** Logic */
 export async function test() {

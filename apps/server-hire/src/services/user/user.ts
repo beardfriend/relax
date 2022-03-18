@@ -1,4 +1,5 @@
 import { signUpType } from '@Libs/constants/types';
+import { userInfo } from '@Libs/interface/user';
 import { swtichLoginType } from '@Libs/utils/switch';
 import User from '@SH/Entities/user/user';
 import { getManager, getRepository } from 'typeorm';
@@ -56,4 +57,9 @@ export async function createNormalUser(email: string, password: string) {
   });
 
   await manager.save(user);
+}
+
+export async function updateUserInfo(id: number, data: userInfo) {
+  const userRepo = getRepository(User);
+  await userRepo.update({ id }, { ...data });
 }

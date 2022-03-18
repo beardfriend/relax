@@ -12,6 +12,11 @@ export const signupSuccess: response = {
   message: '회원가입에 성공하였습니다.',
 };
 
+export const getMeSuccess: response = {
+  statusCode: 200,
+  category: 'user',
+  message: '회원 정보 요청에 성공하였습니다.',
+};
 export const noUser: response = {
   statusCode: 400,
   category: 'user',
