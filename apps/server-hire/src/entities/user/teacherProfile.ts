@@ -9,9 +9,14 @@ class TeacherProfile extends UpdateColumn {
   @PrimaryColumn()
   id: number;
 
-  @OneToOne(() => Teacher)
-  @JoinColumn()
-  user: Teacher;
+  @Column()
+  name: string;
+
+  @Column({ nullable: true })
+  introduce: string;
+
+  @Column()
+  instagram: string;
 
   @OneToOne(() => Images)
   profileImage: Images;
@@ -19,8 +24,9 @@ class TeacherProfile extends UpdateColumn {
   @OneToMany(() => Yoga, (yoga) => yoga.teacher)
   yoga: Yoga[];
 
-  @Column({ nullable: true })
-  introduce: string;
+  @OneToOne(() => Teacher)
+  @JoinColumn()
+  user: Teacher;
 }
 
 export default TeacherProfile;

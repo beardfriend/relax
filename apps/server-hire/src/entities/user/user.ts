@@ -8,13 +8,13 @@ import Teacher from './teacher';
 @Entity()
 class User extends UserDto implements Primary {
   @Column({ nullable: true })
+  email: string;
+
+  @Column({ nullable: true })
   kakaoId: number;
 
   @Column({ nullable: true })
   googleId: string;
-
-  @Column({ nullable: true })
-  email: string;
 
   @Column({ nullable: true })
   password: string;

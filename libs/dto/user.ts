@@ -11,7 +11,7 @@ export class UserDto extends Primary {
   @Expose({ groups: ['me'] })
   googleId: string;
 
-  @Expose({ groups: ['signup', 'login'] })
+  @Expose({ groups: ['signup', 'login', 'me'] })
   @IsNotEmpty()
   email: string;
 

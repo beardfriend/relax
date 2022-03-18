@@ -1,12 +1,15 @@
 import { UpdateColumn } from '@Libs/entites/abstract';
 import Resume from '@SH/Entities/resume/resume';
-import { Entity, JoinColumn, OneToMany, OneToOne } from 'typeorm';
+import { Entity, JoinColumn, OneToMany, OneToOne, PrimaryColumn } from 'typeorm';
 import TeacherProfile from './teacherProfile';
 import User from './user';
 
 @Entity()
 class Teacher extends UpdateColumn {
-  @OneToOne(() => User, { primary: true, nullable: false, cascade: true })
+  @PrimaryColumn()
+  id: number;
+
+  @OneToOne(() => User, { primary: true })
   @JoinColumn({ name: 'id' })
   user: User;
 

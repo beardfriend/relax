@@ -16,5 +16,8 @@ export interface updateUserData {
   academy?: DeepPartial<Academy>;
   teacher?: DeepPartial<Teacher>;
   password?: string;
-  phone_number?: string;
+}
+
+export interface userInfo {
+  phoneNumber: string;
 }
