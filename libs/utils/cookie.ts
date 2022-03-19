@@ -1,5 +1,6 @@
 export function splitCookie(cookie: string) {
   const cooked = [];
+
   if (cookie.includes(';')) {
     const splitedCookie = cookie.split('; ');
     for (let i = 0; i < splitedCookie.length; i += 1) {
@@ -19,5 +20,5 @@ export function findCookieValue(array: { [key: string]: string }[], keyname: str
   if (findCookie === undefined) {
     return undefined;
   }
-  return findCookie[keyname];
+  return findCookie[keyname] as string;
 }

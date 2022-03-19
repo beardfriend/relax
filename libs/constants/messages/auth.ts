@@ -1,9 +1,9 @@
 import { response } from '@Libs/interface/response';
 
-export const accessRefreshNotFound: response = {
+export const redirectLoginPage: response = {
   statusCode: 302,
   category: 'auth',
-  message: 'accessToken, RefreshToken이 존재하지 않습니다. 로그인 페이지로 이동해주세요.',
+  message: '토큰이 존재하지 않습니다. 로그인 페이지로 이동해주세요.',
 };
 
 export const requestTokenNotfound: response = {

@@ -22,6 +22,7 @@ export async function getCode(req: Request, res: Response) {
     const url = await getKakaoRedirectUrl();
     return res.redirect(url);
   }
+
   const { accessTokenInfo, refreshToeknInfo } = await getSignedAccessRefreshToken(refreshToken);
 
   res.cookie(token.LOGIN, accessTokenInfo.signedAccessToken, {

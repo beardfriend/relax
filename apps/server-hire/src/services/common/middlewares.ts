@@ -4,6 +4,7 @@ import env from '@SH/env';
 import { findCookieValue, splitCookie } from '@Libs/utils/cookie';
 import { verfiyError } from '@Libs/constants/messages';
 import { kakao_getUserData, kakao_token_update } from '@Libs/api/kakao';
+import CreateError from 'http-errors';
 
 export function getAccessRefreshToken(cookies: string) {
   const splitedCookies = splitCookie(cookies);
@@ -13,35 +14,39 @@ export function getAccessRefreshToken(cookies: string) {
 }
 
 export async function getSignedAccessRefreshToken(refreshToken: string) {
-  const verifyRefreshToken = await jwt.verify(refreshToken, env.jwt);
+  try {
+    const verifyRefreshToken = await jwt.verify(refreshToken, env.jwt);
 
-  if (typeof verifyRefreshToken === 'string') {
-    throw new Error(verfiyError.message);
-  }
+    if (typeof verifyRefreshToken === 'string') {
+      throw new Error(verfiyError.message);
+    }
 
-  const updatedResult = await kakao_token_update({
-    grant_type: 'refresh_token',
-    client_id: env.kakao.key,
-    refresh_token: verifyRefreshToken.refresh_token,
-  });
-
-  // eslint-disable-next-line @typescript-eslint/naming-convention
-  const { access_token, expires_in, refresh_token, refresh_token_expires_in } = updatedResult.data;
-
-  const signedAccessToken = await jwt.sign({ access_token, type: 'kakao' }, env.jwt, {
-    expiresIn: expires_in,
-  });
-
-  if (refresh_token !== undefined && refresh_token_expires_in !== undefined) {
-    const signedRefreshToken = await jwt.sign({ refresh_token, type: 'kakao' }, env.jwt, {
-      expiresIn: refresh_token_expires_in,
+    const updatedResult = await kakao_token_update({
+      grant_type: 'refresh_token',
+      client_id: env.kakao.key,
+      refresh_token: verifyRefreshToken.refresh_token,
     });
-    return {
-      accessTokenInfo: { signedAccessToken, expiresIn: expires_in },
-      refreshToeknInfo: { signedRefreshToken, refreshExpiresIn: refresh_token_expires_in },
-    };
+
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    const { access_token, expires_in, refresh_token, refresh_token_expires_in } = updatedResult.data;
+
+    const signedAccessToken = await jwt.sign({ access_token, type: 'kakao' }, env.jwt, {
+      expiresIn: expires_in,
+    });
+
+    if (refresh_token !== undefined && refresh_token_expires_in !== undefined) {
+      const signedRefreshToken = await jwt.sign({ refresh_token, type: 'kakao' }, env.jwt, {
+        expiresIn: refresh_token_expires_in,
+      });
+      return {
+        accessTokenInfo: { signedAccessToken, expiresIn: expires_in },
+        refreshToeknInfo: { signedRefreshToken, refreshExpiresIn: refresh_token_expires_in },
+      };
+    }
+    return { accessTokenInfo: { signedAccessToken, expiresIn: expires_in } };
+  } catch (error) {
+    throw CreateError(401, 'plese');
   }
-  return { accessTokenInfo: { signedAccessToken, expiresIn: expires_in } };
 }
 
 export async function setUserInfoKakao(accessToken: string) {
@@ -74,29 +79,22 @@ export async function setUserInfo(accessToken: string) {
   return [loginType, user];
 }
 
-interface Itoken {
-  accessToken: string | undefined;
-  refreshToken: string | undefined;
-}
+export function loginStatusFunc(
+  cookies: string | undefined
+): ['loginFail' | 'getKakaoAccess' | 'loginSuccess', undefined | string] {
+  if (cookies === undefined) {
+    return ['loginFail', undefined];
+  }
+  const { accessToken, refreshToken } = getAccessRefreshToken(cookies);
 
-export function isLoginStatusFunc(accessRefreshToken: Itoken) {
-  const { accessToken, refreshToken } = accessRefreshToken;
-  let status: string;
-
+  if (accessToken === undefined && refreshToken !== undefined) {
+    return ['getKakaoAccess', refreshToken];
+  }
   if (
     (refreshToken !== undefined && accessToken !== undefined) ||
     (refreshToken === undefined && accessToken !== undefined)
   ) {
-    status = 'loginSuccess';
-    return [status, accessToken];
+    return ['loginSuccess', accessToken];
   }
-  if (refreshToken === undefined && accessToken === undefined) {
-    status = 'loginFail';
-    return [status];
-  }
-  if (refreshToken !== undefined && accessToken === undefined) {
-    status = 'getKakaoAccess';
-    return [status, refreshToken];
-  }
-  return [];
+  throw new Error('error');
 }

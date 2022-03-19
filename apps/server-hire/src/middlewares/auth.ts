@@ -1,61 +1,52 @@
-import { accessRefreshNotFound } from '@Constants/Messages';
+import { redirectLoginPage } from '@Libs/constants/messages';
 import token from '@Libs/constants/token';
 import { userType } from '@Libs/constants/types';
-import {
-  getAccessRefreshToken,
-  getSignedAccessRefreshToken,
-  isLoginStatusFunc,
-  setUserInfo,
-} from '@SH/Services/common/middlewares';
+import { getSignedAccessRefreshToken, loginStatusFunc, setUserInfo } from '@SH/Services/common/middlewares';
 import { findUser } from '@SH/Services/user/user';
 import { NextFunction, Request, Response } from 'express';
 
 export async function loginCheckMiddleWare(req: Request, res: Response, next: NextFunction) {
-  const cookies = req.headers.cookie;
-
-  if (cookies === undefined) {
-    return res
-      .status(accessRefreshNotFound.statusCode)
-      .send({ msg: accessRefreshNotFound.message, category: accessRefreshNotFound.category });
-  }
-
-  const { accessToken, refreshToken } = getAccessRefreshToken(cookies);
-
-  const [status, accessOrRefreshToken] = isLoginStatusFunc({ accessToken, refreshToken });
-
-  let needVerifyToken = accessOrRefreshToken;
-
-  try {
-    if (status === 'loginFail') {
-      return res
-        .status(accessRefreshNotFound.statusCode)
-        .send({ msg: accessRefreshNotFound.message, category: accessRefreshNotFound.category });
-    }
-
-    if (status === 'getKakaoAccess') {
-      const { accessTokenInfo, refreshToeknInfo } = await getSignedAccessRefreshToken(accessOrRefreshToken);
-
-      res.cookie(token.LOGIN, accessTokenInfo.signedAccessToken, {
-        maxAge: accessTokenInfo.expiresIn * 1000,
-        httpOnly: true,
-      });
-
-      if (refreshToeknInfo !== undefined) {
-        res.cookie(token.RefreshKakao, refreshToeknInfo.signedRefreshToken, {
-          maxAge: refreshToeknInfo.refreshExpiresIn * 1000,
-          httpOnly: true,
-        });
-      }
-
-      needVerifyToken = accessTokenInfo.signedAccessToken;
-    }
-    const [type, user] = await setUserInfo(needVerifyToken);
+  async function setReqeustUserInfo(accessToken: string) {
+    const [type, user] = await setUserInfo(accessToken);
     req.type = type;
     req.user = user;
-    return next();
-  } catch (error) {
-    throw new Error('Login MiddleWare Error');
   }
+
+  const cookies = req.headers.cookie;
+
+  const [status, refreshAccessToken] = loginStatusFunc(cookies);
+
+  if (status === 'loginFail' || refreshAccessToken === undefined) {
+    return res
+      .status(redirectLoginPage.statusCode)
+      .send({ msg: redirectLoginPage.message, category: redirectLoginPage.category });
+  }
+
+  if (status === 'getKakaoAccess') {
+    const refreshToken = refreshAccessToken;
+    const { accessTokenInfo, refreshToeknInfo } = await getSignedAccessRefreshToken(refreshToken);
+
+    res.cookie(token.LOGIN, accessTokenInfo.signedAccessToken, {
+      maxAge: accessTokenInfo.expiresIn * 1000,
+      httpOnly: true,
+    });
+
+    if (refreshToeknInfo !== undefined) {
+      res.cookie(token.RefreshKakao, refreshToeknInfo.signedRefreshToken, {
+        maxAge: refreshToeknInfo.refreshExpiresIn * 1000,
+        httpOnly: true,
+      });
+    }
+
+    await setReqeustUserInfo(accessTokenInfo.signedAccessToken);
+  }
+
+  if (status === 'loginSuccess') {
+    const accessToken = refreshAccessToken;
+    await setReqeustUserInfo(accessToken);
+  }
+
+  return next();
 }
 
 export async function onlyTeacherAccess(req: Request, res: Response, next: NextFunction) {

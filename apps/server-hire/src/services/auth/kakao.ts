@@ -75,10 +75,11 @@ export async function getSignedAccessRefreshTokenKaKao(
 ) {
   const { accessToken, expiresIn } = accessTokenInfo;
   const { refreshToken, refreshExpiresIn } = refreshTokenInfo;
+
   const signedAccessToken = await jwt.sign({ accessToken, type: 'kakao', kakao_id: userId }, env.jwt, {
     expiresIn,
   });
-
   const signedRefreshToken = await jwt.sign({ refreshToken, type: 'kakao' }, env.jwt, { expiresIn: refreshExpiresIn });
+
   return { signedAccessToken, signedRefreshToken };
 }
