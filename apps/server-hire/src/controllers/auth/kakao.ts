@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/naming-convention */
+import { kakaoCodeNotFound } from '@Libs/constants/messages';
 import token from '@Libs/constants/token';
 import env from '@SH/env';
 import {
@@ -41,6 +42,12 @@ export async function getCode(req: Request, res: Response) {
 }
 
 export async function getToken(req: Request, res: Response) {
+  if (req.query.code === undefined) {
+    return res
+      .status(kakaoCodeNotFound.statusCode)
+      .send({ msg: kakaoCodeNotFound.message, category: kakaoCodeNotFound.category });
+  }
+
   const { accessTokenInfo, refreshTokenInfo } = await getkakaoTokenData(req.query.code as string);
 
   const userId = await getKakaoUserId(accessTokenInfo.accessToken);

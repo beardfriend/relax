@@ -1,39 +1,23 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import { serverError, alreadyAccessToken, googleCodeNotFound } from '@Libs/constants/messages';
-import { google_getToken, goolge_authcode } from '@Libs/api/google';
-import jwt, { GoogleUserDataPayload } from 'jsonwebtoken';
-import { Response, Request } from 'express';
-import env from '@SH/env';
-import { findGoogleUser, createGoogleUser } from '@SH/Services/user/user';
-import { normalExpireIn, normalMaxAge } from '@Libs/constants/constant';
+import { normalMaxAge } from '@Libs/constants/constant';
+import { alreadyAccessToken, googleCodeNotFound, serverError } from '@Libs/constants/messages';
 import token from '@Libs/constants/token';
-import { findCookieValue, splitCookie } from '@Libs/utils/cookie';
-
-async function googleAuthUrl() {
-  const result = await goolge_authcode({
-    client_id: env.google.key,
-    redirect_uri: env.google.redirect_uri,
-    response_type: 'code',
-    scope: ' openid profile email https://www.googleapis.com/auth/drive.file',
-    access_type: 'offline',
-  });
-  return result.request.res.responseUrl;
-}
+import env from '@SH/env';
+import { getGoogleAuthURL, getGoogleUserData, signGoogleToken } from '@SH/Services/auth/google';
+import { checkAccessToken } from '@SH/Services/common/token';
+import { createGoogleUser, findGoogleUser } from '@SH/Services/user/user';
+import { Request, Response } from 'express';
 
 export async function googleGetCode(req: Request, res: Response) {
   const cookies = req.headers.cookie;
   try {
-    if (cookies === undefined) {
-      const url = await googleAuthUrl();
-      return res.redirect(url);
-    }
-    const splitedCookies = splitCookie(cookies);
-    const accessToken = findCookieValue(splitedCookies, token.LOGIN);
+    const accessToken = checkAccessToken(cookies);
 
-    if (accessToken === undefined) {
-      const url = await googleAuthUrl();
+    if (!accessToken) {
+      const url = await getGoogleAuthURL();
       return res.redirect(url);
     }
+
     return res
       .status(alreadyAccessToken.statusCode)
       .send({ msg: alreadyAccessToken.message, category: alreadyAccessToken.category });
@@ -48,28 +32,17 @@ export async function googleGetToken(req: Request, res: Response) {
       .status(googleCodeNotFound.statusCode)
       .send({ msg: googleCodeNotFound.message, category: googleCodeNotFound.category });
   }
+
   try {
-    const result = await google_getToken({
-      client_id: env.google.key,
-      client_secret: env.google.password,
-      redirect_uri: env.google.redirect_uri,
-      code: req.query.code as string,
-      grant_type: 'authorization_code',
-    });
+    const { sub, email } = await getGoogleUserData(req.query.code as string);
 
-    const { id_token } = result.data;
-
-    const userData = await (<GoogleUserDataPayload>jwt.decode(id_token));
-    const { sub, email } = userData;
     const isAlreadyGoogleUser = await findGoogleUser(sub);
 
-    if (isAlreadyGoogleUser === undefined) {
+    if (!isAlreadyGoogleUser) {
       await createGoogleUser(sub, email);
     }
 
-    const signedGoogleID = await jwt.sign({ google_id: sub, type: 'google' }, env.jwt, {
-      expiresIn: normalExpireIn,
-    });
+    const signedGoogleID = await signGoogleToken(sub);
 
     res.cookie(token.LOGIN, signedGoogleID, { maxAge: normalMaxAge, httpOnly: true });
 

@@ -6,20 +6,24 @@ import jwt from 'jsonwebtoken';
 import { findUser, createNormalUser } from '@SH/Services/user/user';
 import bcrypt from 'bcrypt';
 import { Request, Response } from 'express';
-import { normalUser } from '@Libs/interface/user';
+import { InormalUser } from '@Libs/interface/user';
 
 async function signUp(req: Request, res: Response) {
-  const { email, password }: normalUser = req.body;
-  const searchEmail = await findUser(email, 'normal');
-  if (searchEmail !== undefined) {
+  const { email, password }: InormalUser = req.body;
+
+  const user = await findUser(email, 'normal');
+
+  if (user !== undefined) {
     return res.status(existEmail.statusCode).json({ msg: existEmail.message, category: existEmail.category });
   }
 
   const hashedPassword = await bcrypt.hash(password, 10);
+
   await createNormalUser(email, hashedPassword);
 
   const signedEmail = await jwt.sign({ email, type: 'normal' }, env.jwt, { expiresIn: normalExpireIn });
   res.cookie(token.LOGIN, signedEmail, { maxAge: normalMaxAge, httpOnly: true });
+
   return res.status(signupSuccess.statusCode).json({ msg: signupSuccess.message, category: signupSuccess.category });
 }
 

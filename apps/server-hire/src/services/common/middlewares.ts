@@ -86,7 +86,9 @@ export function loginStatusFunc(
     return ['loginFail', undefined];
   }
   const { accessToken, refreshToken } = getAccessRefreshToken(cookies);
-
+  if (accessToken === undefined) {
+    return ['loginFail', undefined];
+  }
   if (accessToken === undefined && refreshToken !== undefined) {
     return ['getKakaoAccess', refreshToken];
   }

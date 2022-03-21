@@ -1,4 +1,4 @@
-import { redirectLoginPage } from '@Libs/constants/messages';
+import { redirectLoginPage, serverError } from '@Libs/constants/messages';
 import token from '@Libs/constants/token';
 import { userType } from '@Libs/constants/types';
 import { getSignedAccessRefreshToken, loginStatusFunc, setUserInfo } from '@SH/Services/common/middlewares';
@@ -13,40 +13,43 @@ export async function loginCheckMiddleWare(req: Request, res: Response, next: Ne
   }
 
   const cookies = req.headers.cookie;
-
   const [status, refreshAccessToken] = loginStatusFunc(cookies);
 
-  if (status === 'loginFail' || refreshAccessToken === undefined) {
-    return res
-      .status(redirectLoginPage.statusCode)
-      .send({ msg: redirectLoginPage.message, category: redirectLoginPage.category });
-  }
-
-  if (status === 'getKakaoAccess') {
-    const refreshToken = refreshAccessToken;
-    const { accessTokenInfo, refreshToeknInfo } = await getSignedAccessRefreshToken(refreshToken);
-
-    res.cookie(token.LOGIN, accessTokenInfo.signedAccessToken, {
-      maxAge: accessTokenInfo.expiresIn * 1000,
-      httpOnly: true,
-    });
-
-    if (refreshToeknInfo !== undefined) {
-      res.cookie(token.RefreshKakao, refreshToeknInfo.signedRefreshToken, {
-        maxAge: refreshToeknInfo.refreshExpiresIn * 1000,
-        httpOnly: true,
-      });
+  try {
+    if (status === 'loginFail' || refreshAccessToken === undefined) {
+      return res
+        .status(redirectLoginPage.statusCode)
+        .send({ msg: redirectLoginPage.message, category: redirectLoginPage.category });
     }
 
-    await setReqeustUserInfo(accessTokenInfo.signedAccessToken);
-  }
+    if (status === 'getKakaoAccess') {
+      const refreshToken = refreshAccessToken;
+      const { accessTokenInfo, refreshToeknInfo } = await getSignedAccessRefreshToken(refreshToken);
 
-  if (status === 'loginSuccess') {
-    const accessToken = refreshAccessToken;
-    await setReqeustUserInfo(accessToken);
-  }
+      res.cookie(token.LOGIN, accessTokenInfo.signedAccessToken, {
+        maxAge: accessTokenInfo.expiresIn * 1000,
+        httpOnly: true,
+      });
 
-  return next();
+      if (refreshToeknInfo !== undefined) {
+        res.cookie(token.RefreshKakao, refreshToeknInfo.signedRefreshToken, {
+          maxAge: refreshToeknInfo.refreshExpiresIn * 1000,
+          httpOnly: true,
+        });
+      }
+
+      await setReqeustUserInfo(accessTokenInfo.signedAccessToken);
+    }
+
+    if (status === 'loginSuccess') {
+      const accessToken = refreshAccessToken;
+      await setReqeustUserInfo(accessToken);
+    }
+
+    return next();
+  } catch (error) {
+    return res.status(serverError.statusCode).send({ msg: serverError.message, category: serverError.category });
+  }
 }
 
 export async function onlyTeacherAccess(req: Request, res: Response, next: NextFunction) {
