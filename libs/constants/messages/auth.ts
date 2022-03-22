@@ -30,6 +30,12 @@ export const googleCodeNotFound: response = {
   message: '토큰발급을 위한 구글코드가 넘어오지 않았습니다.',
 };
 
+export const kakaoCodeNotFound: response = {
+  statusCode: 400,
+  category: 'auth',
+  message: '토큰발급을 위한 카카오 코드가 넘어오지 않았습니다.',
+};
+
 export const cookieNotFound: response = {
   statusCode: 400,
   category: 'auth',
