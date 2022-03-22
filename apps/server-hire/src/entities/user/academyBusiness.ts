@@ -5,7 +5,7 @@ import Academy from './academy';
 @Entity()
 class AcademyBusiness extends AcadmeyBusinessDto {
   @Column()
-  businessNumber: number;
+  businessNumber: string;
 
   @Column()
   representationName: string;

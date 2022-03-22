@@ -1,10 +1,10 @@
-export interface addressType {
-  x: number;
-  y: number;
-  region1Depth: string;
-  region2Depth: string;
-  region3Depth: string;
-  roadName: string;
-  mainBuildingNo: string;
-  subBuildingNo: string;
+export interface Iaddress {
+  readonly x: number;
+  readonly y: number;
+  readonly region1Depth: string;
+  readonly region2Depth: string;
+  readonly region3Depth: string;
+  readonly roadName: string;
+  readonly mainBuildingNo: string;
+  readonly subBuildingNo: string;
 }

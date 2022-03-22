@@ -1,8 +1,8 @@
-import { addressType } from '@Libs/interface/address';
+import { Iaddress } from '@Libs/interface/address';
 import Address from '@SH/Entities/address';
 import { getManager } from 'typeorm';
 
-export default async function createAddress(address: addressType) {
+export default async function createAddress(address: Iaddress) {
   if (address === undefined) {
     return undefined;
   }

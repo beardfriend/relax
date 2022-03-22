@@ -21,7 +21,7 @@ export class AcademyProfileDto extends UpdateColumn {
 export class AcadmeyBusinessDto extends Primary {
   @Expose()
   @IsNotEmpty()
-  businessNumber: number;
+  businessNumber: string;
 
   @Expose()
   @IsNotEmpty()

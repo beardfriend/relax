@@ -2,7 +2,7 @@ import Academy from '@SH/Entities/user/academy';
 import Teacher from '@SH/Entities/user/teacher';
 import { DeepPartial } from 'typeorm';
 
-export interface normalUser {
+export interface InormalUser {
   email: string;
   password: string;
 }
@@ -20,4 +20,9 @@ export interface updateUserData {
 
 export interface userInfo {
   phoneNumber: string;
+}
+
+export interface IloginData {
+  loginType: 'normal' | 'kakao' | 'google';
+  uniqueKey: string | number;
 }
