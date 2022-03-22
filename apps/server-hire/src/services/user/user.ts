@@ -25,6 +25,9 @@ export async function findKakaoUser(kakaoId: number) {
 export async function findGoogleUser(googleId: string) {
   const userRepo = getRepository(User);
   const res = await userRepo.findOne({ where: { googleId, signupType: signUpType.GOOGLE } });
+  if (res === undefined) {
+    return false;
+  }
   return res;
 }
 
