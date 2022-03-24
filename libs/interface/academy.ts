@@ -25,6 +25,7 @@ export interface IacademyProfileRequest extends Iaddress {
   yoga?: string[] | string | undefined;
   ACADEMY_LOGO: Express.Multer.File[];
   ACADEMY_INTRODUCE: Express.Multer.File[];
+  isDeleteLogo?: string;
 }
 
 export interface Iimages {

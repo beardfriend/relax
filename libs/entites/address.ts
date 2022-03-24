@@ -3,12 +3,6 @@ import { Column } from 'typeorm';
 import { Primary } from './abstract';
 
 abstract class AddressBasic extends AddressDto implements Primary {
-  @Column({ type: 'float' })
-  x: number;
-
-  @Column({ type: 'float' })
-  y: number;
-
   @Column()
   region1Depth: string;
 

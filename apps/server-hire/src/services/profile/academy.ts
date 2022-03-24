@@ -55,12 +55,12 @@ export async function findAcademyProfile(uniqueKey: string | number, loginType: 
  *************** */
 
 export async function createAndSaveAcademyProfile(
-  stringData: academyProfileType.data & academyProfileType.join,
+  data: academyProfileType.data & academyProfileType.join,
   findedAcademy: DeepPartial<Academy>
 ): Promise<AcademyProfile> {
   const manager = getManager();
   const academyProfile = manager.create(AcademyProfile, {
-    ...stringData,
+    ...data,
     user: findedAcademy,
   });
   try {
@@ -68,7 +68,7 @@ export async function createAndSaveAcademyProfile(
     return academyProfile;
   } catch (error) {
     console.log(error);
-    throw new Error('hello');
+    throw new Error('database error');
   }
 }
 
@@ -114,6 +114,7 @@ async function createIntroduce(
 export async function updateProfile(profile: DeepPartial<AcademyProfile>, data: academyProfileType.data) {
   const profileRepo = getRepository(AcademyProfile);
   const newData = dataCompareFunc(profile, data);
+
   if (!newData) {
     return;
   }
@@ -121,15 +122,18 @@ export async function updateProfile(profile: DeepPartial<AcademyProfile>, data: 
 }
 
 export async function updateAddress(profile: DeepPartial<AcademyProfile>, data: Iaddress) {
+  if (profile.address === undefined) {
+    return;
+  }
   const addressRepo = getRepository(Address);
-  const newData = dataCompareFunc(profile, data);
+  const newData = dataCompareFunc(profile.address, data);
   if (!newData) {
     return;
   }
   await addressRepo.update({ id: profile.address?.id }, newData);
 }
 
-export async function updateLogo(id: number, data: image.data) {
+export async function updateLogo(id: number | undefined, data: image.data) {
   const manager = getManager();
   await manager.update(Images, { id }, { ...data });
 }
@@ -194,14 +198,15 @@ export async function updateLogoLogic(
   ACADEMY_LOGO: Express.Multer.File[],
   academyProfile: DeepPartial<AcademyProfile>
 ) {
+  if (ACADEMY_LOGO.length === 0) {
+    return;
+  }
+
   if (academyProfile.logo === null) {
     const createdLogo = await createLogo(ACADEMY_LOGO);
     await updateProfileLogoId(academyProfile?.id, createdLogo);
   } else {
-    if (academyProfile.logo === undefined || academyProfile.logo.id === undefined) {
-      return;
-    }
-    await updateLogo(academyProfile.logo.id, {
+    await updateLogo(academyProfile.logo?.id, {
       category: swtichImageCategory(ACADEMY_LOGO[0].fieldname),
       fileType: ACADEMY_LOGO[0].mimetype,
       path: ACADEMY_LOGO[0].path,
@@ -229,6 +234,7 @@ export async function updateIntroduceLogic(
 
 export async function updateLogoIntroudceImage(
   images: { [fieldname: string]: Express.Multer.File[] },
+  isDeleteLogo: string | undefined,
   academyProfile: DeepPartial<AcademyProfile>
 ): Promise<void> {
   const { ACADEMY_LOGO, ACADEMY_INTRODUCE } = images;
@@ -247,8 +253,9 @@ export async function updateLogoIntroudceImage(
     await updateLogoLogic(ACADEMY_LOGO, academyProfile);
   }
   if (isLogo === 'No' && isIntroduce === 'No') {
-    await deleteIntroduceImageByFK(academyProfile);
-    await deleteLogoImage(academyProfile);
+    if (isDeleteLogo === 'true') {
+      await deleteLogoImage(academyProfile);
+    }
   }
 }
 
@@ -257,13 +264,12 @@ export async function updateLogoIntroudceImage(
  *************** */
 
 export async function createAcademyProfile(data: IacademyProfileRequest, loginData: IloginData): Promise<void> {
-  const { uniqueKey, loginType } = loginData;
   const { ACADEMY_INTRODUCE, ACADEMY_LOGO, academyName, representationNumber, introduce, yoga } = data;
-  const { region1Depth, region2Depth, region3Depth, roadName, mainBuildingNo, subBuildingNo, x, y } = data;
-  const address = { region1Depth, region2Depth, region3Depth, roadName, mainBuildingNo, subBuildingNo, x, y };
+  const { region1Depth, region2Depth, region3Depth, roadName, mainBuildingNo, subBuildingNo } = data;
+  const address = { region1Depth, region2Depth, region3Depth, roadName, mainBuildingNo, subBuildingNo };
   const imagesData = { ACADEMY_INTRODUCE, ACADEMY_LOGO };
 
-  const findedAcademy = await findAcademy(uniqueKey, loginType);
+  const findedAcademy = await findAcademy(loginData);
   const { logo, introduceImage } = await createLogoIntroduceImage(imagesData);
   const yogaList = await createYogaList(yoga);
   const createdAddress = await createAddress(address);
@@ -276,15 +282,15 @@ export async function createAcademyProfile(data: IacademyProfileRequest, loginDa
 
 export async function updateAcademyProfile(data: IacademyProfileRequest, loginData: IloginData): Promise<void> {
   const { uniqueKey, loginType } = loginData;
-  const { ACADEMY_INTRODUCE, ACADEMY_LOGO, academyName, representationNumber, introduce, yoga } = data;
-  const { region1Depth, region2Depth, region3Depth, roadName, mainBuildingNo, subBuildingNo, x, y } = data;
-  const address = { region1Depth, region2Depth, region3Depth, roadName, mainBuildingNo, subBuildingNo, x, y };
+  const { ACADEMY_INTRODUCE, ACADEMY_LOGO, academyName, representationNumber, introduce, yoga, isDeleteLogo } = data;
+  const { region1Depth, region2Depth, region3Depth, roadName, mainBuildingNo, subBuildingNo } = data;
+  const address = { region1Depth, region2Depth, region3Depth, roadName, mainBuildingNo, subBuildingNo };
   const imagesData = { ACADEMY_INTRODUCE, ACADEMY_LOGO };
   const findedProfileAllInfo = await findAcademyProfile(uniqueKey, loginType);
 
   const profile = findedProfileAllInfo.academy.academyProfile;
   await updateAddress(profile, address);
   await updateYogaList(yoga, profile.yoga, profile);
-  await updateLogoIntroudceImage(imagesData, profile);
+  await updateLogoIntroudceImage(imagesData, isDeleteLogo, profile);
   await updateProfile(profile, { academyName, representationNumber, introduce });
 }

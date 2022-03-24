@@ -1,5 +1,5 @@
 import { databaseError } from '@Libs/constants/messages';
-import { userKey } from '@Libs/interface/user';
+import { IloginData } from '@Libs/interface/user';
 import { swtichLoginType } from '@Libs/utils/switch';
 import Teacher from '@SH/Entities/user/teacher';
 import User from '@SH/Entities/user/user';
@@ -20,7 +20,8 @@ export async function createTeacher(findedUser: DeepPartial<User>) {
   }
 }
 
-export async function findTeacher(uniqueKey: userKey.uniqueKey, loginType: userKey.loginType) {
+export async function findTeacher(loginData: IloginData) {
+  const { loginType, uniqueKey } = loginData;
   const UserRepo = getRepository(User);
   try {
     const res = await UserRepo.findOne({

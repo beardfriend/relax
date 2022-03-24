@@ -49,14 +49,6 @@ export class AcademyProfilePostDto extends AcademyProfileDto {
 
   @Expose()
   @IsNotEmpty()
-  x: number;
-
-  @Expose()
-  @IsNotEmpty()
-  y: number;
-
-  @Expose()
-  @IsNotEmpty()
   region1Depth: string;
 
   @Expose()

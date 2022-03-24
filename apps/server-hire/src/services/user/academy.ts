@@ -1,8 +1,8 @@
 import { databaseError } from '@Libs/constants/messages';
+import { IloginData } from '@Libs/interface/user';
 import { swtichLoginType } from '@Libs/utils/switch';
 import Academy from '@SH/Entities/user/academy';
 import User from '@SH/Entities/user/user';
-import { userKey } from '@Libs/interface/user';
 import { DeepPartial, getManager, getRepository } from 'typeorm';
 
 export async function createAcademy(findedUser: DeepPartial<User>) {
@@ -21,7 +21,8 @@ export async function createAcademy(findedUser: DeepPartial<User>) {
   }
 }
 
-export async function findAcademy(uniqueKey: userKey.uniqueKey, loginType: userKey.loginType) {
+export async function findAcademy(loginData: IloginData) {
+  const { loginType, uniqueKey } = loginData;
   const UserRepo = getRepository(User);
   try {
     const res = await UserRepo.findOne({

@@ -13,11 +13,17 @@ export function dataCompareFunc<T>(prevData: DeepPartial<T>, newData: { [key: st
   const filteredData = Object.keys(newData)
     .filter((key) => Object.keys(prevData).includes(key))
     .reduce((prev: {} | undefined, current: string) => {
+      console.log(plainObject[current], newData[current]);
       if (plainObject[current] === newData[current]) {
-        return;
+        return {
+          ...prev,
+        };
       }
+
       if (plainObject[current] === null && newData[current] === undefined) {
-        return;
+        return {
+          ...prev,
+        };
       }
       return {
         ...prev,
@@ -25,7 +31,7 @@ export function dataCompareFunc<T>(prevData: DeepPartial<T>, newData: { [key: st
       };
     }, []);
   console.log(filteredData);
-  if (filteredData === undefined) {
+  if (filteredData === {}) {
     return false;
   }
   return filteredData;
