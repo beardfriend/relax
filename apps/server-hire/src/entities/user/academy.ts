@@ -1,4 +1,5 @@
 import { AcademyDto } from '@Libs/dto/academy';
+import { UpdateColumn } from '@Libs/entites/abstract';
 import { Entity, JoinColumn, OneToMany, OneToOne, PrimaryColumn } from 'typeorm';
 import Recruitement from '../recruitment/recruitment';
 import AcademyBusiness from './academyBusiness';
@@ -6,7 +7,7 @@ import AcademyProfile from './academyProfile';
 import User from './user';
 
 @Entity()
-class Academy extends AcademyDto {
+class Academy extends AcademyDto implements UpdateColumn {
   @PrimaryColumn()
   id: number;
 

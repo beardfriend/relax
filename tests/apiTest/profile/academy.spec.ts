@@ -4,7 +4,7 @@ import request from 'supertest';
 import { createConnection, getManager } from 'typeorm';
 import { findAcademyProfile } from '@SH/Services/profile/academy';
 
-describe('회원가입 -> Role 선택 -> 비즈니스 인증 -> 프로필 생성됐는지 체크', () => {
+describe('학원 프로필', () => {
   beforeAll(async () => {
     await createConnection({
       type: 'postgres',

@@ -30,8 +30,8 @@ export default async function academyProfile(req: Request, res: Response) {
     .send({ msg: updateProfileSuccess.message, category: updateProfileSuccess.category });
 }
 
-export async function academyProfileGet(req: Request, res: Response) {
-  const profile = await findAcademyProfile(req.user, req.body);
+export async function getAcademyProfile(req: Request, res: Response) {
+  const profile = await findAcademyProfile(req.user, req.type);
   const datas = classToPlain(profile, { exposeUnsetFields: false });
 
   const address = profile.academy.academyProfile.address.getFullAddress();
