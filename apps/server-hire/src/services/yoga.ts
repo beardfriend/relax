@@ -1,16 +1,17 @@
 import { yogaSortType } from '@Libs/constants/types';
 import { switchYogaType, switchYogaTypeReverse } from '@Libs/utils/switch';
+
 import AcademyProfile from '@SH/Entities/user/academyProfile';
 import TeacherProfile from '@SH/Entities/user/teacherProfile';
 import Yoga from '@SH/Entities/yoga/yoga';
 import { DeepPartial, getManager } from 'typeorm';
 
-async function createYoga(name: yogaSortType, key?: DeepPartial<AcademyProfile>) {
+async function createYoga(name: yogaSortType, key?: DeepPartial<AcademyProfile> | DeepPartial<TeacherProfile>) {
+  const constructorClass = key?.constructor.name;
+
   const manager = getManager();
-  const yoga = manager.create(Yoga, {
-    name,
-    academy: key,
-  });
+  const newData = constructorClass === 'AcademyProfile' ? { name, academy: key } : { name, teacher: key };
+  const yoga = manager.create(Yoga, newData);
   await manager.save(yoga);
   return yoga;
 }
@@ -20,9 +21,14 @@ export async function deleteYoga(id: number) {
   await manager.delete(Yoga, { id });
 }
 
-export async function deleteYogaALL(academyProfile: DeepPartial<AcademyProfile>) {
+export async function deleteYogaALL(profile: DeepPartial<AcademyProfile> | DeepPartial<TeacherProfile>) {
   const manager = getManager();
-  await manager.delete(Yoga, { academy: academyProfile });
+  if (profile.yoga === undefined) {
+    return;
+  }
+  profile.yoga.map(async (data) => {
+    await manager.delete(Yoga, { id: data.id });
+  });
 }
 
 export async function createYogaList(
@@ -58,6 +64,7 @@ export async function updateYogaList(
   if (typeof yogaList === 'string') {
     yogaList = [yogaList];
   }
+
   if (yogaList === undefined) {
     await deleteYogaALL(profile);
     return;

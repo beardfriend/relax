@@ -6,3 +6,5 @@ export const academyMulter = upload.fields([
   { name: 'ACADEMY_LOGO', maxCount: 1 },
   { name: 'ACADEMY_INTRODUCE', maxCount: 5 },
 ]);
+
+export const teacherMulter = upload.array('TEACHER_PROFILE', 1);

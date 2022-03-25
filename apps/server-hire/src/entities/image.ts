@@ -1,5 +1,5 @@
 import Image from '@Libs/entites/image';
-import { Column, Entity, JoinColumn, ManyToOne, OneToOne } from 'typeorm';
+import { Column, Entity, ManyToOne, OneToOne } from 'typeorm';
 import { imageType } from '@Constants/Types';
 import TeacherProfile from '@SH/Entities/user/teacherProfile';
 import AcademyProfile from '@SH/Entities/user/academyProfile';
@@ -11,8 +11,7 @@ class Images extends Image {
   category: imageType;
 
   @OneToOne(() => TeacherProfile, { nullable: true })
-  @JoinColumn()
-  teacherProfile: TeacherProfile;
+  teacherProfileImage: TeacherProfile;
 
   @ManyToOne(() => Resume, (resume) => resume.images, { nullable: true })
   resume: Resume;

@@ -1,10 +1,10 @@
 import express from 'express';
-import academyProfile, { academyProfileGet } from '@SH/Controllers/profile/academyProfile';
+import academyProfile, { getAcademyProfile } from '@SH/Controllers/profile/academyProfile';
 import { loginCheckMiddleWare, onlyAcademyAccess, onlyTeacherAccess } from '@SH/MiddleWares/auth';
-import { academyMulter } from '@SH/MiddleWares/multer';
+import { academyMulter, teacherMulter } from '@SH/MiddleWares/multer';
 import validatorFunc from '@SH/MiddleWares/validator';
 import { AcademyProfilePostDto } from '@Libs/dto/academy';
-import { putTeacherProfile } from '@SH/Controllers/profile/teacherProfile';
+import putTeacherProfile, { getTeacherProfile } from '@SH/Controllers/profile/teacherProfile';
 
 const router = express.Router();
 
@@ -16,7 +16,8 @@ router.put(
   validatorFunc(AcademyProfilePostDto),
   academyProfile
 );
-router.get('/academy', loginCheckMiddleWare, onlyAcademyAccess, academyProfileGet);
+router.get('/academy', loginCheckMiddleWare, onlyAcademyAccess, getAcademyProfile);
 
-router.put('/teacher', loginCheckMiddleWare, onlyTeacherAccess, putTeacherProfile);
+router.put('/teacher', loginCheckMiddleWare, teacherMulter, onlyTeacherAccess, putTeacherProfile);
+router.get('/teacher', loginCheckMiddleWare, onlyTeacherAccess, getTeacherProfile);
 export default router;

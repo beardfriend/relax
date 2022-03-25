@@ -1,3 +1,4 @@
+import { TeacherProfileDto } from '@Libs/dto/teacher';
 import { UpdateColumn } from '@Libs/entites/abstract';
 import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryColumn } from 'typeorm';
 import Images from '../image';
@@ -5,7 +6,7 @@ import Yoga from '../yoga/yoga';
 import Teacher from './teacher';
 
 @Entity()
-class TeacherProfile extends UpdateColumn {
+class TeacherProfile extends TeacherProfileDto implements UpdateColumn {
   @PrimaryColumn()
   id: number;
 
@@ -15,17 +16,18 @@ class TeacherProfile extends UpdateColumn {
   @Column({ nullable: true })
   introduce: string;
 
-  @Column()
+  @Column({ nullable: true })
   instagram: string;
 
   @OneToOne(() => Images)
+  @JoinColumn()
   profileImage: Images;
 
   @OneToMany(() => Yoga, (yoga) => yoga.teacher)
   yoga: Yoga[];
 
-  @OneToOne(() => Teacher)
-  @JoinColumn()
+  @OneToOne(() => Teacher, { cascade: true })
+  @JoinColumn({ name: 'id' })
   user: Teacher;
 }
 
