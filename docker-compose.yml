@@ -1,25 +1,20 @@
 # Use postgres/example user/password credentials
 version: '3.1'
-
 services:
-  server:
+  server-hire:
     build:
       context: .
-      dockerfile: ./compose/DockerFile
-    env_file:
-      - apps/server-hire/dist/config/.env.production
+      dockerfile: ./DockerFile
     ports:
-      - 80:80
-    expose:
-      - 80
-    command:
-
+      - '3000:3000'
+    command: yarn start:pm2
   db:
+    container_name: db
     image: postgres:latest
     restart: always
     environment:
-      POSTGRES_PASSWORD: ${TYPEORM_PASSWORD}
       POSTGRES_DB: relax_db
+      POSTGRES_PASSWORD: example
     volumes:
       - /data/postgresql/data/db:/data/db
     ports:

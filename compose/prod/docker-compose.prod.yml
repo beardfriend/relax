@@ -1,0 +1,12 @@
+version: '3'
+services:
+  server-hire:
+    build:
+      context: ../../
+      dockerfile: DockerFile
+    container_name: server-hire
+    ports:
+      - '8000:8000'
+    volumes:
+      - ./:/app
+    command: ls

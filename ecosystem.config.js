@@ -3,8 +3,8 @@ module.exports = {
     {
       name: 'server-hire',
       script: 'dist/apps/server-hire/src/app.js',
-      interpreter: 'node',
-      interpreter_args: ['-r', 'ts-node/register/transpile-only', '-r', 'tsconfig-paths/register'],
+      // interpreter: 'node',
+      // interpreter_args: ['-r', 'ts-node/register/transpile-only', '-r', 'tsconfig-paths/register'],
       watch: true,
       env_production: {
         NODE_ENV: 'production',

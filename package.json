@@ -8,9 +8,9 @@
   "author": "beardfriend <beardfriend21@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "start:pm2": "pm2 start ecosystem.config.js --env production",
+    "start:pm2": "pm2-runtime start ecosystem.config.js --env production",
     "build:webpack": "cross-env NODE_ENV=production webpack --progress --config webpack.config.js",
-    "build:tsc": "tsc -b ./apps/server-hire/tsconfig.build.json"
+    "build:tsc": "tsc -b ./apps/server-hire/tsconfig.build.json && mkdir dist/config && cp config/.env.production dist/config/.env.production"
   },
   "dependencies": {
     "axios": "^0.25.0",
