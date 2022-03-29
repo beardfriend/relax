@@ -1,6 +1,5 @@
 import { UpdateColumn } from '@Libs/entites/abstract';
 import { Exclude, Expose, Type } from 'class-transformer';
-import { IsNotEmpty } from 'class-validator';
 import { ImageDto } from './image';
 import { YogaDto } from './yoga';
 
@@ -15,8 +14,7 @@ export class TeacherProfileDto extends UpdateColumn {
   introduce: string;
 
   @Expose()
-  @IsNotEmpty()
-  representationNumber: string;
+  instagram: string;
 
   @Type(() => ImageDto)
   profileImage: ImageDto;

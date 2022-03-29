@@ -2,6 +2,18 @@
 version: '3.1'
 
 services:
+  server:
+    build:
+      context: .
+      dockerfile: ./compose/DockerFile
+    env_file:
+      - apps/server-hire/dist/config/.env.production
+    ports:
+      - 80:80
+    expose:
+      - 80
+    command:
+
   db:
     image: postgres:latest
     restart: always

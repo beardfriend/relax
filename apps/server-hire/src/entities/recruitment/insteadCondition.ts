@@ -6,7 +6,7 @@ import Recruitement from './recruitment';
 
 @Entity()
 class InsteadCondition extends Primary {
-  @OneToMany(() => RecruitTime, (recruitTime) => recruitTime.date)
+  @OneToMany(() => RecruitTime, (recruitTime) => recruitTime.insteadCondition)
   time: RecruitTime[];
 
   @Column({ type: 'enum', enum: yogaSortType })

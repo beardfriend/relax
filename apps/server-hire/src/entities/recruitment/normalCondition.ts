@@ -6,7 +6,7 @@ import Recruitement from './recruitment';
 
 @Entity()
 class NormalCondition extends Primary {
-  @OneToMany(() => RecruitTime, (recruitTime) => recruitTime.week)
+  @OneToMany(() => RecruitTime, (recruitTime) => recruitTime.noramlCondition)
   time: RecruitTime[];
 
   @Column({ type: 'enum', enum: yogaSortType })

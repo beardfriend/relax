@@ -1,5 +1,6 @@
 import { Primary } from '@Libs/entites/abstract';
 import { Entity, Column, ManyToOne } from 'typeorm';
+
 import InsteadCondition from './insteadCondition';
 import NormalCondition from './normalCondition';
 

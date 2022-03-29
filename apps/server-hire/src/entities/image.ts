@@ -20,7 +20,6 @@ class Images extends Image {
   academyLogo: AcademyProfile;
 
   @ManyToOne(() => AcademyProfile, (profile) => profile.introduceImage, {
-    nullable: true,
     createForeignKeyConstraints: false,
   })
   academyIntroduce: AcademyProfile;

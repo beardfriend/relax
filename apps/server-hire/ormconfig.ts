@@ -4,6 +4,7 @@ import env from '@SH/env';
 import useDotenv from '@SH/Initializations/express/lib/useDotenv';
 import { ConnectionOptions } from 'typeorm';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
+import Entites from '@SH/Entities/index';
 
 useDotenv();
 
@@ -16,7 +17,7 @@ export default {
   database: env.typeorm.database,
   synchronize: env.typeorm.sync,
   logging: env.typeorm.logging,
-  entities: [env.typeorm.entities],
+  entities: Entites,
   migrations: [env.typeorm.migration],
   cli: {
     migrationsDir: 'src/migrations',

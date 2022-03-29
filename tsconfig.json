@@ -3,7 +3,9 @@
     "module": "commonjs",
     "lib": ["DOM", "ES2015"],
     "target": "es6",
+    "outDir": "dist",
     //엄격 타입 설정
+    "strict": true,
     "noImplicitAny": true, // any타입 허용 안함
     "strictNullChecks": true, // null 체크 까다롭게
     "strictFunctionTypes": true, // 함수 타입 까다롭게 체크
@@ -12,10 +14,12 @@
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "allowSyntheticDefaultImports": true,
+    "strictPropertyInitialization": false,
     "esModuleInterop": true, // commonjs를 사용하기 위해 꼭 필요함.
     "emitDecoratorMetadata": true, // typeorm
     "experimentalDecorators": true, //typeorm
     "typeRoots": ["./node_modules/@types", "./libs/types"],
+    "skipLibCheck": true,
     "baseUrl": ".",
     "paths": {
       "@SH/env": ["./apps/server-hire/src/env.ts"],
@@ -32,6 +36,6 @@
     //
   },
 
-  "exclude": ["node_modules", "dist"],
+  "exclude": ["node_modules", "libs/entites/**", "tests/**"],
   "include": ["**/*.ts", "**/*.tsx"]
 }

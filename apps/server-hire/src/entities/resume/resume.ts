@@ -10,28 +10,28 @@ import WorkExperience from './workExperience';
 @Entity()
 class Resume extends Primary {
   @OneToMany(() => ResumeApplyList, (applyList) => applyList.resume)
-  resume: ResumeApplyList;
+  resumeApplyList: ResumeApplyList;
 
-  @ManyToOne(() => Teacher)
+  @ManyToOne(() => Teacher, (teacher) => teacher.resume)
   teacher: Teacher;
 
   @Column()
   resumeName: string;
 
-  @Column({ nullable: true })
+  @Column()
   isOpen: boolean;
 
-  @OneToMany(() => Images, (image) => image.resume, { nullable: true })
+  @OneToMany(() => Images, (image) => image.resume)
   images: Images[];
 
-  @OneToMany(() => Certification, (certification) => certification.resume, { nullable: true })
-  certification?: Certification[];
+  @OneToMany(() => Certification, (certification) => certification.resume)
+  certification: Certification[];
 
-  @OneToMany(() => Education, (education) => education.resume, { nullable: true })
-  education?: Education[];
+  @OneToMany(() => Education, (education) => education.resume)
+  education: Education[];
 
-  @OneToMany(() => WorkExperience, (work_experience) => work_experience.resume, { nullable: true })
-  workExperience?: WorkExperience[];
+  @OneToMany(() => WorkExperience, (work_experience) => work_experience.resume)
+  workExperience: WorkExperience[];
 }
 
 export default Resume;

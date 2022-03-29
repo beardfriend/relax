@@ -68,11 +68,11 @@ export function switchLoginType2(loginType: 'normal' | 'kakao' | 'google') {
 export function swtichEnv(key: string) {
   switch (key) {
     case 'production':
-      return `../../config/.env.production`;
+      return `./config/.env.production`;
     case 'development':
       return `../../config/.env.development`;
     case 'test':
-      return `./config/.env.test`;
+      return `../../config/.env.test`;
 
     default:
       throw new Error('존재하지 않는 타입입니다.');

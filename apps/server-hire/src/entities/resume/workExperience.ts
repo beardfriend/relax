@@ -20,7 +20,7 @@ class WorkExperience extends Primary {
   @OneToMany(() => ClassContent, (data) => data.workExperience)
   classContent: ClassContent[];
 
-  @ManyToOne(() => Resume)
+  @ManyToOne(() => Resume, (resume) => resume.workExperience)
   resume: Resume;
 }
 

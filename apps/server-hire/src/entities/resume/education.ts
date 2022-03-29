@@ -22,7 +22,7 @@ class Education extends Primary {
   @Column()
   etcExplain: string;
 
-  @ManyToOne(() => Resume)
+  @ManyToOne(() => Resume, (resume) => resume.education)
   resume: Resume;
 }
 

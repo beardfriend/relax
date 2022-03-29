@@ -20,7 +20,7 @@ class Certification extends Primary {
   @Column()
   etcExplain: string;
 
-  @ManyToOne(() => Resume)
+  @ManyToOne(() => Resume, (resume) => resume.certification)
   resume: Resume;
 }
 

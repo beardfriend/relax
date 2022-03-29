@@ -4,10 +4,11 @@ import { Primary } from '@Libs/entites/abstract';
 import InsteadCondition from './insteadCondition';
 import NormalCondition from './normalCondition';
 import Academy from '../user/academy';
+import ResumeApplyList from '../resumeApplyList';
 
 @Entity()
 class Recruitement extends Primary {
-  @ManyToOne(() => Academy)
+  @ManyToOne(() => Academy, (academy) => academy.recruitement)
   writer: Academy;
 
   @Column({ type: 'enum', enum: recruitmentStatus, default: recruitmentStatus.DOING })
@@ -24,6 +25,9 @@ class Recruitement extends Primary {
 
   @Column()
   treatList: string;
+
+  @OneToMany(() => ResumeApplyList, (applyList) => applyList.recruit)
+  applyList: ResumeApplyList[];
 
   @OneToMany(() => InsteadCondition, (insteadCondition) => insteadCondition.recruit)
   instead: InsteadCondition[];

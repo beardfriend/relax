@@ -5,6 +5,8 @@
     "lib": ["ES2015", "ES2016", "ES2017", "ES2018", "ES2019", "ES2020"],
     "removeComments": true,
     "baseUrl": "src",
+    "outDir": "dist",
+    "sourceMap": true,
     "paths": {
       "@SH/env": ["./env.ts"],
       "@SH/Initializations/*": ["./initialzations/*"],
@@ -17,5 +19,7 @@
       "@Constants/Types": ["../../../libs/constants/types/index.ts"],
       "@Constants/Messages": ["../../../libs/constants/messages/index.ts"]
     }
-  }
+  },
+  "exclude": ["../client-hire", "node_modules"],
+  "include": ["../../**/*.ts"]
 }

@@ -5,6 +5,7 @@
   "extends": ["plugin:prettier/recommended"],
   "parser": "@typescript-eslint/parser",
   "plugins": ["@typescript-eslint", "import"],
+  "ignorePatterns": "*.js",
   "rules": {
     "prettier/prettier": "error",
     "import/no-unresolved": ["warn", { "caseSensitive": true }],
