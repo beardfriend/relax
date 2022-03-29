@@ -7,19 +7,19 @@ import Teacher from './teacher';
 
 @Entity()
 class User extends UserDto implements Primary {
-  @Column({ default: null })
+  @Column({ nullable: true })
   email: string;
 
-  @Column({ default: null })
+  @Column({ nullable: true })
   kakaoId: number;
 
-  @Column({ default: null })
+  @Column({ nullable: true })
   googleId: string;
 
-  @Column({ default: null })
+  @Column({ nullable: true })
   password: string;
 
-  @Column({ default: null })
+  @Column({ nullable: true })
   phoneNumber: string;
 
   @Column({ type: 'enum', enum: userType, default: null })

@@ -8,8 +8,9 @@
   "author": "beardfriend <beardfriend21@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "start": "NODE_ENV=development pm2 start node_modules/ts-node/register node_modules/tsconfig-paths/register dist/apps/server-hire/src/app.js --watch",
-    "build": "cross-env NODE_ENV=production webpack --progress --config webpack.config.js"
+    "start:pm2": "pm2 start ecosystem.config.js --env production",
+    "build:webpack": "cross-env NODE_ENV=production webpack --progress --config webpack.config.js",
+    "build:tsc": "tsc -b ./apps/server-hire/tsconfig.build.json"
   },
   "dependencies": {
     "axios": "^0.25.0",

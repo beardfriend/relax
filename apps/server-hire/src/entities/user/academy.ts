@@ -11,8 +11,8 @@ class Academy extends AcademyDto implements UpdateColumn {
   @PrimaryColumn()
   id: number;
 
-  @OneToOne(() => User, { primary: true })
-  @JoinColumn({ name: 'id' })
+  @OneToOne(() => User)
+  @JoinColumn()
   user: User;
 
   @OneToMany(() => Recruitement, (recruitement) => recruitement.writer)

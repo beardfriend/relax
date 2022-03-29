@@ -10,8 +10,8 @@ class Teacher extends TeacherDto implements UpdateColumn {
   @PrimaryColumn()
   id: number;
 
-  @OneToOne(() => User, { primary: true })
-  @JoinColumn({ name: 'id' })
+  @OneToOne(() => User)
+  @JoinColumn()
   user: User;
 
   @OneToOne(() => TeacherProfile)

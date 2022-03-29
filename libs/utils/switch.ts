@@ -68,7 +68,7 @@ export function switchLoginType2(loginType: 'normal' | 'kakao' | 'google') {
 export function swtichEnv(key: string) {
   switch (key) {
     case 'production':
-      return `./config/.env.production`;
+      return `./dist/config/.env.production`;
     case 'development':
       return `../../config/.env.development`;
     case 'test':
