@@ -7,7 +7,7 @@ export const loginSuccess: response = {
 };
 
 export const signupSuccess: response = {
-  statusCode: 200,
+  statusCode: 201,
   category: 'user',
   message: '회원가입에 성공하였습니다.',
 };
@@ -48,13 +48,13 @@ export const userInfoNotfound: response = {
 };
 
 export const userTypeSelect: response = {
-  statusCode: 200,
+  statusCode: 201,
   category: 'user',
   message: '회원 유형이 성공적으로 등록되었습니다.',
 };
 
 export const businessCheckSuccess: response = {
-  statusCode: 200,
+  statusCode: 201,
   category: 'user',
   message: '사업자 등록이 완료되었습니다.',
 };
@@ -72,7 +72,7 @@ export const businessCheckFail: response = {
 };
 
 export const academyProfileSuccess: response = {
-  statusCode: 200,
+  statusCode: 201,
   category: 'user',
   message: '프로필 등록이 성공적으로 완료되었습니다.',
 };
