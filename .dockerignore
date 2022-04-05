@@ -14,6 +14,6 @@ node_modules
 .prettierrc
 DockerFile
 jest.config.ts
-webpack.config.js
+
 
 

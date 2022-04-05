@@ -1,16 +1,7 @@
 # Use postgres/example user/password credentials
 version: '3.1'
 services:
-  server-hire:
-    build:
-      context: .
-      dockerfile: ./DockerFile
-    depends_on:
-      - db
-    ports:
-      - '3000:3000'
-    command: yarn start:pm2
-  db:
+  realx_db:
     image: postgres:latest
     restart: always
     environment:
@@ -18,5 +9,6 @@ services:
       POSTGRES_PASSWORD: ${TYPEORM_PASSWORD}
     volumes:
       - /data/postgresql/data/db:/data/db
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
       - '5432:5432'
