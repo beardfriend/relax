@@ -55,6 +55,9 @@ module.exports = {
       ],
     }),
   ],
+  optimization: {
+    minimize: false,
+  },
   devtool: 'source-map',
   plugins: [
     new webpack.DefinePlugin({

@@ -4,10 +4,10 @@ docker-compose*
 DockerFile
 apps/client-hire
 compose
-config
-libs
 tests
 uploads
+dist
+node_modules
 .dockerignore
 .eslintrc
 .gitignore

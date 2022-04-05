@@ -9,7 +9,7 @@ import {
 import { classToPlain } from 'class-transformer';
 import { Request, Response } from 'express';
 
-export default async function academyProfile(req: Request, res: Response) {
+export default async function putAcademyProfile(req: Request, res: Response) {
   const images = req.files as Iimages;
 
   const profileData = Object.assign(req.body, images) as IacademyProfileRequest;
