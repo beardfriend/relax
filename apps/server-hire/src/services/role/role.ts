@@ -7,16 +7,13 @@ export default async function updateRole(findedUser: DeepPartial<User>, role: st
   const manager = getManager();
   const user = findedUser;
 
-  try {
-    if (role === 'ACADEMY') {
-      user.role = userType.ACADEMY;
-    } else if (role === 'TEACHER') {
-      user.role = userType.TEACHER;
-      await createTeacher(findedUser);
-    }
-
-    await manager.save(user);
-  } catch (error) {
-    console.log(error);
+  if (role === 'ACADEMY') {
+    user.role = userType.ACADEMY;
+  } else if (role === 'TEACHER') {
+    user.role = userType.TEACHER;
+    await createTeacher(findedUser);
+  } else {
+    throw new Error('error');
   }
+  await manager.save(user);
 }

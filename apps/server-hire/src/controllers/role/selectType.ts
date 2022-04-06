@@ -5,17 +5,22 @@ import { Request, Response } from 'express';
 
 async function selectRole(req: Request, res: Response) {
   const { role } = req.body;
+  try {
+    const findedUser = await findUser(req.user, req.type);
 
-  const findedUser = await findUser(req.user, req.type);
+    if (findedUser === undefined) {
+      return res
+        .status(userInfoNotfound.statusCode)
+        .send({ msg: userInfoNotfound.message, category: userInfoNotfound.category });
+    }
+    await updateRole(findedUser, role);
 
-  if (findedUser === undefined) {
     return res
-      .status(userInfoNotfound.statusCode)
-      .send({ msg: userInfoNotfound.message, category: userInfoNotfound.category });
+      .status(userTypeSelect.statusCode)
+      .send({ msg: userTypeSelect.message, category: userTypeSelect.category });
+  } catch (error) {
+    return res.status(500).send('서버에러');
   }
-  await updateRole(findedUser, role);
-
-  return res.status(userTypeSelect.statusCode).send({ msg: userTypeSelect.message, category: userTypeSelect.category });
 }
 
 export default selectRole;
