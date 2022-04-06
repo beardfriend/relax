@@ -1,7 +1,7 @@
 import { AcademyDto } from '@Libs/dto/academy';
 import { UpdateColumn } from '@Libs/entites/abstract';
 import { Entity, JoinColumn, OneToMany, OneToOne, PrimaryColumn } from 'typeorm';
-import Recruitement from '../recruitment/recruitment';
+import Recruitment from '../recruitment/recruitment';
 import AcademyBusiness from './academyBusiness';
 import AcademyProfile from './academyProfile';
 import User from './user';
@@ -12,11 +12,11 @@ class Academy extends AcademyDto implements UpdateColumn {
   id: number;
 
   @OneToOne(() => User)
-  @JoinColumn()
+  @JoinColumn({ name: 'id' })
   user: User;
 
-  @OneToMany(() => Recruitement, (recruitement) => recruitement.writer)
-  recruitement: Recruitement[];
+  @OneToMany(() => Recruitment, (recruitment) => recruitment.writer)
+  recruitment: Recruitment[];
 
   @OneToOne(() => AcademyBusiness)
   @JoinColumn()

@@ -11,7 +11,7 @@ class Teacher extends TeacherDto implements UpdateColumn {
   id: number;
 
   @OneToOne(() => User)
-  @JoinColumn()
+  @JoinColumn({ name: 'id' })
   user: User;
 
   @OneToOne(() => TeacherProfile)

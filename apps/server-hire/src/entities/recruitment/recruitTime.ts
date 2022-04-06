@@ -6,10 +6,10 @@ import NormalCondition from './normalCondition';
 
 @Entity()
 class RecruitTime extends Primary {
-  @Column()
+  @Column({ nullable: true })
   week: string;
 
-  @Column()
+  @Column({ nullable: true })
   date: string;
 
   @Column()

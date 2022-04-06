@@ -2,7 +2,7 @@ import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 import { yogaSortType } from '@Libs/constants/types';
 import { Primary } from '@Libs/entites/abstract';
 import RecruitTime from './recruitTime';
-import Recruitement from './recruitment';
+import Recruitment from './recruitment';
 
 @Entity()
 class NormalCondition extends Primary {
@@ -18,7 +18,7 @@ class NormalCondition extends Primary {
   @Column()
   pay: number;
 
-  @ManyToOne(() => Recruitement, (recruitment) => recruitment.normal)
-  recruit: Recruitement;
+  @ManyToOne(() => Recruitment, (recruitment) => recruitment.normal)
+  recruit: Recruitment;
 }
 export default NormalCondition;

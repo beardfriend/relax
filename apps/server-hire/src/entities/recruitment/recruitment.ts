@@ -7,8 +7,8 @@ import Academy from '../user/academy';
 import ResumeApplyList from '../resumeApplyList';
 
 @Entity()
-class Recruitement extends Primary {
-  @ManyToOne(() => Academy, (academy) => academy.recruitement)
+class Recruitment extends Primary {
+  @ManyToOne(() => Academy, (academy) => academy.recruitment)
   writer: Academy;
 
   @Column({ type: 'enum', enum: recruitmentStatus, default: recruitmentStatus.DOING })
@@ -24,7 +24,7 @@ class Recruitement extends Primary {
   qualifications: string;
 
   @Column()
-  treatList: string;
+  privilegeList: string;
 
   @OneToMany(() => ResumeApplyList, (applyList) => applyList.recruit)
   applyList: ResumeApplyList[];
@@ -35,4 +35,4 @@ class Recruitement extends Primary {
   @OneToMany(() => NormalCondition, (normalCondition) => normalCondition.recruit)
   normal: NormalCondition[];
 }
-export default Recruitement;
+export default Recruitment;

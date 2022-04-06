@@ -13,7 +13,7 @@ import Certifictaion from '@SH/Entities/resume/certification';
 import ClassContent from '@SH/Entities/resume/classContent';
 import Education from '@SH/Entities/resume/education';
 import WorkExperience from '@SH/Entities/resume/workExperience';
-import Recruitement from '@SH/Entities/recruitment/recruitment';
+import Recruitment from '@SH/Entities/recruitment/recruitment';
 import InsteadCondition from '@SH/Entities/recruitment/insteadCondition';
 import NormalCondition from '@SH/Entities/recruitment/normalCondition';
 import RecruitTime from '@SH/Entities/recruitment/recruitTime';
@@ -34,7 +34,7 @@ export default [
   ClassContent,
   Education,
   WorkExperience,
-  Recruitement,
+  Recruitment,
   InsteadCondition,
   NormalCondition,
   RecruitTime,
