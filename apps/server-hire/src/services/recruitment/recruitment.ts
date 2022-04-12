@@ -50,6 +50,11 @@ export async function updateRecruitWriter(academy: DeepPartial<Academy>, id: num
  * Delete *
  *************** */
 
+export async function deleteRecruitment(id: number) {
+  const recruitRepo = getRepository(Recruitment);
+  await recruitRepo.delete({ id });
+}
+
 /* ***************
  * Middle Logic *
  *************** */

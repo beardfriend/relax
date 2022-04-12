@@ -18,7 +18,7 @@ class NormalCondition extends Primary {
   @Column()
   pay: number;
 
-  @ManyToOne(() => Recruitment, (recruitment) => recruitment.normal)
+  @ManyToOne(() => Recruitment, (recruitment) => recruitment.normal, { onDelete: 'CASCADE' })
   recruit: Recruitment;
 }
 export default NormalCondition;

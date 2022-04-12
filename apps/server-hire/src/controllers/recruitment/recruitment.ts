@@ -1,7 +1,12 @@
 import { recruitType, yogaSortType } from '@Libs/constants/types';
 import { findAcademy } from '@SH/Services/user/academy';
 import { RecruitmentDto } from '@Libs/dto/recruitment';
-import { createNormalCondition, createRecruitment, createRecruitTimes } from '@SH/Services/recruitment/recruitment';
+import {
+  createNormalCondition,
+  createRecruitment,
+  createRecruitTimes,
+  deleteRecruitment,
+} from '@SH/Services/recruitment/recruitment';
 import { Request, Response } from 'express';
 
 export default async function postRecruitment(req: Request, res: Response) {
@@ -32,4 +37,10 @@ export default async function postRecruitment(req: Request, res: Response) {
     { writer: findedAcademy }
   );
   res.send('hello');
+}
+
+export async function delRecruitment(req: Request, res: Response) {
+  const { id } = req.body;
+  await deleteRecruitment(id);
+  res.send('delete success');
 }

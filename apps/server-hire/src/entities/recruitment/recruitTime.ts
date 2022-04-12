@@ -18,7 +18,7 @@ class RecruitTime extends Primary {
   @Column()
   endTime: string;
 
-  @ManyToOne(() => NormalCondition, (normalCondition) => normalCondition.time)
+  @ManyToOne(() => NormalCondition, (normalCondition) => normalCondition.time, { onDelete: 'CASCADE' })
   noramlCondition: NormalCondition;
 
   @ManyToOne(() => InsteadCondition, (insteadCondition) => insteadCondition.time)
